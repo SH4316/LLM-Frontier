@@ -342,6 +342,50 @@ function table(entries) {
                 : '';
             })
             .join('');
+        const displayGroupedIntroLinks = () => {
+          const links = models
+            .map((model) => {
+              const url = model.intro?.match(/\]\((https?:\/\/[^)]+)\)/)?.[1];
+              return url
+                ? { name: shortFeatureModelName(model.name), url }
+                : null;
+            })
+            .filter(Boolean);
+          const unique = [
+            ...new Map(links.map((item) => [item.url, item])).values(),
+          ];
+          return unique.length === 1
+            ? '<a href="' +
+                esc(unique[0].url) +
+                '" target="_blank" rel="noreferrer">공식 소개 ↗</a>'
+            : links
+                .map(
+                  (item) =>
+                    '<a href="' +
+                    esc(item.url) +
+                    '" target="_blank" rel="noreferrer">' +
+                    esc(item.name) +
+                    ' 소개 ↗</a>',
+                )
+                .join('<br>');
+        };
+        const displayGroupedSpecLinks = () => {
+          const links = models
+            .map((model) => {
+              const spec = specs.get(p.platform + '/' + model.name) || {};
+              return spec.source
+                ? '<small>' +
+                    esc(shortFeatureModelName(model.name)) +
+                    ' 출처: ' +
+                    link(spec.source) +
+                    '</small>'
+                : '';
+            })
+            .join('');
+          return links
+            ? '<details><summary>사양·출처</summary>' + links + '</details>'
+            : '';
+        };
         const modelNames = models
           .map((model) => model.name.replaceAll('`', ''))
           .join(' + ');
@@ -400,8 +444,9 @@ function table(entries) {
             })
             .join('') +
           '</td><td>' +
-          displayLink((model) => model.intro) +
-          (conciseGroupedFeatures ? displaySpecLinks() : '') +
+          (conciseGroupedFeatures
+            ? displayGroupedIntroLinks() + displayGroupedSpecLinks()
+            : displayLink((model) => model.intro)) +
           models
             .map((model) => {
               const r = routerInfo(p, model);
