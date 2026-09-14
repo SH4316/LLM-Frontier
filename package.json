@@ -1,0 +1,15 @@
+{
+  "name": "llm-frontier",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "build": "npm run build:static",
+    "build:static": "node scripts/build-site.mjs",
+    "validate": "node scripts/validate-site.mjs"
+  }
+}

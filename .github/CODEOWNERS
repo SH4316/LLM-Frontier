@@ -1,0 +1,6 @@
+# Repository owner review is required for model and generated-site changes.
+/models/ @SH4316
+/docs/ @SH4316
+/AGENTS.md @SH4316
+/index.html @SH4316
+/scripts/ @SH4316
