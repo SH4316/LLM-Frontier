@@ -17,7 +17,7 @@ Claude 3 세대부터 Claude 5 계열까지의 주요 공개·API 모델 이력�
 | 출시일 | 모델 | 상태 | 홈 분류 | 특징 | 비용 메모 | 공식 소개 | 가격 문서 | 비고 |
 |---|---|---|---|---|---|---|---|---|
 | 2026-09-01 | Claude Fable 5.1 | Current | frontier | 추론, 코딩, 멀티모달, 장문맥, 에이전트 작업, Computer use, Tool call, Vision | Fable 가격 확인 | [Fable 5.1·Mythos 5.1](https://www.anthropic.com/claude-fable-and-mythos-5-1) | [Claude 가격](https://claude.com/pricing) |  |
-| 2026-09-01 | Claude Mythos 5.1 | Preview | - | 추론, 코딩, 멀티모달, 장문맥, 에이전트 작업 | 제한 접근 | [Fable 5.1·Mythos 5.1](https://www.anthropic.com/claude-fable-and-mythos-5-1) | [Claude 가격](https://claude.com/pricing) | 신뢰 접근 전용 |
+| 2026-09-01 | Claude Mythos 5.1 | Preview | frontier | 추론, 코딩, 멀티모달, 장문맥, 에이전트 작업 | 제한 접근 | [Fable 5.1·Mythos 5.1](https://www.anthropic.com/claude-fable-and-mythos-5-1) | [Claude 가격](https://claude.com/pricing) | 신뢰 접근 전용 |
 | 2026-07-24 | Claude Opus 5 | Current | frontier | 코딩, 추론, 장문맥, 에이전트 작업, 비용 효율, Computer use, Tool call, Vision | Opus 가격 확인 | [Claude Opus 5](https://www.anthropic.com/news/claude-opus-5) | [Claude 가격](https://claude.com/pricing) |  |
 | 2026-06-30 | Claude Sonnet 5 | Current | value | 코딩, 추론, 속도, Computer use, 에이전트 작업 | $2/$10 input/output per 1M tokens; 2026-08-10 영구 가격 확정 | [Claude Sonnet 5](https://www.anthropic.com/news/claude-sonnet-5) | [Claude 가격](https://claude.com/pricing) | Opus 4.8 근접 성능을 더 낮은 가격으로 제공; 공식 발표 기준 |
 | 2026-06-09 | Claude Fable 5 | Current | - | 추론, 코딩, 멀티모달, 장문맥, 에이전트 작업 | Fable 가격 확인 | [Fable 5·Mythos 5](https://www.anthropic.com/news/claude-fable-5-mythos-5) | [Claude 가격](https://claude.com/pricing) |  |

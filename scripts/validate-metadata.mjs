@@ -14,6 +14,18 @@ const keys = new Set(),
   seen = new Set(),
   homeKeys = new Set(),
   errors = [];
+const frontierDisplayGroups = new Map([
+  [
+    'Anthropic/Claude Fable 5.1',
+    'Anthropic/Claude Fable 5.1 + Claude Mythos 5.1',
+  ],
+  [
+    'Anthropic/Claude Mythos 5.1',
+    'Anthropic/Claude Fable 5.1 + Claude Mythos 5.1',
+  ],
+]);
+const frontierDisplayGroupKey = (platform, name) =>
+  frontierDisplayGroups.get(platform + '/' + name) || platform + '/' + name;
 const categoryCounts = { transcription: 0, 'image-generation': 0 };
 for (const file of (await readdir(root + '/models')).filter(
   (x) => x.endsWith('.md') && !x.startsWith('_'),
@@ -21,7 +33,7 @@ for (const file of (await readdir(root + '/models')).filter(
   const source = await readFile(root + '/models/' + file, 'utf8');
   const platform = source.match(/^platform: (.+)$/m)?.[1];
   const type = source.match(/^type: (.+)$/m)?.[1];
-  let frontier = 0;
+  const frontier = new Set();
   for (const line of source
     .split('\n')
     .filter((x) => /^\| (?:\d{4}-\d{2}-\d{2}|미상) \|/.test(x))) {
@@ -34,9 +46,11 @@ for (const file of (await readdir(root + '/models')).filter(
     )
       homeKeys.add(platform + '/' + name);
     if (type in categoryCounts) categoryCounts[type]++;
-    if (category === 'frontier' && status !== 'Deprecated') frontier++;
+    if (category === 'frontier' && status !== 'Deprecated')
+      frontier.add(frontierDisplayGroupKey(platform, name));
   }
-  if (frontier > 2) errors.push(file + ': Frontier 최대 2개 초과');
+  if (frontier.size > 2)
+    errors.push(file + ': Frontier 표시 항목은 최대 2개입니다.');
 }
 for (const [type, count] of Object.entries(categoryCounts))
   if (!count) errors.push(type + ': 모델 목록이 비어 있습니다.');
@@ -67,6 +81,23 @@ for (const line of source
 }
 for (const key of homeKeys)
   if (!seen.has(key)) errors.push(key + ': 홈 모델 사양 누락');
+const routerKeys = new Set();
+const routerSource = await readFile(root + '/specs/openrouter.md', 'utf8');
+for (const line of routerSource
+  .split('\n')
+  .filter((x) => x.startsWith('| ') && !x.startsWith('| 플랫폼 |'))) {
+  const [platform, name, url, price, ...extra] = split(line);
+  const key = platform + '/' + name;
+  if (
+    extra.length ||
+    !keys.has(key) ||
+    routerKeys.has(key) ||
+    !/^\[OpenRouter\]\(https:\/\/openrouter\.ai\/[^)]+\)$/.test(url) ||
+    !price?.includes('per 1M tokens')
+  )
+    errors.push(key + ': OpenRouter 스냅샷 연결·가격 오류');
+  routerKeys.add(key);
+}
 for (const file of [
   'index.html',
   'transcription.html',
@@ -81,6 +112,16 @@ for (const file of [
     errors.push(file + ': 필수 링크·표 누락');
   if (!html.includes('local-models.html'))
     errors.push(file + ': Local 탐색 링크 누락');
+  if (
+    file !== 'local-models.html' &&
+    (!html.includes('<th>Price</th>') || !html.includes('<th>추가 설명</th>'))
+  )
+    errors.push(file + ': Price·추가 설명 열 누락');
+  if (
+    file === 'index.html' &&
+    (html.includes('id="other"') || html.includes('href="#other"'))
+  )
+    errors.push(file + ': 메인 과거 모델 섹션은 표시하지 않습니다.');
 }
 if (errors.length) {
   console.error(errors.join('\n'));

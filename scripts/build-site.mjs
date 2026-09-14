@@ -107,12 +107,36 @@ const sort = (a, b) =>
   (b.m.date === '미상' ? '' : b.m.date).localeCompare(
     a.m.date === '미상' ? '' : a.m.date,
   );
+const frontierDisplayGroups = new Map([
+  [
+    'Anthropic/Claude Fable 5.1',
+    'Anthropic/Claude Fable 5.1 + Claude Mythos 5.1',
+  ],
+  [
+    'Anthropic/Claude Mythos 5.1',
+    'Anthropic/Claude Fable 5.1 + Claude Mythos 5.1',
+  ],
+]);
+const frontierDisplayGroupKey = ({ p, m }) =>
+  frontierDisplayGroups.get(p.platform + '/' + m.name) ||
+  p.platform + '/' + m.name;
+const groupForFrontierDisplay = (entries) => {
+  const groups = new Map();
+  for (const entry of entries) {
+    const key = frontierDisplayGroupKey(entry);
+    const group = groups.get(key);
+    if (group) group.models.push(entry.m);
+    else groups.set(key, { p: entry.p, models: [entry.m] });
+  }
+  return [...groups.values()];
+};
 const frontier = all.filter(
   (x) => x.m.category === 'frontier' && x.m.status !== 'Deprecated',
 );
+const frontierDisplay = groupForFrontierDisplay(frontier);
 for (const p of languages) {
-  if (frontier.filter((x) => x.p.slug === p.slug).length > 2)
-    throw new Error(p.platform + ': frontier 모델은 최대 2개입니다.');
+  if (frontierDisplay.filter((x) => x.p.slug === p.slug).length > 2)
+    throw new Error(p.platform + ': Frontier 표시 항목은 최대 2개입니다.');
 }
 const value = all
   .filter((x) => x.m.category === 'value' && x.m.status !== 'Deprecated')
@@ -121,6 +145,34 @@ const other = all
   .filter((x) => x.m.category !== 'frontier' || x.m.status === 'Deprecated')
   .filter((x) => x.m.category !== 'value' || x.m.status === 'Deprecated')
   .sort(sort);
+const openrouter = new Map();
+const routerText = await readFile(join(root, 'specs', 'openrouter.md'), 'utf8');
+for (const line of routerText
+  .split('\n')
+  .filter((x) => x.startsWith('| ') && !x.startsWith('| 플랫폼 |'))) {
+  const [platform, name, url, price] = cells(line);
+  openrouter.set(platform + '/' + name, { url, price });
+}
+const chineseProviders = new Set([
+  'deepseek',
+  'glm',
+  'kimi',
+  'qwen',
+  'xiaomi',
+  'tencent',
+]);
+function routerInfo(p, model) {
+  if (!chineseProviders.has(p.icon_slug || p.slug)) return null;
+  return (
+    openrouter.get(p.platform + '/' + model.name) || {
+      url:
+        '[OpenRouter 검색](https://openrouter.ai/models?q=' +
+        encodeURIComponent(model.name.replaceAll('`', '')) +
+        ')',
+      price: '',
+    }
+  );
+}
 const styles = await readFile(join(root, 'styles.css'), 'utf8');
 const initials = {
   openai: 'O',
@@ -160,12 +212,68 @@ function table(entries) {
     ? 'Context / 입력한도'
     : 'Context length';
   return (
-    '<div class="table-scroll"><table><thead><tr><th>플랫폼 / 모델</th><th>출시일</th><th>' +
+    '<div class="table-scroll model-table"><table><thead><tr><th>플랫폼 / 모델</th><th>출시일</th><th>' +
     contextTitle +
-    '</th><th>Open weights</th><th>특화 기능</th><th>소개 / 가격</th></tr></thead><tbody>' +
+    '</th><th>Open weights / License</th><th>특화 기능</th><th>Price</th><th>소개 / 링크</th><th>추가 설명</th></tr></thead><tbody>' +
     entries
-      .map(({ p, m }) => {
-        const s = specs.get(p.platform + '/' + m.name) || {};
+      .map((entry) => {
+        const { p, m } = entry;
+        const models = entry.models || [m];
+        const grouped = models.length > 1;
+        const displayValue = (getter) =>
+          new Set(models.map((model) => getter(model) || '미상')).size === 1
+            ? getter(models[0]) || '미상'
+            : models
+                .map((model) => {
+                  const value = getter(model) || '미상';
+                  return grouped ? model.name + ': ' + value : value;
+                })
+                .join(' · ');
+        const displayLink = (getter) =>
+          models
+            .map((model) => {
+              const value = getter(model) || '';
+              return (grouped ? esc(model.name) + ': ' : '') + link(value);
+            })
+            .join('<br>');
+        const displaySpecs = (getter) =>
+          models
+            .map((model) => {
+              const spec = specs.get(p.platform + '/' + model.name) || {};
+              const value = getter(spec, model) || '미상';
+              return (grouped ? esc(model.name) + ': ' : '') + esc(value);
+            })
+            .join('<br>');
+        const displaySpecLinks = () =>
+          models
+            .map((model) => {
+              const spec = specs.get(p.platform + '/' + model.name) || {};
+              return spec.source
+                ? '<small>' +
+                    (grouped ? esc(model.name) + ': ' : '') +
+                    link(spec.source) +
+                    '</small>'
+                : '';
+            })
+            .join('');
+        const modelNames = models
+          .map((model) => model.name.replaceAll('`', ''))
+          .join(' + ');
+        const statuses = models
+          .map((model) =>
+            grouped ? model.name + ': ' + model.status : model.status,
+          )
+          .join(' · ');
+        const notes = models
+          .filter((model) => model.note)
+          .map(
+            (model) =>
+              '<small>' +
+              (grouped ? esc(model.name) + ': ' : '') +
+              link(model.note.replaceAll('`', '')) +
+              '</small>',
+          )
+          .join('');
         return (
           '<tr><td><a class="platform-name" href="' +
           esc(github('models/' + p.file)) +
@@ -173,34 +281,51 @@ function table(entries) {
           icon(p) +
           esc(p.platform) +
           '</a><strong class="model-name">' +
-          esc(m.name.replaceAll('`', '')) +
+          esc(modelNames) +
           '</strong><small>' +
-          esc(m.status) +
-          ((!p.type || p.type === 'language') &&
-          m.category === 'value' &&
-          m.cost
-            ? ' · ' + esc(m.cost)
-            : '') +
+          esc(statuses) +
           '</small></td><td class="date">' +
-          esc(m.date) +
+          esc(displayValue((model) => model.date)) +
           '</td><td>' +
-          esc(s.context || '미상') +
+          displaySpecs((spec) => spec.context) +
           '</td><td>' +
-          esc(s.weights || '미상') +
+          displaySpecs((spec) => spec.weights) +
           '</td><td>' +
-          esc(s.features || m.features) +
-          (s.source ? '<small>' + link(s.source) + '</small>' : '') +
+          displaySpecs((spec, model) => spec.features || model.features) +
+          displaySpecLinks() +
           '</td><td>' +
-          link(m.intro) +
+          displayLink((model) =>
+            model.cost ? model.cost.replaceAll('`', '') : '가격 미상',
+          ) +
           '<small>' +
-          link(m.pricing) +
+          displayLink((model) => model.pricing) +
           '</small>' +
-          (p.type && p.type !== 'language' && m.cost
-            ? '<small>' + link(m.cost.replaceAll('`', '')) + '</small>'
-            : '') +
-          (m.note
-            ? '<small>' + link(m.note.replaceAll('`', '')) + '</small>'
-            : '') +
+          models
+            .map((model) => {
+              const r = routerInfo(p, model);
+              return r?.price
+                ? '<small>' +
+                    (grouped ? esc(model.name) + ': ' : '') +
+                    esc(r.price) +
+                    '</small>'
+                : '';
+            })
+            .join('') +
+          '</td><td>' +
+          displayLink((model) => model.intro) +
+          models
+            .map((model) => {
+              const r = routerInfo(p, model);
+              return r
+                ? '<small>' +
+                    (grouped ? esc(model.name) + ': ' : '') +
+                    link(r.url) +
+                    '</small>'
+                : '';
+            })
+            .join('') +
+          '</td><td>' +
+          (notes || '<span class="empty-note">—</span>') +
           '</td></tr>'
         );
       })
@@ -258,7 +383,7 @@ function document(title, body) {
   ).replace(/></g, '>\n<');
 }
 const summary =
-  '<p class="intro">플랫폼별 최고 모델과 고성능·저비용 모델, 전체 버전 이력. Context length는 토큰 단위이며 API·앱·설정별 한도가 다를 수 있습니다.</p><nav aria-label="모델 목록"><a href="#frontier">Frontier</a><a href="#value">가성비</a><a href="#other">다른 모델 · 과거 버전</a><a href="#platforms">플랫폼 타임라인</a></nav>';
+  '<p class="intro">플랫폼별 최고 모델과 고성능·저비용 모델, 전체 버전 이력. Context length는 토큰 단위이며 API·앱·설정별 한도가 다를 수 있습니다.</p><nav aria-label="모델 목록"><a href="#frontier">Frontier</a><a href="#value">가성비</a><a href="#platforms">플랫폼 타임라인</a></nav>';
 const providers =
   '<section id="platforms"><h2>플랫폼별 타임라인</h2><div class="table-scroll"><table><thead><tr><th>플랫폼</th><th>출시 기록</th><th>문서 확인일</th><th>Markdown</th></tr></thead><tbody>' +
   languages
@@ -285,13 +410,11 @@ await writeFile(
     'Frontier LLM Index',
     summary +
       '<section id="frontier"><h2>Frontier models <span>' +
-      frontier.length +
-      '</span></h2><p>플랫폼별 최상위 모델 1–2개.</p>' +
-      table(frontier) +
+      frontierDisplay.length +
+      '</span></h2><p>플랫폼별 최고 모델 중심 · Anthropic은 Fable·Mythos 5.1 그룹과 Opus 5를 2개 표시 항목으로 유지합니다.</p>' +
+      table(frontierDisplay) +
       '</section><section id="value"><h2>Value models · 고성능·저비용</h2><p>Sonnet·DeepSeek Flash·Gemini Flash처럼 실용 성능이 높고 비용이 낮은 모델입니다. 소형 모델 목록이 아니며, 메모리별 실행 추천은 Local 페이지에서 확인합니다.</p>' +
       table(value) +
-      '</section><section id="other"><h2>다른 모델 · 과거 버전</h2>' +
-      table(other) +
       '</section>' +
       providers,
   ),
