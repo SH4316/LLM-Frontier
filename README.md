@@ -6,11 +6,16 @@
 
 메인 페이지는 [HTMLPreview에서 열기](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html)로 확인할 수 있습니다.
 
+[음성 전사](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/transcription.html) · [이미지 생성](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/image-generation.html) · [메모리별 Local 모델](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/local-models.html)
+
 플랫폼별 원본 인덱스는 [`models/`](./models/) 아래에 있습니다.
 
 ## 구조
 
 - `index.html`: Markdown 인덱스에서 생성되는 메인 페이지
+- `transcription.html`, `image-generation.html`: 음성 전사·이미지 생성 별도 페이지
+- `local-models.html`: Unsloth 기반 메모리별 Local 추천
+- `specs/*.md`: 사양·기능 근거 및 Local 추천 Markdown 원본
 - `models/*.md`: 플랫폼별 모델 버전·출시일·공식 문서 인덱스
 - `styles.css`: 메인 페이지 스타일 원본
 - `scripts/build-site.mjs`: Markdown을 읽어 `index.html`을 생성
@@ -24,8 +29,8 @@
 모델 Markdown을 수정한 뒤 다음 명령을 실행합니다.
 
 ```bash
-npm run validate
 npm run build
+npm run validate
 ```
 
 생성된 `index.html`을 수정사항과 함께 Pull Request에 포함합니다. 자세한 내용은 [`docs/UPDATE_RULES.md`](./docs/UPDATE_RULES.md)를 확인하십시오.

@@ -14,6 +14,11 @@
 ### 모델 데이터 규칙
 
 - 모델 관련 원본 데이터는 `models/*.md`에서 관리합니다.
+- 사양과 기능 근거는 `specs/models.md`, Unsloth 기반 메모리별 Local 추천은 `specs/local-models.md`에서 Markdown으로 관리합니다.
+- 모든 타임라인은 최신 출시일을 위에 두는 내림차순이며 `미상`은 맨 아래입니다.
+- Frontier는 플랫폼별 최상위 1–2개만 선택합니다. 나머지는 메인 하단에 유지합니다.
+- 기능 명칭은 `Computer use`입니다. 컴퓨터 화면·브라우저 조작 능력을 뜻하며 연산 효율과 구분합니다.
+- Context length·공개 가중치·라이선스·기능에는 공식 근거를 남깁니다. 확인되지 않은 값은 추정하지 않습니다.
 - 모델 버전의 과거 기록을 삭제하거나 기존 출시일을 임의로 변경하지 않습니다.
 - 출시일은 공식 출시일 기준의 `YYYY-MM-DD` 형식을 사용합니다.
 - 공식 소개 문서와 공식 가격 문서 링크를 우선 사용합니다.
@@ -25,11 +30,11 @@
 Markdown 인덱스를 수정한 뒤 다음 명령을 실행합니다.
 
 ```bash
-npm run validate
 npm run build
+npm run validate
 ```
 
-`npm run build`는 플랫폼 Markdown 인덱스를 읽어 루트 `index.html`을 다시 생성합니다.
+`npm run build`는 Markdown 원본을 읽어 메인·음성 전사·이미지 생성·Local 추천 HTML 페이지를 다시 생성합니다.
 
 ### Git 작업 규칙
 

@@ -1,242 +1,355 @@
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
-const modelsDir = join(root, "models");
-const repositoryUrl = "https://github.com/SH4316/LLM-Frontier";
-const validStatuses = new Set(["Current", "Preview", "Deprecated"]);
-
-const escapeHtml = (value = "") =>
+const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
+const repo = 'https://github.com/SH4316/LLM-Frontier';
+const branch = process.env.PREVIEW_BRANCH || 'main';
+const github = (path) => repo + '/blob/' + branch + '/' + path;
+const preview = (path) => 'https://htmlpreview.github.io/?' + github(path);
+const esc = (value = '') =>
   String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-
-const splitTableRow = (line) =>
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+const cells = (line) =>
   line
     .trim()
-    .replace(/^\|/, "")
-    .replace(/\|$/, "")
-    .split("|")
-    .map((cell) => cell.trim());
-
-const parseLink = (cell) => {
-  const match = cell.match(/^\[([^\]]+)\]\((https?:\/\/[^)]+)\)$/);
-  return match ? { label: match[1], url: match[2] } : { label: cell, url: "" };
-};
-
-const parseFrontMatter = (source) => {
-  const match = source.match(/^---\n([\s\S]*?)\n---/);
-  const values = {};
-  if (!match) return values;
-  for (const line of match[1].split("\n")) {
-    const separator = line.indexOf(":");
-    if (separator === -1) continue;
-    values[line.slice(0, separator).trim()] = line.slice(separator + 1).trim();
+    .replace(/^\|/, '')
+    .replace(/\|$/, '')
+    .split('|')
+    .map((x) => x.trim());
+const link = (value = '') => {
+  let html = '',
+    offset = 0;
+  for (const m of value.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g)) {
+    html +=
+      esc(value.slice(offset, m.index)) +
+      '<a href="' +
+      esc(m[2]) +
+      '" target="_blank" rel="noreferrer">' +
+      esc(m[1]) +
+      ' ↗</a>';
+    offset = m.index + m[0].length;
   }
-  return values;
+  return html + esc(value.slice(offset));
 };
-
-const parseModels = (source) => {
+function parse(source) {
+  const meta = {};
+  for (const line of (source.match(/^---\n([\s\S]*?)\n---/)?.[1] || '').split(
+    '\n',
+  )) {
+    const i = line.indexOf(':');
+    if (i >= 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+  }
   const lines = source.split(/\r?\n/);
-  const headerIndex = lines.findIndex((line) => line.startsWith("| 출시일 |"));
-  if (headerIndex === -1) return [];
-
-  const models = [];
-  for (const line of lines.slice(headerIndex + 2)) {
-    if (!line.startsWith("|")) break;
-    const cells = splitTableRow(line);
-    if (cells.length < 9 || cells[0].startsWith("---")) continue;
-    const [releaseDate, name, status, category, features, costNote, introCell, pricingCell, note] = cells;
-    const intro = parseLink(introCell);
-    const pricing = parseLink(pricingCell);
-    models.push({
-      releaseDate,
-      name,
-      status,
-      category,
-      features: features.split(",").map((tag) => tag.trim()).filter(Boolean),
-      costNote,
-      intro,
-      pricing,
-      note,
-    });
+  const start = lines.findIndex((x) => x.startsWith('| 출시일 |'));
+  const rows = [];
+  if (start >= 0)
+    for (const line of lines.slice(start + 2)) {
+      if (!line.startsWith('|')) break;
+      const [
+        date,
+        name,
+        status,
+        category,
+        features,
+        cost,
+        intro,
+        pricing,
+        note,
+      ] = cells(line);
+      rows.push({
+        date,
+        name,
+        status,
+        category,
+        features,
+        cost,
+        intro,
+        pricing,
+        note,
+      });
+    }
+  return { ...meta, rows };
+}
+const files = (await readdir(join(root, 'models')))
+  .filter((x) => x.endsWith('.md') && !x.startsWith('_'))
+  .sort();
+const platforms = await Promise.all(
+  files.map(async (file) => ({
+    ...parse(await readFile(join(root, 'models', file), 'utf8')),
+    file,
+  })),
+);
+const specs = new Map();
+try {
+  const text = await readFile(join(root, 'specs', 'models.md'), 'utf8');
+  for (const line of text
+    .split('\n')
+    .filter(
+      (x) =>
+        x.startsWith('|') &&
+        !x.startsWith('|---') &&
+        !x.startsWith('| 플랫폼 |'),
+    )) {
+    const [platform, name, context, weights, features, source] = cells(line);
+    specs.set(platform + '/' + name, { context, weights, features, source });
   }
-  return models;
-};
-
-const loadIndexes = async () => {
-  const names = (await readdir(modelsDir))
-    .filter((name) => name.endsWith(".md") && name !== "_TEMPLATE.md")
-    .sort();
-
-  return Promise.all(
-    names.map(async (fileName) => {
-      const source = await readFile(join(modelsDir, fileName), "utf8");
-      const frontMatter = parseFrontMatter(source);
-      return {
-        fileName,
-        filePath: `models/${fileName}`,
-        sourceUrl: `${repositoryUrl}/blob/main/models/${fileName}`,
-        platform: frontMatter.platform ?? fileName.replace(/\.md$/, ""),
-        slug: frontMatter.slug ?? fileName.replace(/\.md$/, ""),
-        lastReviewed: frontMatter.last_reviewed ?? "미상",
-        officialSite: frontMatter.official_site ?? "",
-        models: parseModels(source),
-      };
-    }),
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+const languages = platforms.filter((p) => !p.type || p.type === 'language');
+const all = languages.flatMap((p) => p.rows.map((m) => ({ p, m })));
+const sort = (a, b) =>
+  (b.m.date === '미상' ? '' : b.m.date).localeCompare(
+    a.m.date === '미상' ? '' : a.m.date,
   );
+const frontier = all.filter(
+  (x) => x.m.category === 'frontier' && x.m.status !== 'Deprecated',
+);
+for (const p of languages) {
+  if (frontier.filter((x) => x.p.slug === p.slug).length > 2)
+    throw new Error(p.platform + ': frontier 모델은 최대 2개입니다.');
+}
+const value = all
+  .filter((x) => x.m.category === 'value' && x.m.status !== 'Deprecated')
+  .sort(sort);
+const other = all
+  .filter((x) => x.m.category !== 'frontier' || x.m.status === 'Deprecated')
+  .filter((x) => x.m.category !== 'value' || x.m.status === 'Deprecated')
+  .sort(sort);
+const styles = await readFile(join(root, 'styles.css'), 'utf8');
+const initials = {
+  openai: 'O',
+  anthropic: 'A',
+  google: 'G',
+  deepseek: 'D',
+  glm: 'Z',
+  kimi: 'K',
+  qwen: 'Q',
+  meta: 'M',
+  xai: '𝕏',
+  cursor: 'C',
+  upstage: 'U',
+  xiaomi: 'mi',
+  nvidia: 'N',
+  tencent: 'T',
+  poolside: 'P',
 };
-
-const renderTags = (features) =>
-  `<ul class="tag-list">${features.map((feature) => `<li class="tag">${escapeHtml(feature)}</li>`).join("")}</ul>`;
-
-const renderModelCard = (model, platform, number, category) => {
-  const cardClass = category === "value" ? "model-card value-card" : "model-card";
-  const categoryLabel = category === "value" ? "VALUE / COST SIGNAL" : "FRONTIER / CAPABILITY SIGNAL";
-  const note = model.costNote && category === "value" ? model.costNote : model.note || "공식 소개 문서와 플랫폼 인덱스를 기준으로 수동 큐레이션";
-  return `
-    <article class="${cardClass}">
-      <div>
-        <div class="card-topline">
-          <span class="card-index">${categoryLabel} · ${String(number).padStart(2, "0")}</span>
-          <span class="model-status">${escapeHtml(model.status)}</span>
-        </div>
-        <h3>${escapeHtml(model.name)}</h3>
-        <p class="provider">${escapeHtml(platform.platform)}</p>
-        <p class="model-note">${escapeHtml(note)}</p>
-        ${renderTags(model.features)}
-      </div>
-      <div class="card-bottomline">
-        <span class="date">Released ${escapeHtml(model.releaseDate)}</span>
-        <a class="card-link" href="${escapeHtml(platform.sourceUrl)}" target="_blank" rel="noreferrer">Platform timeline</a>
-      </div>
-    </article>`;
-};
-
-const renderPlatformCard = (platform) => {
-  const latest = [...platform.models].reverse().find((model) => model.status !== "Deprecated") ?? platform.models.at(-1);
-  return `
-    <a class="platform-card" href="${escapeHtml(platform.sourceUrl)}" target="_blank" rel="noreferrer">
-      <div class="card-bottomline">
-        <span class="platform-meta">${escapeHtml(platform.filePath)}</span>
-        <span class="platform-arrow">↗</span>
-      </div>
-      <h3>${escapeHtml(platform.platform)}</h3>
-      <div class="card-bottomline">
-        <span class="platform-meta">${platform.models.length} versions indexed</span>
-        <span class="platform-meta">${escapeHtml(latest?.releaseDate ?? "미상")}</span>
-      </div>
-    </a>`;
-};
-
-const styles = await readFile(join(root, "styles.css"), "utf8");
-const platforms = await loadIndexes();
-const allModels = platforms.flatMap((platform) => platform.models.map((model) => ({ model, platform })));
-const frontierModels = allModels.filter(({ model }) => model.category === "frontier" && model.status !== "Deprecated");
-const valueModels = allModels.filter(({ model }) => model.category === "value" && model.status !== "Deprecated");
-const currentModels = allModels.filter(({ model }) => model.status === "Current");
-const latestDate = platforms
-  .flatMap((platform) => platform.models.map((model) => model.releaseDate))
-  .filter((date) => /^\d{4}-\d{2}-\d{2}$/.test(date))
-  .sort()
-  .at(-1);
-
-const html = `<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="주요 Frontier LLM과 가성비 모델, 플랫폼별 출시 이력을 수동 큐레이션하는 정적 인덱스" />
-    <title>Frontier LLM Index</title>
-    <style>${styles}</style>
-  </head>
-  <body>
-    <div class="site-shell">
-      <header class="topbar">
-        <a class="brand" href="#top" aria-label="Frontier LLM Index home"><span class="brand-mark">F</span> Frontier LLM Index</a>
-        <nav class="topnav" aria-label="주요 섹션">
-          <a href="#frontier">Frontier</a>
-          <a href="#value">Value</a>
-          <a href="#platforms">Platforms</a>
-          <a href="#rules">Rules</a>
-        </nav>
-        <span class="as-of">AS OF 2026.09.14</span>
-      </header>
-
-      <main id="top">
-        <section class="hero" aria-labelledby="hero-title">
-          <div>
-            <p class="eyebrow">Static model intelligence / manually curated</p>
-            <h1 id="hero-title">Frontier<br /><span>LLM</span> Index</h1>
-            <p class="hero-copy">주요 모델이 언제 출시되었고, 어떤 작업에 강하며, 지금 어떤 선택으로 남아 있는지 한 화면에서 기록합니다.</p>
-          </div>
-          <aside class="hero-panel" aria-label="인덱스 기준">
-            <span class="panel-label">Index protocol 01</span>
-            <strong>Release history first. Opinions second.</strong>
-            <small>Official sources · No live polling</small>
-          </aside>
-        </section>
-
-        <section class="stats" aria-label="인덱스 통계">
-          <div class="stat"><span class="stat-value">${platforms.length}</span><span class="stat-label">platforms indexed</span></div>
-          <div class="stat"><span class="stat-value">${allModels.length}</span><span class="stat-label">release entries</span></div>
-          <div class="stat"><span class="stat-value">${frontierModels.length}</span><span class="stat-label">frontier picks</span></div>
-          <div class="stat"><span class="stat-value">${valueModels.length}</span><span class="stat-label">value picks</span></div>
-        </section>
-
-        <section class="section" id="frontier" aria-labelledby="frontier-title">
-          <div class="section-heading">
-            <div><p class="section-kicker">01 / Capability signal</p><h2 id="frontier-title">Frontier<br />Models</h2></div>
-            <p>고난도 코딩·추론·에이전트 작업에 적합하다고 판단한 현재 모델입니다.</p>
-          </div>
-          <div class="model-grid">${frontierModels.map(({ model, platform }, index) => renderModelCard(model, platform, index + 1, "frontier")).join("")}</div>
-        </section>
-
-        <section class="section" id="value" aria-labelledby="value-title">
-          <div class="section-heading">
-            <div><p class="section-kicker">02 / Cost signal</p><h2 id="value-title">Value<br />Models</h2></div>
-            <p>대표 작업 비용과 실제 활용성을 함께 보고 선택하는 가성비 모델입니다.</p>
-          </div>
-          <div class="model-grid">${valueModels.map(({ model, platform }, index) => renderModelCard(model, platform, index + 1, "value")).join("")}</div>
-        </section>
-
-        <section class="section" id="platforms" aria-labelledby="platforms-title">
-          <div class="section-heading">
-            <div><p class="section-kicker">03 / Source files</p><h2 id="platforms-title">Platform<br />Indexes</h2></div>
-            <p>플랫폼 이름을 누르면 GitHub의 Markdown 원본 파일과 전체 출시 타임라인을 확인할 수 있습니다.</p>
-          </div>
-          <div class="platform-grid">${platforms.map(renderPlatformCard).join("")}</div>
-        </section>
-
-        <section class="section" id="rules" aria-labelledby="rules-title">
-          <div class="operation-panel">
-            <div>
-              <p class="section-kicker">04 / Update protocol</p>
-              <h2 id="rules-title">Static by design.<br />Reviewed by people.</h2>
-              <p>실시간 API나 자동 크롤링을 사용하지 않습니다. LLM은 공식 자료를 확인해 PR을 만들고, 관리자가 출시일·문서 링크·가성비 판단을 검토한 뒤 반영합니다.</p>
-            </div>
-            <div class="operation-links">
-              <a href="${repositoryUrl}/blob/main/docs/UPDATE_RULES.md" target="_blank" rel="noreferrer"><span>UPDATE_RULES.md</span><span>↗</span></a>
-              <a href="${repositoryUrl}/blob/main/docs/PR_RULES.md" target="_blank" rel="noreferrer"><span>PR_RULES.md</span><span>↗</span></a>
-              <a href="${repositoryUrl}/blob/main/AGENTS.md" target="_blank" rel="noreferrer"><span>AGENTS.md</span><span>↗</span></a>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        <p>Last reviewed: 2026-09-14 · Latest indexed release: ${escapeHtml(latestDate ?? "미상")} · ${currentModels.length} current entries</p>
-        <p><a href="${repositoryUrl}" target="_blank" rel="noreferrer">SH4316 / LLM-Frontier</a><br />Source of truth: GitHub Markdown files</p>
-      </footer>
-    </div>
-  </body>
-</html>
-`;
-
-await mkdir(join(root, "scripts"), { recursive: true });
-await writeFile(join(root, "index.html"), html, "utf8");
-console.log(`Generated index.html from ${platforms.length} platform Markdown files (${allModels.length} release entries).`);
+function icon(p) {
+  const slug = p.icon_slug || p.slug;
+  const domain = p.official_site ? new URL(p.official_site).hostname : '';
+  return (
+    '<span class="platform-icon icon-' +
+    esc(slug) +
+    '" aria-hidden="true">' +
+    esc(initials[slug] || p.platform.slice(0, 2)) +
+    (domain
+      ? '<img src="https://www.google.com/s2/favicons?domain=' +
+        esc(domain) +
+        '&amp;sz=64" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
+      : '') +
+    '</span>'
+  );
+}
+function table(entries) {
+  const contextTitle = entries.some(({ p }) => p.type && p.type !== 'language')
+    ? 'Context / 입력한도'
+    : 'Context length';
+  return (
+    '<div class="table-scroll"><table><thead><tr><th>플랫폼 / 모델</th><th>출시일</th><th>' +
+    contextTitle +
+    '</th><th>Open weights</th><th>특화 기능</th><th>소개 / 가격</th></tr></thead><tbody>' +
+    entries
+      .map(({ p, m }) => {
+        const s = specs.get(p.platform + '/' + m.name) || {};
+        return (
+          '<tr><td><a class="platform-name" href="' +
+          esc(github('models/' + p.file)) +
+          '">' +
+          icon(p) +
+          esc(p.platform) +
+          '</a><strong class="model-name">' +
+          esc(m.name.replaceAll('`', '')) +
+          '</strong><small>' +
+          esc(m.status) +
+          ((!p.type || p.type === 'language') &&
+          m.category === 'value' &&
+          m.cost
+            ? ' · ' + esc(m.cost)
+            : '') +
+          '</small></td><td class="date">' +
+          esc(m.date) +
+          '</td><td>' +
+          esc(s.context || '미상') +
+          '</td><td>' +
+          esc(s.weights || '미상') +
+          '</td><td>' +
+          esc(s.features || m.features) +
+          (s.source ? '<small>' + link(s.source) + '</small>' : '') +
+          '</td><td>' +
+          link(m.intro) +
+          '<small>' +
+          link(m.pricing) +
+          '</small>' +
+          (p.type && p.type !== 'language' && m.cost
+            ? '<small>' + link(m.cost.replaceAll('`', '')) + '</small>'
+            : '') +
+          (m.note
+            ? '<small>' + link(m.note.replaceAll('`', '')) + '</small>'
+            : '') +
+          '</td></tr>'
+        );
+      })
+      .join('') +
+    '</tbody></table></div>'
+  );
+}
+const nav =
+  '<nav><a href="' +
+  esc(preview('index.html')) +
+  '">LLM</a><a href="' +
+  esc(preview('transcription.html')) +
+  '">Transcription</a><a href="' +
+  esc(preview('image-generation.html')) +
+  '">Image generation</a><a href="' +
+  esc(preview('local-models.html')) +
+  '">Local models</a><a href="' +
+  esc(github('docs/UPDATE_RULES.md')) +
+  '">Update rules</a></nav>';
+const branchNavigation = `<script>
+(() => {
+  if (location.hostname !== 'htmlpreview.github.io') return;
+  const source = decodeURI(location.search.slice(1));
+  const prefix = ${JSON.stringify(repo + '/blob/')};
+  if (!source.startsWith(prefix)) return;
+  const path = source.slice(prefix.length);
+  const requestedBranch = path.slice(0, path.lastIndexOf('/'));
+  if (!requestedBranch || requestedBranch === 'main') return;
+  for (const anchor of document.querySelectorAll('a[href]')) {
+    anchor.href = anchor.href.replace(prefix + 'main/', prefix + requestedBranch + '/');
+  }
+})();
+</script>`;
+function document(title, body) {
+  return (
+    '<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' +
+    esc(title) +
+    '</title><style>' +
+    styles +
+    '</style></head><body><div class="external-bar"><a href="https://artificialanalysis.ai/" target="_blank" rel="noreferrer">Artificial Analysis ↗</a></div><div class="shell"><header><a class="brand" href="' +
+    esc(preview('index.html')) +
+    '">Frontier Model Index</a>' +
+    nav +
+    '</header><main><h1>' +
+    esc(title) +
+    '</h1>' +
+    body +
+    '</main><footer>공식 자료를 기반으로 수동 업데이트 · 미상: 공식 정보 미확인 · Open weights와 오픈소스 라이선스를 구분합니다. Deprecated: 공식 폐기 예고 또는 지원 종료; 공개 가중치 이용 여부는 별도입니다.<br><a href="' +
+    esc(github('AGENTS.md')) +
+    '">AGENTS.md</a> · <a href="' +
+    esc(repo) +
+    '">GitHub</a></footer></div>' +
+    branchNavigation +
+    '</body></html>'
+  ).replace(/></g, '>\n<');
+}
+const summary =
+  '<p class="intro">플랫폼별 대표 모델과 전체 버전 이력. Context length는 토큰 단위이며 API·앱·설정별 한도가 다를 수 있습니다.</p><nav aria-label="모델 목록"><a href="#frontier">Frontier</a><a href="#value">가성비</a><a href="#other">다른 모델 · 과거 버전</a><a href="#platforms">플랫폼 타임라인</a></nav>';
+const providers =
+  '<section id="platforms"><h2>플랫폼별 타임라인</h2><div class="table-scroll"><table><thead><tr><th>플랫폼</th><th>출시 기록</th><th>문서 확인일</th><th>Markdown</th></tr></thead><tbody>' +
+  languages
+    .map(
+      (p) =>
+        '<tr><td class="platform-name">' +
+        icon(p) +
+        esc(p.platform) +
+        '</td><td>' +
+        p.rows.length +
+        '</td><td>' +
+        esc(p.last_reviewed) +
+        '</td><td><a href="' +
+        esc(github('models/' + p.file)) +
+        '">' +
+        esc(p.file) +
+        ' ↗</a></td></tr>',
+    )
+    .join('') +
+  '</tbody></table></div></section>';
+await writeFile(
+  join(root, 'index.html'),
+  document(
+    'Frontier LLM Index',
+    summary +
+      '<section id="frontier"><h2>Frontier models <span>' +
+      frontier.length +
+      '</span></h2><p>플랫폼별 최상위 모델 1–2개.</p>' +
+      table(frontier) +
+      '</section><section id="value"><h2>가성비 모델</h2>' +
+      table(value) +
+      '</section><section id="other"><h2>다른 모델 · 과거 버전</h2>' +
+      table(other) +
+      '</section>' +
+      providers,
+  ),
+);
+for (const [type, file, title] of [
+  ['transcription', 'transcription.html', 'Transcription Models'],
+  ['image-generation', 'image-generation.html', 'Image Generation Models'],
+]) {
+  const entries = platforms
+    .filter((p) => p.type === type)
+    .flatMap((p) => p.rows.map((m) => ({ p, m })))
+    .sort(sort);
+  await writeFile(
+    join(root, file),
+    document(
+      title,
+      '<p class="intro">공식 출시 이력과 모델 문서. 음성·이미지 모델의 입력 한도는 지원 단위로 표시합니다.</p>' +
+        table(entries),
+    ),
+  );
+}
+const localSource = await readFile(join(root, 'specs/local-models.md'), 'utf8');
+let localBody = '',
+  inTable = false,
+  headerRow = false;
+for (const line of localSource.split(/\r?\n/)) {
+  if (line.startsWith('|---')) continue;
+  if (line.startsWith('|')) {
+    if (!inTable) {
+      localBody += '<div class="table-scroll"><table>';
+      inTable = true;
+      headerRow = true;
+    }
+    const tag = headerRow ? 'th' : 'td';
+    localBody +=
+      '<tr>' +
+      cells(line)
+        .map((c) => '<' + tag + '>' + link(c) + '</' + tag + '>')
+        .join('') +
+      '</tr>';
+    headerRow = false;
+  } else {
+    if (inTable) {
+      localBody += '</table></div>';
+      inTable = false;
+    }
+    if (line.startsWith('## '))
+      localBody += '<section><h2>' + esc(line.slice(3)) + '</h2></section>';
+    else if (line && !line.startsWith('# '))
+      localBody += '<p>' + link(line) + '</p>';
+  }
+}
+if (inTable) localBody += '</table></div>';
+await writeFile(
+  join(root, 'local-models.html'),
+  document(
+    'Local Models by Memory',
+    '<div class="local-guide">' + localBody + '</div>',
+  ),
+);
+console.log('Generated four static pages from Markdown.');

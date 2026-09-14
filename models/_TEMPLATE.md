@@ -1,6 +1,8 @@
 ---
 platform: Platform name
 slug: platform-slug
+icon_slug: platform-slug
+type: language
 last_reviewed: 2026-09-14
 official_site: https://example.com
 pricing_page: https://example.com/pricing
@@ -8,7 +10,9 @@ pricing_page: https://example.com/pricing
 
 # Platform name Models
 
-플랫폼의 모델 버전과 공식 소개 문서를 기록합니다. 새 버전은 기존 행 아래에 추가한 뒤 출시일 기준으로 정렬합니다.
+플랫폼의 모델 버전과 공식 소개 문서를 기록합니다. 최신 출시일이 위에 오도록 내림차순으로 정렬하며 `미상`은 맨 아래에 둡니다. Frontier는 플랫폼별 최상위 1–2개만 선택합니다.
+
+사양·특화 기능은 `specs/models.md`에 동일한 플랫폼/모델 이름으로 기록합니다. Context length의 단위와 Open weights 라이선스, 공식 근거 링크를 함께 남깁니다.
 
 ## Version Timeline
 
