@@ -2,6 +2,8 @@
 
 주요 Frontier LLM과 가성비 모델, 플랫폼별 출시 이력을 GitHub 파일로 관리하는 정적 인덱스입니다.
 
+모델 목록은 카드가 아닌 표로 표시합니다. Frontier는 플랫폼별 최고 모델 1–2개만, Value는 Sonnet·DeepSeek Flash·Gemini Flash처럼 실용 성능이 높으면서 비용이 낮은 모델만 선정합니다. 소형 모델의 메모리별 실행 추천은 Local 페이지에서 별도로 관리합니다.
+
 ## Preview
 
 메인 페이지는 [HTMLPreview에서 열기](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html)로 확인할 수 있습니다.
@@ -18,7 +20,7 @@
 - `specs/*.md`: 사양·기능 근거 및 Local 추천 Markdown 원본
 - `models/*.md`: 플랫폼별 모델 버전·출시일·공식 문서 인덱스
 - `styles.css`: 메인 페이지 스타일 원본
-- `scripts/build-site.mjs`: Markdown을 읽어 `index.html`을 생성
+- `scripts/build-site.mjs`: Markdown을 읽어 4개 HTML 페이지를 생성
 - `scripts/validate-site.mjs`: 날짜·상태·태그·공식 링크 검증
 - `docs/UPDATE_RULES.md`: 수동 업데이트 및 가성비 교체 규칙
 - `docs/PR_RULES.md`: Pull Request 및 관리자 승인 규칙
@@ -33,4 +35,4 @@ npm run build
 npm run validate
 ```
 
-생성된 `index.html`을 수정사항과 함께 Pull Request에 포함합니다. 자세한 내용은 [`docs/UPDATE_RULES.md`](./docs/UPDATE_RULES.md)를 확인하십시오.
+생성된 4개 HTML 페이지를 수정사항과 함께 Pull Request에 포함합니다. 자세한 내용은 [`docs/UPDATE_RULES.md`](./docs/UPDATE_RULES.md)를 확인하십시오.

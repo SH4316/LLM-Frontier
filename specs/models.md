@@ -142,3 +142,4 @@
 | Qwen | Qwen2.5 0.5B–72B / Base·Instruct | 대표 7B Instruct: 32,768 native / 131,072 YaRN; 다른 크기별 확인 | Yes — 대표 7B Instruct Apache 2.0; 다른 크기별 라이선스 확인 | 코딩, 추론, 장문맥 | [공식 모델 카드](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct) |
 | Qwen | Qwen3 0.6B/1.7B/4B/8B/14B/32B/30B-A3B/235B-A22B | 대표 8B: 32,768 native / 131,072 YaRN; 다른 크기별 확인 | Yes — 대표 8B Apache 2.0; 다른 크기별 확인 | Tool call, 코딩, 추론; thinking 전환 | [공식 모델 카드](https://huggingface.co/Qwen/Qwen3-8B) |
 | Qwen | Qwen3.5-9B/4B/2B/0.8B | 대표 9B: 262,144 native / 최대 1,010,000 확장; 다른 크기별 확인 | Yes — 대표 9B Apache 2.0; 다른 크기별 확인 | Vision, 코딩, 추론; 대표 9B 공식 Vision Encoder 명시 | [공식 모델 카드](https://huggingface.co/Qwen/Qwen3.5-9B) |
+| Anthropic | Claude Sonnet 5 | 미상 — 공식 발표에서 context 한도 미확인 | No — hosted API | Tool call, Computer use, 코딩, 추론; Opus 4.8 근접 성능·낮은 가격 | [공식 발표·영구 가격](https://www.anthropic.com/news/claude-sonnet-5) |

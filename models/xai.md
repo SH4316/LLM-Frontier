@@ -17,7 +17,7 @@ xAI Grok의 주요 공개·API 모델 이력입니다. 지원 종료 문서를 �
 | 출시일 | 모델 | 상태 | 홈 분류 | 특징 | 비용 메모 | 공식 소개 | 가격 문서 | 비고 |
 |---|---|---|---|---|---|---|---|---|
 | 2026-08-12 | Grok 4.6 | Current | frontier | 코딩, 추론, 멀티모달, 장문맥, 에이전트 작업, Tool call | 대표 작업 비용 확인 | [Grok 4.6](https://x.ai/news/grok-4-6) | [xAI 가격](https://docs.x.ai/developers/pricing) | 기준일 최신 모델 |
-| 2026-07-16 | Grok 4.5 | Current | value | 코딩, 추론, 비용 효율, 에이전트 작업, Tool call, Vision | 대표 작업 비용 확인 | [Grok 4.5](https://x.ai/news/grok-4-5) | [xAI 가격](https://docs.x.ai/developers/pricing) |  |
+| 2026-07-16 | Grok 4.5 | Current | - | 코딩, 추론, 비용 효율, 에이전트 작업, Tool call, Vision | 대표 작업 비용 확인 | [Grok 4.5](https://x.ai/news/grok-4-5) | [xAI 가격](https://docs.x.ai/developers/pricing) |  |
 | 2026-05-29 | Grok Build 0.1 | Preview | - | 코딩, 속도, 비용 효율, 에이전트 작업 | Preview 가격 확인 | [Grok Build 0.1](https://x.ai/news/grok-build-0-1) | [xAI 가격](https://docs.x.ai/developers/pricing) | Public Beta |
 | 2026-03-10 | Grok 4.20 | Current | - | 추론, 속도, 멀티모달, 장문맥, 에이전트 작업 | API 가격 확인 | [xAI Release Notes](https://docs.x.ai/developers/release-notes) | [xAI 가격](https://docs.x.ai/developers/pricing) | 1M context |
 | 2026-03-10 | Grok 4.20 Multi-Agent | Preview | - | 추론, 멀티모달, 장문맥, 에이전트 작업 | Preview 가격 확인 | [Grok 4.20 Multi-Agent](https://docs.x.ai/developers/models/grok-4.20-multi-agent-0309) | [xAI 가격](https://docs.x.ai/developers/pricing) |  |

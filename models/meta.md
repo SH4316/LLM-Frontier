@@ -16,7 +16,7 @@ Meta Llama 계열의 주요 공개 가중치 모델 이력입니다. 오픈 웨�
 
 | 출시일 | 모델 | 상태 | 홈 분류 | 특징 | 비용 메모 | 공식 소개 | 가격 문서 | 비고 |
 |---|---|---|---|---|---|---|---|---|
-| 2025-04-05 | Llama 4 Scout | Current | value | 멀티모달, 장문맥, 코딩, 추론, 비용 효율, Tool call | 단일 GPU 배포 지향 | [Llama 4 소개](https://ai.meta.com/blog/llama-4-multimodal-intelligence/) | [Llama 모델 GitHub](https://github.com/meta-llama/llama-models) | 공개 가중치 |
+| 2025-04-05 | Llama 4 Scout | Current | - | 멀티모달, 장문맥, 코딩, 추론, 비용 효율, Tool call | 단일 GPU 배포 지향 | [Llama 4 소개](https://ai.meta.com/blog/llama-4-multimodal-intelligence/) | [Llama 모델 GitHub](https://github.com/meta-llama/llama-models) | 공개 가중치 |
 | 2025-04-05 | Llama 4 Maverick | Current | frontier | 멀티모달, 장문맥, 코딩, 추론, Tool call | 자체 배포 비용 확인 | [Llama 4 소개](https://ai.meta.com/blog/llama-4-multimodal-intelligence/) | [Llama 모델 GitHub](https://github.com/meta-llama/llama-models) | 공개 가중치 |
 | 2025-04-05 | Llama 4 Behemoth | Preview | - | 멀티모달, 추론, 코딩 | 미출시 모델 | [Llama 4 소개](https://ai.meta.com/blog/llama-4-multimodal-intelligence/) | [Llama 모델 GitHub](https://github.com/meta-llama/llama-models) | 발표 당시 학습 중 |
 | 2024-09-25 | Llama 3.2 텍스트 | Current | - | 속도, 장문맥, 비용 효율 | 자체 배포 비용 확인 | [Llama 3.2 소개](https://ai.meta.com/blog/llama-3-2-connect-2024-vision-edge-mobile-devices/) | [Llama 문서](https://www.llama.com/docs/model-cards-and-prompt-formats/) | 1B·3B |

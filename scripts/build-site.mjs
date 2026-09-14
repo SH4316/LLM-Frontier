@@ -258,7 +258,7 @@ function document(title, body) {
   ).replace(/></g, '>\n<');
 }
 const summary =
-  '<p class="intro">플랫폼별 대표 모델과 전체 버전 이력. Context length는 토큰 단위이며 API·앱·설정별 한도가 다를 수 있습니다.</p><nav aria-label="모델 목록"><a href="#frontier">Frontier</a><a href="#value">가성비</a><a href="#other">다른 모델 · 과거 버전</a><a href="#platforms">플랫폼 타임라인</a></nav>';
+  '<p class="intro">플랫폼별 최고 모델과 고성능·저비용 모델, 전체 버전 이력. Context length는 토큰 단위이며 API·앱·설정별 한도가 다를 수 있습니다.</p><nav aria-label="모델 목록"><a href="#frontier">Frontier</a><a href="#value">가성비</a><a href="#other">다른 모델 · 과거 버전</a><a href="#platforms">플랫폼 타임라인</a></nav>';
 const providers =
   '<section id="platforms"><h2>플랫폼별 타임라인</h2><div class="table-scroll"><table><thead><tr><th>플랫폼</th><th>출시 기록</th><th>문서 확인일</th><th>Markdown</th></tr></thead><tbody>' +
   languages
@@ -288,7 +288,7 @@ await writeFile(
       frontier.length +
       '</span></h2><p>플랫폼별 최상위 모델 1–2개.</p>' +
       table(frontier) +
-      '</section><section id="value"><h2>가성비 모델</h2>' +
+      '</section><section id="value"><h2>Value models · 고성능·저비용</h2><p>Sonnet·DeepSeek Flash·Gemini Flash처럼 실용 성능이 높고 비용이 낮은 모델입니다. 소형 모델 목록이 아니며, 메모리별 실행 추천은 Local 페이지에서 확인합니다.</p>' +
       table(value) +
       '</section><section id="other"><h2>다른 모델 · 과거 버전</h2>' +
       table(other) +
