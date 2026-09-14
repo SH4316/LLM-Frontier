@@ -1,11 +1,12 @@
 import { readdir, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { splitTableRow } from './shared.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const modelsDir = join(root, 'models');
 const allowedStatuses = new Set(['Current', 'Preview', 'Deprecated']);
-const allowedCategories = new Set(['frontier', 'value', '-']);
+const allowedCategories = new Set(['frontier', 'value', 'other', '-']);
 const allowedFeatures = new Set([
   '코딩',
   '추론',
@@ -23,14 +24,6 @@ const allowedFeatures = new Set([
 ]);
 const errors = [];
 const seenSlugs = new Set();
-
-const splitTableRow = (line) =>
-  line
-    .trim()
-    .replace(/^\|/, '')
-    .replace(/\|$/, '')
-    .split('|')
-    .map((cell) => cell.trim());
 
 const hasMarkdownLink = (value) =>
   /^\[[^\]]+\]\(https?:\/\/[^)]+\)$/.test(value);

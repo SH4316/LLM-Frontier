@@ -17,7 +17,7 @@ pricing_page: https://www.upstage.ai/pricing/api
 
 | 출시일 | 모델 | 상태 | 홈 분류 | 특징 | 비용 메모 | 공식 소개 | 가격 문서 | 비고 |
 |---|---|---|---|---|---|---|---|---|
-| 2026-08-11 | Solar Pro 4 | Current | value | 코딩, 추론, Tool call, 장문맥, 에이전트 작업 | $0.30/$1.20 input/output; cached $0.06 | [official release](https://www.upstage.ai/blog/en/solar-pro-4) | [official pricing](https://www.upstage.ai/pricing/api) | 512K context; up to 128K output |
+| 2026-08-11 | Solar Pro 4 | Current | other | 코딩, 추론, Tool call, 장문맥, 에이전트 작업 | $0.30/$1.20 input/output; cached $0.06 | [official release](https://www.upstage.ai/blog/en/solar-pro-4) | [official pricing](https://www.upstage.ai/pricing/api) | Other 대표: Upstage 공식 출시 문서의 current 512K agentic API 모델. 사용자 지정 Value 기준에서 제외하고 Other로 유지 |
 | 2026-07-22 | Solar Open 2 | Current | - | 코딩, 추론, Tool call, 장문맥, 에이전트 작업 | Self-hosted; API price 미상 | [official release](https://www.upstage.ai/blog/en/solar-open-2) | [official pricing](https://www.upstage.ai/pricing/api) | 1M; open weights; Upstage Solar License |
 | 2026-01-26 | Solar Pro 3 | Current | - | 코딩, 추론, Tool call, 에이전트 작업 | $0.15/$0.60; cached $0.015 | [official release](https://www.upstage.ai/blog/en/solar-pro-3-0127) | [official pricing](https://www.upstage.ai/pricing/api) | Context 미상; March 2026 update post published |
 | 2025-07-10 | Solar Pro 2 | Current | - | 추론, Tool call, 에이전트 작업 | $0.15/$0.60; cached $0.015 | [official release](https://www.upstage.ai/blog/en/solar-pro-2-launch) | [official pricing](https://www.upstage.ai/pricing/api) | Final context 미상; official Preview specified 64K |

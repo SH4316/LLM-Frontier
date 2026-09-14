@@ -2,11 +2,11 @@
 
 주요 Frontier LLM과 가성비 모델, 플랫폼별 출시 이력을 GitHub 파일로 관리하는 정적 인덱스입니다.
 
-모델 목록은 카드가 아닌 표로 표시합니다. Frontier는 플랫폼별 최고 모델 1–2개 항목을 선정합니다. Anthropic은 Fable 5.1·Mythos 5.1을 한 항목으로 묶고 Opus 5를 별도로 유지하되, 각 모델의 출시 기록과 접근 제한 정보는 보존합니다. Value는 Sonnet·DeepSeek Flash·Gemini Flash처럼 실용 성능이 높으면서 비용이 낮은 모델만 선정합니다. 소형 모델의 메모리별 실행 추천은 Local 페이지에서 별도로 관리합니다.
+모델 목록은 카드가 아닌 표로 표시합니다. Frontier는 2026-09-14 Artificial Analysis 확인 스냅샷과 제공자 공식 자료를 기준으로 수동 선택한 9개를 표시하며, 실시간 순위나 점수를 저장하지 않습니다. Value는 Solar Pro 4를 제외한 기존 8개를 유지합니다. `그외 모델`은 언어 제공자별 공식 확인 대표를 하나씩 표시하고, 전체 과거 이력은 플랫폼별 Markdown에서 보존합니다. 소형 모델의 메모리별 실행 추천은 Local 페이지에서 별도로 관리합니다.
 
 ## Preview
 
-현재 수정본은 [검토 브랜치 미리보기](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/feat/model-tables-and-catalogs/index.html)에서 확인하십시오. 표 UI와 수정된 Frontier·Value 분류를 반영했으며 메인 과거 모델 섹션은 없습니다. [PR #1](https://github.com/SH4316/LLM-Frontier/pull/1) 병합 전에는 main 미리보기에 이전 화면이 표시됩니다.
+현재 수정본은 [검토 브랜치 미리보기](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/feat/model-tables-and-catalogs/index.html)에서 확인하십시오. 표 UI와 Frontier·Value·`그외 모델` 수동 분류를 반영했으며 메인에는 과거 전체 표를 표시하지 않습니다. [PR #1](https://github.com/SH4316/LLM-Frontier/pull/1) 병합 전에는 main 미리보기에 이전 화면이 표시됩니다.
 
 병합된 메인 페이지는 [HTMLPreview에서 열기](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html)로 확인할 수 있습니다.
 
@@ -39,4 +39,4 @@ npm run validate
 
 생성된 4개 HTML 페이지를 수정사항과 함께 Pull Request에 포함합니다. 자세한 내용은 [`docs/UPDATE_RULES.md`](./docs/UPDATE_RULES.md)를 확인하십시오.
 
-메인에는 Frontier·Value·플랫폼 타임라인 링크만 표시합니다. 과거 모델은 플랫폼별 Markdown에서 확인합니다. Price·추가 설명은 별도 열이며 중국 모델의 OpenRouter 링크·가격 스냅샷은 `specs/openrouter.md`에서 관리합니다.
+메인에는 Frontier·Value·언어 제공자별 `그외 모델`·플랫폼 타임라인 링크를 표시합니다. 과거 모델은 플랫폼별 Markdown에서 확인합니다. Price·추가 설명은 별도 열이며 사양 출처는 접어 표시합니다. 중국 모델의 OpenRouter 링크·가격 스냅샷은 `specs/openrouter.md`에서 관리합니다.

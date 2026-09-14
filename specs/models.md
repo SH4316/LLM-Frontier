@@ -75,7 +75,7 @@
 | Upstage | Solar Pro 3 | 미상 | No; closed commercial | 코딩, 추론, Tool call, 에이전트 작업 | [official release](https://www.upstage.ai/blog/en/solar-pro-3-0127) |
 | Upstage | Solar Pro 2 | 미상 | No; closed commercial | 추론, Tool call, 에이전트 작업 | [official release](https://www.upstage.ai/blog/en/solar-pro-2-launch) |
 | Upstage | Solar Pro | 32K | No; closed commercial | 장문맥 | [official release](https://www.upstage.ai/blog/en/solar-pro) |
-| Xiaomi MiMo | MiMo-X-Pro-Preview | 미상 | 미상; invitation-only Preview | 코딩, Tool call, Computer use (MiMo Desktop 기능; 모델 단독 미확인), 멀티모달, 에이전트 작업; model-specific Vision 미상 | [official Desktop page](https://mimo.mi.com/docs/en-US/news/latest/mimo-desktop) |
+| Xiaomi MiMo | MiMo-X-Pro-Preview | 미상 | 미상; invitation-only Preview | 코딩, Tool call, 멀티모달, 에이전트 작업; Computer use는 MiMo Desktop 제품 기능(모델 단독 미확인), model-specific Vision 미상 | [MiMo X series official preview](https://mimo.mi.com/docs/en-US/news/latest/mimo-desktop) |
 | Xiaomi MiMo | MiMo-V2.5-Pro | 1M | Yes; MIT | 코딩, 추론, Tool call, 장문맥, 에이전트 작업 | [official model card](https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro) |
 | Xiaomi MiMo | MiMo-V2.5 | 1M | Yes; MIT | 코딩, 추론, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업 | [official model card](https://huggingface.co/XiaomiMiMo/MiMo-V2.5) |
 | Xiaomi MiMo | MiMo-V2-Flash | 256K | Yes; MIT | 코딩, Tool call, 장문맥, 에이전트 작업 | [official repository](https://github.com/XiaomiMiMo/MiMo-V2-Flash) |
@@ -96,7 +96,9 @@
 | Poolside Laguna | Laguna XS.2 | 256K | Yes; Apache 2.0 | 코딩, 추론, Tool call, 장문맥, 에이전트 작업 | [official model card](https://huggingface.co/poolside/Laguna-XS.2) |
 | OpenAI | GPT-6 Astra | 1,050,000 tokens | No — proprietary/API | Tool call, Computer use, 코딩, Vision, Image generation 도구 | [API 사양](https://developers.openai.com/api/docs/models/gpt-6-astra) |
 | OpenAI | GPT-5.6 Sol | 1,050,000 tokens | No — proprietary/API | Tool call, Computer use, 코딩, Vision | [API 사양](https://developers.openai.com/api/docs/models/gpt-5.6-sol) |
+| OpenAI | GPT-5.5 Pro | 1,050,000 tokens; max output 128,000 tokens | No — proprietary/API; public weights/license not offered | 추론, 코딩, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업; Computer use 미지원 | [공식 모델 문서](https://developers.openai.com/api/docs/models/gpt-5.5-pro) |
 | Anthropic | Claude Fable 5.1 | 1,000,000 tokens | No — proprietary/API | Tool call, Computer use, 코딩, Vision | [모델 사양](https://platform.claude.com/docs/en/models/fable-5-1/overview) |
+| Anthropic | Claude Fable 5 | 1,000,000 tokens; max output 128,000 tokens | No — proprietary/API | 추론, 코딩, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업 | [Anthropic 공식 모델 개요](https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-5) · [Fable 5·Mythos 5 발표](https://www.anthropic.com/news/claude-fable-5-mythos-5) |
 | Anthropic | Claude Mythos 5.1 | 1,000,000 tokens | 미상 — trusted access/API 제공은 확인되지만 공개 가중치·라이선스는 공식 자료에 명시되지 않음 | 추론, 코딩, Computer use, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업 | [Fable 5.1·Mythos 5.1 공식 발표](https://www.anthropic.com/claude-fable-and-mythos-5-1) · [Claude context windows](https://platform.claude.com/docs/en/build-with-claude/context-windows) |
 | Anthropic | Claude Opus 5 | 1,000,000 tokens | No — proprietary/API | Tool call, Computer use, 코딩, Vision | [모델 사양](https://platform.claude.com/docs/en/models/opus-5/whats-new-opus-5) |
 | Google | Gemini 3.8 Flash | 1,048,576 tokens | No — hosted API | Tool call, Computer use (Preview), 코딩, Vision | [모델 사양](https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash) · [도구 지원](https://ai.google.dev/gemini-api/docs/tools) |
@@ -105,6 +107,8 @@
 | xAI | Grok 4.6 | 500,000 tokens | 미상 — 공식 가중치 배포 확인 안 됨 | Tool call, 코딩, Vision; Computer use 미확인 | [모델 사양](https://docs.x.ai/developers/models/grok-4.6) |
 | GLM / Z.AI | GLM-5.3 | 1,000,000 tokens | Yes — GLM-5.3 License (custom) | Tool call, 코딩; Vision 미지원; Computer use 미확인 | [모델 사양](https://docs.z.ai/guides/llm/glm-5.3) · [라이선스](https://huggingface.co/zai-org/GLM-5.3/blob/main/LICENSE) |
 | GLM / Z.AI | GLM-5.3-Flash | 1,000,000 tokens | Yes — MIT | Tool call, Computer use, 코딩, Vision | [모델 사양](https://docs.z.ai/guides/vlm/glm-5.3-flash) · [라이선스](https://huggingface.co/zai-org/GLM-5.3-Flash/blob/main/LICENSE) |
+| GLM / Z.AI | GLM-5.2 | 1M; max output 128K | 미상 — 공식 GLM-5.2 문서에서 공개 가중치·라이선스 미기재 | 추론, 코딩, Tool call, 장문맥, 에이전트 작업 | [공식 모델 문서](https://docs.z.ai/guides/llm/glm-5.2) |
+| Google | Gemini 3.7 Flash | Input 1,048,576 tokens; output 65,536 tokens | No — hosted API; public weights/license not offered | 추론, 코딩, Computer use (Preview), Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업 | [공식 모델 문서](https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash) · [GA 변경 기록](https://ai.google.dev/gemini-api/docs/changelog) |
 | Kimi / Moonshot AI | Kimi K3 / `kimi-k3` | 1,048,576 tokens | Yes — Kimi K3 License (custom) | Tool call, 코딩, Vision; Computer use 미확인 | [모델 문서](https://www.kimi.ai/ai-models/kimi-k3) · [가중치·라이선스](https://github.com/MoonshotAI/Kimi-K3) |
 | Kimi / Moonshot AI | Kimi K2.7 Code / `kimi-k2.7-code` | 262,144 tokens | Yes — Modified MIT | Tool call, 코딩, Vision; Computer use 미확인 | [모델 문서](https://www.kimi.ai/resources/kimi-k2-7-code) · [가중치·라이선스](https://huggingface.co/moonshotai/Kimi-K2.7-Code) |
 | Qwen | Qwen3.8-Max-0902 / qwen3.8-max-2026-09-02 | 1,000,000 tokens | 미상 — 해당 hosted snapshot의 가중치 미확인 | Tool call, 코딩, Vision; Computer use 미확인 | [모델 업데이트](https://docs.qwencloud.com/changelog/models) · [Tool call](https://help.aliyun.com/en/model-studio/qwen-function-calling) |

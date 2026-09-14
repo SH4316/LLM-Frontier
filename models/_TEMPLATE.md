@@ -10,7 +10,7 @@ pricing_page: https://example.com/pricing
 
 # Platform name Models
 
-플랫폼의 모델 버전과 공식 소개 문서를 기록합니다. 최신 출시일이 위에 오도록 내림차순으로 정렬하며 `미상`은 맨 아래에 둡니다. Frontier는 플랫폼별 최상위 1–2개만 선택합니다.
+플랫폼의 모델 버전과 공식 소개 문서를 기록합니다. 최신 출시일이 위에 오도록 내림차순으로 정렬하며 `미상`은 맨 아래에 둡니다. 언어 모델의 `frontier`·`value`·`other`는 수동 큐레이션이며, `other`는 제공자별 대표 1개에만 부여합니다.
 
 사양·특화 기능은 `specs/models.md`에 동일한 플랫폼/모델 이름으로 기록합니다. Context length의 단위와 Open weights 라이선스, 공식 근거 링크를 함께 남깁니다.
 

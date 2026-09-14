@@ -115,10 +115,18 @@ th {
 }
 .model-table th:nth-child(5),
 .model-table td:nth-child(5) {
-  width: 165px;
-  min-width: 135px;
-  max-width: 190px;
+  width: 145px;
+  min-width: 120px;
+  max-width: 170px;
   overflow-wrap: anywhere;
+}
+.model-table .source-details {
+  margin-top: 6px;
+}
+.model-table summary {
+  cursor: pointer;
+  color: #4d626c;
+  font-size: 11px;
 }
 .model-table .feature-line {
   display: block;
@@ -290,16 +298,17 @@ footer {
 </header>
 <main>
 <h1>Frontier LLM Index</h1>
-<p class="intro">플랫폼별 최고 모델과 고성능·저비용 모델, 전체 버전 이력. Context length는 토큰 단위이며 API·앱·설정별 한도가 다를 수 있습니다.</p>
+<p class="intro">Artificial Analysis와 제공자 공식 자료를 확인한 수동 모델 인덱스입니다. Context length는 토큰 단위이며 API·앱·설정별 한도가 다를 수 있습니다.</p>
 <nav aria-label="모델 목록">
 <a href="#frontier">Frontier</a>
 <a href="#value">가성비</a>
+<a href="#other">그외 모델</a>
 <a href="#platforms">플랫폼 타임라인</a>
 </nav>
 <section id="frontier">
-<h2>Frontier models <span>17</span>
+<h2>Frontier models <span>9</span>
 </h2>
-<p>플랫폼별 최고 모델 중심 · Anthropic은 Fable·Mythos 5.1 그룹과 Opus 5를 2개 표시 항목으로 유지합니다.</p>
+<p>2026-09-14 확인 스냅샷 기준의 수동 큐레이션 9개입니다. <a href="https://artificialanalysis.ai/leaderboards/models" target="_blank" rel="noreferrer">Artificial Analysis LLM leaderboard ↗</a>와 제공자 공식 자료를 대조했으며, 실시간 순위를 재현하거나 점수를 저장하지 않습니다.</p>
 <div class="table-scroll model-table">
 <table>
 <thead>
@@ -317,41 +326,60 @@ footer {
 <tbody>
 <tr>
 <td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/anthropic.md">
-<span class="platform-icon icon-anthropic" aria-hidden="true">A<img src="https://www.google.com/s2/favicons?domain=www.anthropic.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Anthropic</a>
-<strong class="model-name">Claude Fable 5.1 + Claude Mythos 5.1</strong>
-<small>Claude Fable 5.1: Current · Claude Mythos 5.1: Preview</small>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-6 Astra</strong>
+<small>Current</small>
 </td>
-<td class="date">2026-09-01</td>
-<td>Claude Fable 5.1: 1,000,000 tokens<br>Claude Mythos 5.1: 1,000,000 tokens</td>
-<td>Claude Fable 5.1: No — proprietary/API<br>Claude Mythos 5.1: 미상 — trusted access/API 제공은 확인되지만 공개 가중치·라이선스는 공식 자료에 명시되지 않음</td>
-<td>
-<div class="feature-line">
-<span class="feature-label">공통:</span> 코딩 · Computer use · Tool call · Vision</div>
-<div class="feature-line">
-<span class="feature-label">Mythos:</span> 추론</div>
-</td>
-<td>Claude Fable 5.1: Fable 가격 확인<br>Claude Mythos 5.1: 제한 접근<small>Claude Fable 5.1: <a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
-<br>Claude Mythos 5.1: <a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
+<td class="date">2026-09-03</td>
+<td>1,050,000 tokens</td>
+<td>No — proprietary/API</td>
+<td>Tool call, Computer use, 코딩, Vision, Image generation 도구</td>
+<td>공식 API 가격 확인<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
 </small>
 </td>
 <td>
-<a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" rel="noreferrer">공식 소개 ↗</a>
-<details>
-<summary>사양·출처</summary>
-<small>Fable 출처: <a href="https://platform.claude.com/docs/en/models/fable-5-1/overview" target="_blank" rel="noreferrer">모델 사양 ↗</a>
-</small>
-<small>Mythos 출처: <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" rel="noreferrer">Fable 5.1·Mythos 5.1 공식 발표 ↗</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/context-windows" target="_blank" rel="noreferrer">Claude context windows ↗</a>
+<a href="https://openai.com/index/gpt-6-astra/" target="_blank" rel="noreferrer">GPT-6 Astra ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-6-astra" target="_blank" rel="noreferrer">API 사양 ↗</a>
 </small>
 </details>
 </td>
 <td>
-<small>Fable: 기록 특징 원문 — 추론, 코딩, 멀티모달, 장문맥, 에이전트 작업, Computer use, Tool call, Vision</small>
-<small>Fable: 사양 특징 원문 — Tool call, Computer use, 코딩, Vision</small>
-<small>Mythos: 기록 특징 원문 — 추론, 코딩, 멀티모달, 장문맥, 에이전트 작업</small>
-<small>Mythos: 사양 특징 원문 — 추론, 코딩, Computer use, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업</small>
-<small>Claude Mythos 5.1: 신뢰 접근 전용</small>
+<small>1,050,000 tokens; 화면·브라우저·전문 소프트웨어 다단계 작업</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/meta.md">
+<span class="platform-icon icon-meta" aria-hidden="true">M<img src="https://www.google.com/s2/favicons?domain=www.llama.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Meta</a>
+<strong class="model-name">Muse Spark 1.3</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-09-02</td>
+<td>미상</td>
+<td>미상 — Muse Code·Meta Model API 제공 및 공개 가중치 출시 로드맵은 확인되지만 현재 가중치·라이선스는 공식 자료에 명시되지 않음</td>
+<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업</td>
+<td>가격 미상; Meta Model API·Muse Code<small>
+<a href="https://developer.meta.com/ai/" target="_blank" rel="noreferrer">Meta Model API ↗</a>
+</small>
+</td>
+<td>
+<a href="https://research.meta.ai/blog/introducing-muse-spark-1-3" target="_blank" rel="noreferrer">Muse Spark 1.3 소개 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://research.meta.ai/blog/introducing-muse-spark-1-3" target="_blank" rel="noreferrer">Muse Spark 1.3 공식 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Meta Model API·Muse Code에서 사용 가능; 공개 가중치 출시는 공식 로드맵에 기록</small>
 </td>
 </tr>
 <tr>
@@ -359,81 +387,28 @@ footer {
 <a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/anthropic.md">
 <span class="platform-icon icon-anthropic" aria-hidden="true">A<img src="https://www.google.com/s2/favicons?domain=www.anthropic.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
 </span>Anthropic</a>
-<strong class="model-name">Claude Opus 5</strong>
+<strong class="model-name">Claude Fable 5.1</strong>
 <small>Current</small>
 </td>
-<td class="date">2026-07-24</td>
+<td class="date">2026-09-01</td>
 <td>1,000,000 tokens</td>
 <td>No — proprietary/API</td>
-<td>Tool call, Computer use, 코딩, Vision<small>
-<a href="https://platform.claude.com/docs/en/models/opus-5/whats-new-opus-5" target="_blank" rel="noreferrer">모델 사양 ↗</a>
-</small>
-</td>
-<td>Opus 가격 확인<small>
+<td>Tool call, Computer use, 코딩, Vision</td>
+<td>Fable 가격 확인<small>
 <a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
 </small>
 </td>
 <td>
-<a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noreferrer">Claude Opus 5 ↗</a>
+<a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" rel="noreferrer">Fable 5.1·Mythos 5.1 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://platform.claude.com/docs/en/models/fable-5-1/overview" target="_blank" rel="noreferrer">모델 사양 ↗</a>
+</small>
+</details>
 </td>
 <td>
 <span class="empty-note">—</span>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/cursor.md">
-<span class="platform-icon icon-cursor" aria-hidden="true">C<img src="https://www.google.com/s2/favicons?domain=cursor.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Cursor</a>
-<strong class="model-name">Composer 2.5</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-05-18</td>
-<td>200K</td>
-<td>No; proprietary Composer weights; Kimi K2.5 base is open</td>
-<td>코딩, Tool call, Computer use (Cursor 앱 기능; 모델 단독 미확인); Vision 미상<small>
-<a href="https://cursor.com/docs/models/cursor-composer-2-5" target="_blank" rel="noreferrer">official model docs ↗</a>
-</small>
-</td>
-<td>$0.50/$2.50 input/output per 1M; Fast $3/$15<small>
-<a href="https://cursor.com/docs/models/cursor-composer-2-5" target="_blank" rel="noreferrer">official pricing ↗</a>
-</small>
-</td>
-<td>
-<a href="https://cursor.com/blog/composer-2-5" target="_blank" rel="noreferrer">official release ↗</a>
-</td>
-<td>
-<small>200K; Browser computer control is Cursor-harness-level; Composer Vision 미상</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/deepseek.md">
-<span class="platform-icon icon-deepseek" aria-hidden="true">D<img src="https://www.google.com/s2/favicons?domain=www.deepseek.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>DeepSeek</a>
-<strong class="model-name">DeepSeek-V4-Pro / V4-Pro-0813</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-08-13</td>
-<td>1,000,000 tokens</td>
-<td>Yes — MIT</td>
-<td>Tool call, 코딩; Vision 미지원; Computer use 미확인<small>
-<a href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" rel="noreferrer">API 사양 ↗</a> · <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noreferrer">가중치·라이선스 ↗</a>
-</small>
-</td>
-<td>대표 작업 비용 확인<small>
-<a href="https://api-docs.deepseek.com/quick_start/pricing/" target="_blank" rel="noreferrer">DeepSeek 가격 ↗</a>
-</small>
-<small>OpenRouter: $0.9834/$2.9502 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
-</td>
-<td>
-<a href="https://api-docs.deepseek.com/updates/" target="_blank" rel="noreferrer">API 변경 이력 ↗</a>
-<small>
-<a href="https://openrouter.ai/deepseek/deepseek-v4-pro-0813" target="_blank" rel="noreferrer">OpenRouter ↗</a>
-</small>
-</td>
-<td>
-<small>API current</small>
 </td>
 </tr>
 <tr>
@@ -447,10 +422,7 @@ footer {
 <td class="date">2026-08-14</td>
 <td>1,000,000 tokens</td>
 <td>Yes — GLM-5.3 License (custom)</td>
-<td>Tool call, 코딩; Vision 미지원; Computer use 미확인<small>
-<a href="https://docs.z.ai/guides/llm/glm-5.3" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://huggingface.co/zai-org/GLM-5.3/blob/main/LICENSE" target="_blank" rel="noreferrer">라이선스 ↗</a>
-</small>
-</td>
+<td>Tool call, 코딩; Vision 미지원; Computer use 미확인</td>
 <td>공식 가격 확인<small>
 <a href="https://docs.z.ai/guides/overview/pricing" target="_blank" rel="noreferrer">Z.AI 가격 ↗</a>
 </small>
@@ -458,6 +430,12 @@ footer {
 </td>
 <td>
 <a href="https://z.ai/blog/glm-5.3" target="_blank" rel="noreferrer">GLM-5.3 출시 블로그 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.z.ai/guides/llm/glm-5.3" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://huggingface.co/zai-org/GLM-5.3/blob/main/LICENSE" target="_blank" rel="noreferrer">라이선스 ↗</a>
+</small>
+</details>
 <small>
 <a href="https://openrouter.ai/z-ai/glm-5.3" target="_blank" rel="noreferrer">OpenRouter ↗</a>
 </small>
@@ -468,25 +446,57 @@ footer {
 </tr>
 <tr>
 <td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/google.md">
-<span class="platform-icon icon-google" aria-hidden="true">G<img src="https://www.google.com/s2/favicons?domain=deepmind.google&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Google</a>
-<strong class="model-name">Gemini 3.1 Pro Preview</strong>
-<small>Preview</small>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/xai.md">
+<span class="platform-icon icon-xai" aria-hidden="true">𝕏<img src="https://www.google.com/s2/favicons?domain=x.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>xAI</a>
+<strong class="model-name">Grok 4.6</strong>
+<small>Current</small>
 </td>
-<td class="date">2026-02-19</td>
-<td>1,048,576 tokens</td>
-<td>No — hosted API</td>
-<td>Tool call, 코딩, Vision; Computer use 미확인<small>
-<a href="https://deepmind.google/models/model-cards/gemini-3-1-pro" target="_blank" rel="noreferrer">모델 카드 ↗</a>
-</small>
-</td>
-<td>Preview 가격 확인<small>
-<a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noreferrer">Gemini 가격 ↗</a>
+<td class="date">2026-08-12</td>
+<td>500,000 tokens</td>
+<td>미상 — 공식 가중치 배포 확인 안 됨</td>
+<td>Tool call, 코딩, Vision; Computer use 미확인</td>
+<td>대표 작업 비용 확인<small>
+<a href="https://docs.x.ai/developers/pricing" target="_blank" rel="noreferrer">xAI 가격 ↗</a>
 </small>
 </td>
 <td>
-<a href="https://ai.google.dev/gemini-api/docs/changelog" target="_blank" rel="noreferrer">Gemini API 변경 기록 ↗</a>
+<a href="https://x.ai/news/grok-4-6" target="_blank" rel="noreferrer">Grok 4.6 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.x.ai/developers/models/grok-4.6" target="_blank" rel="noreferrer">모델 사양 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>기준일 최신 모델</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/anthropic.md">
+<span class="platform-icon icon-anthropic" aria-hidden="true">A<img src="https://www.google.com/s2/favicons?domain=www.anthropic.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Anthropic</a>
+<strong class="model-name">Claude Opus 5</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-24</td>
+<td>1,000,000 tokens</td>
+<td>No — proprietary/API</td>
+<td>Tool call, Computer use, 코딩, Vision</td>
+<td>Opus 가격 확인<small>
+<a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noreferrer">Claude Opus 5 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://platform.claude.com/docs/en/models/opus-5/whats-new-opus-5" target="_blank" rel="noreferrer">모델 사양 ↗</a>
+</small>
+</details>
 </td>
 <td>
 <span class="empty-note">—</span>
@@ -503,10 +513,7 @@ footer {
 <td class="date">2026-07-16</td>
 <td>1,048,576 tokens</td>
 <td>Yes — Kimi K3 License (custom)</td>
-<td>Tool call, 코딩, Vision; Computer use 미확인<small>
-<a href="https://www.kimi.ai/ai-models/kimi-k3" target="_blank" rel="noreferrer">모델 문서 ↗</a> · <a href="https://github.com/MoonshotAI/Kimi-K3" target="_blank" rel="noreferrer">가중치·라이선스 ↗</a>
-</small>
-</td>
+<td>Tool call, 코딩, Vision; Computer use 미확인</td>
 <td>대표 작업 비용 확인<small>
 <a href="https://www.kimi.ai/resources/kimi-k3-pricing" target="_blank" rel="noreferrer">Kimi K3 가격 ↗</a>
 </small>
@@ -514,90 +521,18 @@ footer {
 </td>
 <td>
 <a href="https://www.kimi.ai/blog/kimi-k3" target="_blank" rel="noreferrer">Kimi K3 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://www.kimi.ai/ai-models/kimi-k3" target="_blank" rel="noreferrer">모델 문서 ↗</a> · <a href="https://github.com/MoonshotAI/Kimi-K3" target="_blank" rel="noreferrer">가중치·라이선스 ↗</a>
+</small>
+</details>
 <small>
 <a href="https://openrouter.ai/moonshotai/kimi-k3" target="_blank" rel="noreferrer">OpenRouter ↗</a>
 </small>
 </td>
 <td>
 <small>1M context</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/meta.md">
-<span class="platform-icon icon-meta" aria-hidden="true">M<img src="https://www.google.com/s2/favicons?domain=www.llama.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Meta</a>
-<strong class="model-name">Muse Spark 1.3</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-09-02</td>
-<td>미상</td>
-<td>미상 — Muse Code·Meta Model API 제공 및 공개 가중치 출시 로드맵은 확인되지만 현재 가중치·라이선스는 공식 자료에 명시되지 않음</td>
-<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업<small>
-<a href="https://research.meta.ai/blog/introducing-muse-spark-1-3" target="_blank" rel="noreferrer">Muse Spark 1.3 공식 발표 ↗</a>
-</small>
-</td>
-<td>가격 미상; Meta Model API·Muse Code<small>
-<a href="https://developer.meta.com/ai/" target="_blank" rel="noreferrer">Meta Model API ↗</a>
-</small>
-</td>
-<td>
-<a href="https://research.meta.ai/blog/introducing-muse-spark-1-3" target="_blank" rel="noreferrer">Muse Spark 1.3 소개 ↗</a>
-</td>
-<td>
-<small>Meta Model API·Muse Code에서 사용 가능; 공개 가중치 출시는 공식 로드맵에 기록</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/nvidia.md">
-<span class="platform-icon icon-nvidia" aria-hidden="true">N<img src="https://www.google.com/s2/favicons?domain=www.nvidia.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>NVIDIA Nemotron</a>
-<strong class="model-name">NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-06-04</td>
-<td>1M</td>
-<td>Yes; OpenMDW-1.1</td>
-<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업<small>
-<a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16" target="_blank" rel="noreferrer">official model card ↗</a>
-</small>
-</td>
-<td>Free prototype endpoint; production price 미상<small>
-<a href="https://build.nvidia.com/nvidia/nemotron-3-ultra-550b-a55b" target="_blank" rel="noreferrer">NVIDIA Build ↗</a>
-</small>
-</td>
-<td>
-<a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16" target="_blank" rel="noreferrer">official model card ↗</a>
-</td>
-<td>
-<small>1M; OpenMDW-1.1</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai.md">
-<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>OpenAI</a>
-<strong class="model-name">GPT-6 Astra</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-09-03</td>
-<td>1,050,000 tokens</td>
-<td>No — proprietary/API</td>
-<td>Tool call, Computer use, 코딩, Vision, Image generation 도구<small>
-<a href="https://developers.openai.com/api/docs/models/gpt-6-astra" target="_blank" rel="noreferrer">API 사양 ↗</a>
-</small>
-</td>
-<td>공식 API 가격 확인<small>
-<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
-</small>
-</td>
-<td>
-<a href="https://openai.com/index/gpt-6-astra/" target="_blank" rel="noreferrer">GPT-6 Astra ↗</a>
-</td>
-<td>
-<small>1,050,000 tokens; 화면·브라우저·전문 소프트웨어 다단계 작업</small>
 </td>
 </tr>
 <tr>
@@ -611,16 +546,19 @@ footer {
 <td class="date">2026-07-09</td>
 <td>1,050,000 tokens</td>
 <td>No — proprietary/API</td>
-<td>Tool call, Computer use, 코딩, Vision<small>
-<a href="https://developers.openai.com/api/docs/models/gpt-5.6-sol" target="_blank" rel="noreferrer">API 사양 ↗</a>
-</small>
-</td>
+<td>Tool call, Computer use, 코딩, Vision</td>
 <td>대표 작업 비용 확인<small>
 <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
 </small>
 </td>
 <td>
 <a href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noreferrer">GPT-5.6 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-5.6-sol" target="_blank" rel="noreferrer">API 사양 ↗</a>
+</small>
+</details>
 </td>
 <td>
 <small>최신 flagship</small>
@@ -628,172 +566,31 @@ footer {
 </tr>
 <tr>
 <td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/poolside.md">
-<span class="platform-icon icon-poolside" aria-hidden="true">P<img src="https://www.google.com/s2/favicons?domain=poolside.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Poolside Laguna</a>
-<strong class="model-name">Laguna S 2.1</strong>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/anthropic.md">
+<span class="platform-icon icon-anthropic" aria-hidden="true">A<img src="https://www.google.com/s2/favicons?domain=www.anthropic.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Anthropic</a>
+<strong class="model-name">Claude Fable 5</strong>
 <small>Current</small>
 </td>
-<td class="date">2026-07-21</td>
-<td>1M</td>
-<td>Yes; OpenMDW-1.1</td>
-<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업; Vision 미지원<small>
-<a href="https://huggingface.co/poolside/Laguna-S-2.1" target="_blank" rel="noreferrer">official model card ↗</a>
-</small>
-</td>
-<td>Current API list price 미상; limited-time free access<small>
-<a href="https://poolside.ai/models" target="_blank" rel="noreferrer">official models/pricing ↗</a>
+<td class="date">2026-06-09</td>
+<td>1,000,000 tokens; max output 128,000 tokens</td>
+<td>No — proprietary/API</td>
+<td>추론, 코딩, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업</td>
+<td>Fable 가격 확인<small>
+<a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
 </small>
 </td>
 <td>
-<a href="https://poolside.ai/blog/introducing-laguna-s-2-1" target="_blank" rel="noreferrer">official release ↗</a>
-</td>
-<td>
-<small>1M; OpenMDW-1.1; official blog explicitly notes lack of vision capabilities</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen.md">
-<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Qwen</a>
-<strong class="model-name">Qwen3.8-Max-0902 / qwen3.8-max-2026-09-02</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-09-02</td>
-<td>1,000,000 tokens</td>
-<td>미상 — 해당 hosted snapshot의 가중치 미확인</td>
-<td>Tool call, 코딩, Vision; Computer use 미확인<small>
-<a href="https://docs.qwencloud.com/changelog/models" target="_blank" rel="noreferrer">모델 업데이트 ↗</a> · <a href="https://help.aliyun.com/en/model-studio/qwen-function-calling" target="_blank" rel="noreferrer">Tool call ↗</a>
-</small>
-</td>
-<td>대표 작업 비용 확인<small>
-<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud 가격 ↗</a>
-</small>
-</td>
-<td>
-<a href="https://docs.qwencloud.com/changelog/models" target="_blank" rel="noreferrer">QwenCloud 모델 변경 기록 ↗</a>
+<a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noreferrer">Fable 5·Mythos 5 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
 <small>
-<a href="https://openrouter.ai/models?q=Qwen3.8-Max-0902%20%2F%20qwen3.8-max-2026-09-02" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+<a href="https://platform.claude.com/docs/en/about-claude/models/whats-new-claude-4-5" target="_blank" rel="noreferrer">Anthropic 공식 모델 개요 ↗</a> · <a href="https://www.anthropic.com/news/claude-fable-5-mythos-5" target="_blank" rel="noreferrer">Fable 5·Mythos 5 발표 ↗</a>
 </small>
+</details>
 </td>
 <td>
-<small>기준일 현재 최신 snapshot</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/tencent.md">
-<span class="platform-icon icon-tencent" aria-hidden="true">T<img src="https://www.google.com/s2/favicons?domain=hunyuan.tencent.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Tencent HY/Hunyuan</a>
-<strong class="model-name">Hy4 preview</strong>
-<small>Preview</small>
-</td>
-<td class="date">2026-08-28</td>
-<td>1M</td>
-<td>Yes; Apache 2.0</td>
-<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업<small>
-<a href="https://github.com/Tencent-Hunyuan/Hy4-preview" target="_blank" rel="noreferrer">official repository ↗</a>
-</small>
-</td>
-<td>¥6/¥18 input/output; cache-hit ¥0.3 per 1M<small>
-<a href="https://cloud.tencent.com/document/product/1823/130055" target="_blank" rel="noreferrer">TokenHub pricing ↗</a>
-</small>
-<small>OpenRouter: $0.834/$2.501 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
-</td>
-<td>
-<a href="https://www.tencent.com/tencent-releases-and-open-sources-tencent-hy4-preview/" target="_blank" rel="noreferrer">official release ↗</a>
-<small>
-<a href="https://openrouter.ai/tencent/hy4-preview" target="_blank" rel="noreferrer">OpenRouter ↗</a>
-</small>
-</td>
-<td>
-<small>1M in repository; launch article says exceeding 1M; Apache 2.0</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/tencent.md">
-<span class="platform-icon icon-tencent" aria-hidden="true">T<img src="https://www.google.com/s2/favicons?domain=hunyuan.tencent.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Tencent HY/Hunyuan</a>
-<strong class="model-name">Hy3</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-07-06</td>
-<td>256K</td>
-<td>Yes; Apache 2.0</td>
-<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업<small>
-<a href="https://github.com/Tencent-Hunyuan/Hy3" target="_blank" rel="noreferrer">official repository ↗</a>
-</small>
-</td>
-<td>¥1/¥4; cache-hit ¥0.25<small>
-<a href="https://cloud.tencent.com/document/product/1823/130055" target="_blank" rel="noreferrer">TokenHub pricing ↗</a>
-</small>
-<small>OpenRouter: $0.132/$0.528 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
-</td>
-<td>
-<a href="https://www.tencent.com/tencent-hunyuan-officially-releases-hy3-advancing-agent-capabilities-and-deeper-product-integration/" target="_blank" rel="noreferrer">official release ↗</a>
-<small>
-<a href="https://openrouter.ai/tencent/hy3" target="_blank" rel="noreferrer">OpenRouter ↗</a>
-</small>
-</td>
-<td>
-<small>256K; Apache 2.0</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/xai.md">
-<span class="platform-icon icon-xai" aria-hidden="true">𝕏<img src="https://www.google.com/s2/favicons?domain=x.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>xAI</a>
-<strong class="model-name">Grok 4.6</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-08-12</td>
-<td>500,000 tokens</td>
-<td>미상 — 공식 가중치 배포 확인 안 됨</td>
-<td>Tool call, 코딩, Vision; Computer use 미확인<small>
-<a href="https://docs.x.ai/developers/models/grok-4.6" target="_blank" rel="noreferrer">모델 사양 ↗</a>
-</small>
-</td>
-<td>대표 작업 비용 확인<small>
-<a href="https://docs.x.ai/developers/pricing" target="_blank" rel="noreferrer">xAI 가격 ↗</a>
-</small>
-</td>
-<td>
-<a href="https://x.ai/news/grok-4-6" target="_blank" rel="noreferrer">Grok 4.6 ↗</a>
-</td>
-<td>
-<small>기준일 최신 모델</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/xiaomi.md">
-<span class="platform-icon icon-xiaomi" aria-hidden="true">mi<img src="https://www.google.com/s2/favicons?domain=mimo.mi.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Xiaomi MiMo</a>
-<strong class="model-name">MiMo-X-Pro-Preview</strong>
-<small>Preview</small>
-</td>
-<td class="date">2026-09-08</td>
-<td>미상</td>
-<td>미상; invitation-only Preview</td>
-<td>코딩, Tool call, Computer use (MiMo Desktop 기능; 모델 단독 미확인), 멀티모달, 에이전트 작업; model-specific Vision 미상<small>
-<a href="https://mimo.mi.com/docs/en-US/news/latest/mimo-desktop" target="_blank" rel="noreferrer">official Desktop page ↗</a>
-</small>
-</td>
-<td>Limited free invitation beta; token price 미상<small>
-<a href="https://mimo.mi.com/docs/price/pay-as-you-go" target="_blank" rel="noreferrer">official pricing ↗</a>
-</small>
-</td>
-<td>
-<a href="https://mimo.mi.com/docs/en-US/news/latest/mimo-desktop" target="_blank" rel="noreferrer">official Desktop release ↗</a>
-<small>
-<a href="https://openrouter.ai/models?q=MiMo-X-Pro-Preview" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
-</small>
-</td>
-<td>
-<small>Context, weights, license 미상; computer control is MiMo Desktop/X-series product functionality</small>
+<small>사용자 지정 AA 기반 Frontier 선택</small>
 </td>
 </tr>
 </tbody>
@@ -829,10 +626,7 @@ footer {
 <td class="date">2026-09-10</td>
 <td>1,000,000 tokens</td>
 <td>Yes — MIT model weights</td>
-<td>코딩, 추론, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업, 속도, 비용 효율; Computer use 미확인<small>
-<a href="https://www.deepseek.com/en/news/deepseek-v4-1-flash/" target="_blank" rel="noreferrer">DeepSeek V4.1 Flash 발표 ↗</a> · <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash" target="_blank" rel="noreferrer">DeepSeek-V4.1-Flash 모델 카드 ↗</a> · <a href="https://api-docs.deepseek.com/updates/" target="_blank" rel="noreferrer">DeepSeek API 변경 기록 ↗</a>
-</small>
-</td>
+<td>코딩, 추론, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업, 속도, 비용 효율; Computer use 미확인</td>
 <td>대표 작업 비용 확인<small>
 <a href="https://api-docs.deepseek.com/quick_start/pricing/" target="_blank" rel="noreferrer">DeepSeek 가격 ↗</a>
 </small>
@@ -840,6 +634,12 @@ footer {
 </td>
 <td>
 <a href="https://deepseek.com/en/news/deepseek-v4-1-flash/" target="_blank" rel="noreferrer">V4.1-Flash ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://www.deepseek.com/en/news/deepseek-v4-1-flash/" target="_blank" rel="noreferrer">DeepSeek V4.1 Flash 발표 ↗</a> · <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash" target="_blank" rel="noreferrer">DeepSeek-V4.1-Flash 모델 카드 ↗</a> · <a href="https://api-docs.deepseek.com/updates/" target="_blank" rel="noreferrer">DeepSeek API 변경 기록 ↗</a>
+</small>
+</details>
 <small>
 <a href="https://openrouter.ai/deepseek/deepseek-v4.1-flash" target="_blank" rel="noreferrer">OpenRouter ↗</a>
 </small>
@@ -859,16 +659,19 @@ footer {
 <td class="date">2026-09-02</td>
 <td>1,048,576 tokens</td>
 <td>No — hosted API</td>
-<td>Tool call, Computer use (Preview), 코딩, Vision<small>
-<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://ai.google.dev/gemini-api/docs/tools" target="_blank" rel="noreferrer">도구 지원 ↗</a>
-</small>
-</td>
+<td>Tool call, Computer use (Preview), 코딩, Vision</td>
 <td>$0.75/$3.75 input/output per 1M tokens (~2026-12-31); 이후 $1.50/$7.50<small>
 <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noreferrer">Gemini 가격 ↗</a>
 </small>
 </td>
 <td>
 <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/" target="_blank" rel="noreferrer">Gemini 3.8 Flash ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://ai.google.dev/gemini-api/docs/tools" target="_blank" rel="noreferrer">도구 지원 ↗</a>
+</small>
+</details>
 </td>
 <td>
 <small>장기 코딩·에이전트 작업을 위한 고성능 Flash; Value 분류</small>
@@ -885,10 +688,7 @@ footer {
 <td class="date">2026-08-26</td>
 <td>1,000,000 tokens</td>
 <td>Yes — MIT</td>
-<td>Tool call, Computer use, 코딩, Vision<small>
-<a href="https://docs.z.ai/guides/vlm/glm-5.3-flash" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://huggingface.co/zai-org/GLM-5.3-Flash/blob/main/LICENSE" target="_blank" rel="noreferrer">라이선스 ↗</a>
-</small>
-</td>
+<td>Tool call, Computer use, 코딩, Vision</td>
 <td>대표 작업 비용 확인<small>
 <a href="https://docs.z.ai/guides/overview/pricing" target="_blank" rel="noreferrer">Z.AI 가격 ↗</a>
 </small>
@@ -896,6 +696,12 @@ footer {
 </td>
 <td>
 <a href="https://docs.bigmodel.cn/cn/guide/models/vlm/glm-5.3-flash" target="_blank" rel="noreferrer">GLM-5.3-Flash 문서 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.z.ai/guides/vlm/glm-5.3-flash" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://huggingface.co/zai-org/GLM-5.3-Flash/blob/main/LICENSE" target="_blank" rel="noreferrer">라이선스 ↗</a>
+</small>
+</details>
 <small>
 <a href="https://openrouter.ai/z-ai/glm-5.3-flash" target="_blank" rel="noreferrer">OpenRouter ↗</a>
 </small>
@@ -915,10 +721,7 @@ footer {
 <td class="date">2026-08-26</td>
 <td>1,000,000 tokens; max input 991,808; max output 131,072</td>
 <td>No — QwenCloud hosted production model; public weights are for separate Qwen3.8-Flash-Next</td>
-<td>코딩, 추론, Computer use (desktop application operation), Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업, 속도, 비용 효율<small>
-<a href="https://docs.qwencloud.com/developer-guides/getting-started/latest-model" target="_blank" rel="noreferrer">Qwen3.8-Flash 모델 문서 ↗</a> · <a href="https://help.aliyun.com/en/model-studio/qwen3-8-flash" target="_blank" rel="noreferrer">Qwen3.8-Flash API 사양 ↗</a> · <a href="https://qwen.ai/blog?id=qwen3.8-flash-next" target="_blank" rel="noreferrer">Qwen3.8-Flash-Next 공개 ↗</a>
-</small>
-</td>
+<td>코딩, 추론, Computer use (desktop application operation), Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업, 속도, 비용 효율</td>
 <td>공식 가격표 확인<small>
 <a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud 가격 ↗</a>
 </small>
@@ -926,38 +729,18 @@ footer {
 </td>
 <td>
 <a href="https://qwen.ai/blog?id=qwen3.8-flash-next" target="_blank" rel="noreferrer">Qwen3.8-Flash-Next 소개 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.qwencloud.com/developer-guides/getting-started/latest-model" target="_blank" rel="noreferrer">Qwen3.8-Flash 모델 문서 ↗</a> · <a href="https://help.aliyun.com/en/model-studio/qwen3-8-flash" target="_blank" rel="noreferrer">Qwen3.8-Flash API 사양 ↗</a> · <a href="https://qwen.ai/blog?id=qwen3.8-flash-next" target="_blank" rel="noreferrer">Qwen3.8-Flash-Next 공개 ↗</a>
+</small>
+</details>
 <small>
 <a href="https://openrouter.ai/qwen/qwen3.8-flash" target="_blank" rel="noreferrer">OpenRouter ↗</a>
 </small>
 </td>
 <td>
 <small>1M 문맥·고처리량</small>
-</td>
-</tr>
-<tr>
-<td>
-<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/upstage.md">
-<span class="platform-icon icon-upstage" aria-hidden="true">U<img src="https://www.google.com/s2/favicons?domain=www.upstage.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
-</span>Upstage</a>
-<strong class="model-name">Solar Pro 4</strong>
-<small>Current</small>
-</td>
-<td class="date">2026-08-11</td>
-<td>512K</td>
-<td>No; closed commercial</td>
-<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업<small>
-<a href="https://www.upstage.ai/blog/en/solar-pro-4" target="_blank" rel="noreferrer">official release ↗</a>
-</small>
-</td>
-<td>$0.30/$1.20 input/output; cached $0.06<small>
-<a href="https://www.upstage.ai/pricing/api" target="_blank" rel="noreferrer">official pricing ↗</a>
-</small>
-</td>
-<td>
-<a href="https://www.upstage.ai/blog/en/solar-pro-4" target="_blank" rel="noreferrer">official release ↗</a>
-</td>
-<td>
-<small>512K context; up to 128K output</small>
 </td>
 </tr>
 <tr>
@@ -971,16 +754,19 @@ footer {
 <td class="date">2026-07-09</td>
 <td>1,050,000 tokens; max output 128,000 tokens</td>
 <td>No — proprietary/API; public weights/license not offered</td>
-<td>코딩, 추론, Computer use, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업, 속도, 비용 효율<small>
-<a href="https://developers.openai.com/api/docs/models/gpt-5.6-terra" target="_blank" rel="noreferrer">GPT-5.6 Terra 모델 사양 ↗</a> · <a href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noreferrer">GPT-5.6 발표 ↗</a>
-</small>
-</td>
+<td>코딩, 추론, Computer use, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업, 속도, 비용 효율</td>
 <td>지능·비용 균형형<small>
 <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
 </small>
 </td>
 <td>
 <a href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noreferrer">GPT-5.6 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-5.6-terra" target="_blank" rel="noreferrer">GPT-5.6 Terra 모델 사양 ↗</a> · <a href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noreferrer">GPT-5.6 발표 ↗</a>
+</small>
+</details>
 </td>
 <td>
 <span class="empty-note">—</span>
@@ -997,16 +783,19 @@ footer {
 <td class="date">2026-07-09</td>
 <td>1,050,000 tokens; max output 128,000 tokens</td>
 <td>No — proprietary/API; public weights/license not offered</td>
-<td>코딩, 추론, Computer use, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업, 속도, 비용 효율<small>
-<a href="https://developers.openai.com/api/docs/models/gpt-5.6-luna" target="_blank" rel="noreferrer">GPT-5.6 Luna 모델 사양 ↗</a> · <a href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noreferrer">GPT-5.6 발표 ↗</a>
-</small>
-</td>
+<td>코딩, 추론, Computer use, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업, 속도, 비용 효율</td>
 <td>비용 민감·고처리량<small>
 <a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
 </small>
 </td>
 <td>
 <a href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noreferrer">GPT-5.6 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-5.6-luna" target="_blank" rel="noreferrer">GPT-5.6 Luna 모델 사양 ↗</a> · <a href="https://openai.com/index/gpt-5-6/" target="_blank" rel="noreferrer">GPT-5.6 발표 ↗</a>
+</small>
+</details>
 </td>
 <td>
 <span class="empty-note">—</span>
@@ -1023,16 +812,19 @@ footer {
 <td class="date">2026-06-30</td>
 <td>미상 — 공식 발표에서 context 한도 미확인</td>
 <td>No — hosted API</td>
-<td>Tool call, Computer use, 코딩, 추론; Opus 4.8 근접 성능·낮은 가격<small>
-<a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noreferrer">공식 발표·영구 가격 ↗</a>
-</small>
-</td>
+<td>Tool call, Computer use, 코딩, 추론; Opus 4.8 근접 성능·낮은 가격</td>
 <td>$2/$10 input/output per 1M tokens; 2026-08-10 영구 가격 확정<small>
 <a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
 </small>
 </td>
 <td>
 <a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noreferrer">Claude Sonnet 5 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://www.anthropic.com/news/claude-sonnet-5" target="_blank" rel="noreferrer">공식 발표·영구 가격 ↗</a>
+</small>
+</details>
 </td>
 <td>
 <small>Opus 4.8 근접 성능을 더 낮은 가격으로 제공; 공식 발표 기준</small>
@@ -1049,10 +841,7 @@ footer {
 <td class="date">2026-06-29</td>
 <td>1M</td>
 <td>Yes; MIT</td>
-<td>코딩, 추론, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업<small>
-<a href="https://huggingface.co/XiaomiMiMo/MiMo-V2.5" target="_blank" rel="noreferrer">official model card ↗</a>
-</small>
-</td>
+<td>코딩, 추론, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업</td>
 <td>$0.14/$0.28; cache-hit $0.0028<small>
 <a href="https://mimo.mi.com/" target="_blank" rel="noreferrer">official pricing ↗</a>
 </small>
@@ -1060,12 +849,513 @@ footer {
 </td>
 <td>
 <a href="https://mimo.mi.com/docs/en-US/news/latest/v2.5-open-sourced" target="_blank" rel="noreferrer">official open-source release ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://huggingface.co/XiaomiMiMo/MiMo-V2.5" target="_blank" rel="noreferrer">official model card ↗</a>
+</small>
+</details>
 <small>
 <a href="https://openrouter.ai/xiaomi/mimo-v2.5" target="_blank" rel="noreferrer">OpenRouter ↗</a>
 </small>
 </td>
 <td>
 <small>1M; native image/video/audio; MIT</small>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="other">
+<h2>그외 모델 <span>15</span>
+</h2>
+<p>언어 제공자별로 공식 자료에서 확인한 현재 대표 모델을 하나씩 기록합니다. Frontier·Value 선택과 중복하지 않으며, 전체 과거 이력은 각 플랫폼 Markdown에서 확인합니다.</p>
+<div class="table-scroll model-table">
+<table>
+<thead>
+<tr>
+<th>플랫폼 / 모델</th>
+<th>출시일</th>
+<th>Context length</th>
+<th>Open weights / License</th>
+<th>특화 기능</th>
+<th>Price</th>
+<th>소개 / 링크</th>
+<th>추가 설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen3.8-27B</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-08-14</td>
+<td>262,144 native; up to 1,000,000 tokens with YaRN</td>
+<td>Yes — Apache 2.0 model weights</td>
+<td>코딩, 추론, Vision, 멀티모달, 장문맥, 에이전트 작업; Tool call·Computer use는 benchmark·runtime 수준으로 모델 기능 명시 미확인</td>
+<td>대표 작업 비용 확인<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud 가격 ↗</a>
+</small>
+<small>OpenRouter: $0.214/$2.55 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
+</td>
+<td>
+<a href="https://github.com/QwenLM/Qwen3.8" target="_blank" rel="noreferrer">Qwen3.8 공식 저장소 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://huggingface.co/Qwen/Qwen3.8-27B" target="_blank" rel="noreferrer">Qwen3.8-27B 모델 카드 ↗</a> · <a href="https://github.com/QwenLM/Qwen3.8" target="_blank" rel="noreferrer">Qwen3.8 공식 저장소 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/qwen/qwen3.8-27b" target="_blank" rel="noreferrer">OpenRouter ↗</a>
+</small>
+</td>
+<td>
+<small>Other 대표: Qwen 공식 repository/model card에서 2026-08-14 공개·Hugging Face/ModelScope 가중치·262K native context를 확인한 open-weight 모델. <a href="https://github.com/QwenLM/Qwen3.8" target="_blank" rel="noreferrer">공식 repository ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/deepseek.md">
+<span class="platform-icon icon-deepseek" aria-hidden="true">D<img src="https://www.google.com/s2/favicons?domain=www.deepseek.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>DeepSeek</a>
+<strong class="model-name">DeepSeek-V4-Pro / V4-Pro-0813</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-08-13</td>
+<td>1,000,000 tokens</td>
+<td>Yes — MIT</td>
+<td>Tool call, 코딩; Vision 미지원; Computer use 미확인</td>
+<td>대표 작업 비용 확인<small>
+<a href="https://api-docs.deepseek.com/quick_start/pricing/" target="_blank" rel="noreferrer">DeepSeek 가격 ↗</a>
+</small>
+<small>OpenRouter: $0.9834/$2.9502 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
+</td>
+<td>
+<a href="https://api-docs.deepseek.com/updates/" target="_blank" rel="noreferrer">API 변경 이력 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://api-docs.deepseek.com/quick_start/pricing" target="_blank" rel="noreferrer">API 사양 ↗</a> · <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noreferrer">가중치·라이선스 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/deepseek/deepseek-v4-pro-0813" target="_blank" rel="noreferrer">OpenRouter ↗</a>
+</small>
+</td>
+<td>
+<small>Other 대표: DeepSeek 공식 모델 카드에서 공개 가중치·1M context·agentic capability를 확인한 현재 Pro 모델. <a href="https://huggingface.co/deepseek-ai/DeepSeek-V4-Pro" target="_blank" rel="noreferrer">공식 모델 카드 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/google.md">
+<span class="platform-icon icon-google" aria-hidden="true">G<img src="https://www.google.com/s2/favicons?domain=deepmind.google&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Google</a>
+<strong class="model-name">Gemini 3.7 Flash</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-08-13</td>
+<td>Input 1,048,576 tokens; output 65,536 tokens</td>
+<td>No — hosted API; public weights/license not offered</td>
+<td>추론, 코딩, Computer use (Preview), Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업</td>
+<td>API 가격 확인<small>
+<a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noreferrer">Gemini 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-3-7-flash/" target="_blank" rel="noreferrer">Gemini 3.7 Flash ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash" target="_blank" rel="noreferrer">공식 모델 문서 ↗</a> · <a href="https://ai.google.dev/gemini-api/docs/changelog" target="_blank" rel="noreferrer">GA 변경 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: Google 공식 모델 문서에서 GA·model ID·1,048,576 입력·65,536 출력·function calling·Computer use Preview를 확인한 current Flash 모델. <a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash" target="_blank" rel="noreferrer">공식 모델 문서 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/nvidia.md">
+<span class="platform-icon icon-nvidia" aria-hidden="true">N<img src="https://www.google.com/s2/favicons?domain=www.nvidia.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>NVIDIA Nemotron</a>
+<strong class="model-name">NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-08-11</td>
+<td>1M</td>
+<td>Yes; OpenMDW-1.1</td>
+<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업</td>
+<td>Free prototype endpoint; production price 미상<small>
+<a href="https://build.nvidia.com/nvidia/nemotron-3.5-lightning-30b-a3b" target="_blank" rel="noreferrer">NVIDIA Build ↗</a>
+</small>
+</td>
+<td>
+<a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4" target="_blank" rel="noreferrer">official model card ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4" target="_blank" rel="noreferrer">official model card ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: NVIDIA 공식 모델 카드의 2026-08-11 공개 가중치·1M context·agent/sub-agent·로컬 실행 모델. <a href="https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4" target="_blank" rel="noreferrer">공식 모델 카드 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/upstage.md">
+<span class="platform-icon icon-upstage" aria-hidden="true">U<img src="https://www.google.com/s2/favicons?domain=www.upstage.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Upstage</a>
+<strong class="model-name">Solar Pro 4</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-08-11</td>
+<td>512K</td>
+<td>No; closed commercial</td>
+<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업</td>
+<td>$0.30/$1.20 input/output; cached $0.06<small>
+<a href="https://www.upstage.ai/pricing/api" target="_blank" rel="noreferrer">official pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://www.upstage.ai/blog/en/solar-pro-4" target="_blank" rel="noreferrer">official release ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://www.upstage.ai/blog/en/solar-pro-4" target="_blank" rel="noreferrer">official release ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: Upstage 공식 출시 문서의 current 512K agentic API 모델. 사용자 지정 Value 기준에서 제외하고 Other로 유지</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/xai.md">
+<span class="platform-icon icon-xai" aria-hidden="true">𝕏<img src="https://www.google.com/s2/favicons?domain=x.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>xAI</a>
+<strong class="model-name">Grok 4.5</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-16</td>
+<td>500,000 tokens</td>
+<td>No — proprietary hosted API; public weights/license not offered</td>
+<td>코딩, 추론, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업; Computer use 미확인</td>
+<td>대표 작업 비용 확인<small>
+<a href="https://docs.x.ai/developers/pricing" target="_blank" rel="noreferrer">xAI 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://x.ai/news/grok-4-5" target="_blank" rel="noreferrer">Grok 4.5 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.x.ai/developers/models/grok-4.5" target="_blank" rel="noreferrer">Grok 4.5 모델 사양 ↗</a> · <a href="https://x.ai/news/grok-4-5" target="_blank" rel="noreferrer">Grok 4.5 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: xAI 공식 모델 문서의 current 500K reasoning/coding agent API 모델. Grok 4.6 Frontier와 분리. <a href="https://docs.x.ai/developers/models/grok-4.5" target="_blank" rel="noreferrer">공식 모델 문서 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/poolside.md">
+<span class="platform-icon icon-poolside" aria-hidden="true">P<img src="https://www.google.com/s2/favicons?domain=poolside.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Poolside Laguna</a>
+<strong class="model-name">Laguna XS 2.1</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-02</td>
+<td>256K</td>
+<td>Yes; OpenMDW-1.1</td>
+<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업</td>
+<td>$0.10/$0.20; cache-read $0.05 per 1M<small>
+<a href="https://poolside.ai/blog/introducing-laguna-xs-2-1" target="_blank" rel="noreferrer">official release pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://poolside.ai/blog/introducing-laguna-xs-2-1" target="_blank" rel="noreferrer">official release ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://huggingface.co/poolside/Laguna-XS-2.1" target="_blank" rel="noreferrer">official model card ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: Poolside 공식 출시·모델 카드가 current open-weight 33B/3B-active·agentic coding·256K를 명시한 모델. <a href="https://huggingface.co/poolside/Laguna-XS-2.1" target="_blank" rel="noreferrer">공식 모델 카드 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/xiaomi.md">
+<span class="platform-icon icon-xiaomi" aria-hidden="true">mi<img src="https://www.google.com/s2/favicons?domain=mimo.mi.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Xiaomi MiMo</a>
+<strong class="model-name">MiMo-V2.5-Pro</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-06-29</td>
+<td>1M</td>
+<td>Yes; MIT</td>
+<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업</td>
+<td>$0.435/$0.87 input/output; cache-hit $0.0036 per 1M<small>
+<a href="https://mimo.mi.com/" target="_blank" rel="noreferrer">official pricing ↗</a>
+</small>
+<small>OpenRouter: $0.435/$0.87 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
+</td>
+<td>
+<a href="https://mimo.mi.com/docs/en-US/news/latest/v2.5-open-sourced" target="_blank" rel="noreferrer">official open-source release ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro" target="_blank" rel="noreferrer">official model card ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/xiaomi/mimo-v2.5-pro" target="_blank" rel="noreferrer">OpenRouter ↗</a>
+</small>
+</td>
+<td>
+<small>Other 대표: Xiaomi MiMo 공식 model card/open-source release의 current 1M MIT Pro 모델. X-Pro Desktop preview는 별도 이력으로 보존. <a href="https://huggingface.co/XiaomiMiMo/MiMo-V2.5-Pro" target="_blank" rel="noreferrer">공식 model card ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/glm.md">
+<span class="platform-icon icon-glm" aria-hidden="true">Z<img src="https://www.google.com/s2/favicons?domain=z.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>GLM / Z.AI</a>
+<strong class="model-name">GLM-5.2</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-06-16</td>
+<td>1M; max output 128K</td>
+<td>미상 — 공식 GLM-5.2 문서에서 공개 가중치·라이선스 미기재</td>
+<td>추론, 코딩, Tool call, 장문맥, 에이전트 작업</td>
+<td>공식 가격 확인<small>
+<a href="https://docs.bigmodel.cn/cn/guide/start/pricing" target="_blank" rel="noreferrer">BigModel 가격 ↗</a>
+</small>
+<small>OpenRouter: $0.6832/$2.1472 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
+</td>
+<td>
+<a href="https://docs.bigmodel.cn/cn/guide/models/text/glm-5.2" target="_blank" rel="noreferrer">GLM-5.2 문서 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.z.ai/guides/llm/glm-5.2" target="_blank" rel="noreferrer">공식 모델 문서 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/z-ai/glm-5.2" target="_blank" rel="noreferrer">OpenRouter ↗</a>
+</small>
+</td>
+<td>
+<small>Other 대표: 공식 문서가 1M context·function calling·MCP·long-horizon engineering을 명시한 current flagship. <a href="https://docs.z.ai/guides/llm/glm-5.2" target="_blank" rel="noreferrer">공식 모델 문서 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/kimi.md">
+<span class="platform-icon icon-kimi" aria-hidden="true">K<img src="https://www.google.com/s2/favicons?domain=www.kimi.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Kimi / Moonshot AI</a>
+<strong class="model-name">Kimi K2.7 Code / kimi-k2.7-code</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-06-16</td>
+<td>262,144 tokens</td>
+<td>Yes — Modified MIT</td>
+<td>Tool call, 코딩, Vision; Computer use 미확인</td>
+<td>대표 작업 비용 확인<small>
+<a href="https://platform.kimi.ai/docs/guide/kimi-k2-7-code-quickstart" target="_blank" rel="noreferrer">Kimi K2.7 문서 ↗</a>
+</small>
+<small>OpenRouter: $0.71/$3.5 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
+</td>
+<td>
+<a href="https://www.kimi.ai/resources/kimi-k2-7-code" target="_blank" rel="noreferrer">Kimi K2.7 Code ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://www.kimi.ai/resources/kimi-k2-7-code" target="_blank" rel="noreferrer">모델 문서 ↗</a> · <a href="https://huggingface.co/moonshotai/Kimi-K2.7-Code" target="_blank" rel="noreferrer">가중치·라이선스 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/moonshotai/kimi-k2.7-code" target="_blank" rel="noreferrer">OpenRouter ↗</a>
+</small>
+</td>
+<td>
+<small>Other 대표: Kimi 공식 문서가 coding 특화·현재 API/Code 제공·256K context·공개 가중치를 명시한 current code 모델. <a href="https://www.kimi.ai/resources/kimi-k2-7-code" target="_blank" rel="noreferrer">공식 모델 문서 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/cursor.md">
+<span class="platform-icon icon-cursor" aria-hidden="true">C<img src="https://www.google.com/s2/favicons?domain=cursor.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Cursor</a>
+<strong class="model-name">Composer 2.5</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-05-18</td>
+<td>200K</td>
+<td>No; proprietary Composer weights; Kimi K2.5 base is open</td>
+<td>코딩, Tool call, Computer use (Cursor 앱 기능; 모델 단독 미확인); Vision 미상</td>
+<td>$0.50/$2.50 input/output per 1M; Fast $3/$15<small>
+<a href="https://cursor.com/docs/models/cursor-composer-2-5" target="_blank" rel="noreferrer">official pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://cursor.com/blog/composer-2-5" target="_blank" rel="noreferrer">official release ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://cursor.com/docs/models/cursor-composer-2-5" target="_blank" rel="noreferrer">official model docs ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: Cursor 공식 문서에서 현재 제공·200K context·가격을 확인한 Composer 모델. Browser computer control은 Cursor harness 기능이며 모델 단독 기능과 구분</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-5.5 Pro</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-04-23</td>
+<td>1,050,000 tokens; max output 128,000 tokens</td>
+<td>No — proprietary/API; public weights/license not offered</td>
+<td>추론, 코딩, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업; Computer use 미지원</td>
+<td>$30/$180 input/output per 1M tokens<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://openai.com/index/introducing-gpt-5-5/" target="_blank" rel="noreferrer">GPT-5.5 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-5.5-pro" target="_blank" rel="noreferrer">공식 모델 문서 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: OpenAI 공식 API 문서의 current professional-work Pro variant(1,050,000 context·128,000 max output·function calling/tools). <a href="https://developers.openai.com/api/docs/models/gpt-5.5-pro" target="_blank" rel="noreferrer">공식 모델 문서 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/anthropic.md">
+<span class="platform-icon icon-anthropic" aria-hidden="true">A<img src="https://www.google.com/s2/favicons?domain=www.anthropic.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Anthropic</a>
+<strong class="model-name">Claude Haiku 4.5</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-10-15</td>
+<td>200,000 tokens; max output 64,000 tokens</td>
+<td>No — proprietary/API; public weights not offered</td>
+<td>코딩, 추론, Computer use, Tool call, Vision, 멀티모달, 에이전트 작업, 속도, 비용 효율</td>
+<td>저비용·고속 계열<small>
+<a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://www.anthropic.com/news/claude-haiku-4-5" target="_blank" rel="noreferrer">Claude Haiku 4.5 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://platform.claude.com/docs/en/models/overview" target="_blank" rel="noreferrer">Claude Haiku 4.5 모델 사양 ↗</a> · <a href="https://www.anthropic.com/news/claude-haiku-4-5" target="_blank" rel="noreferrer">Claude Haiku 4.5 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: 공식 선택 가이드가 빠른 응답·낮은 지연·비용 민감·sub-agent 작업에 권장하는 현재 Haiku 모델. <a href="https://platform.claude.com/docs/en/about-claude/models/choosing-a-model" target="_blank" rel="noreferrer">공식 선택 가이드 ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/tencent.md">
+<span class="platform-icon icon-tencent" aria-hidden="true">T<img src="https://www.google.com/s2/favicons?domain=hunyuan.tencent.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Tencent HY/Hunyuan</a>
+<strong class="model-name">Hunyuan-A13B-Instruct</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-06-27</td>
+<td>256K maximum; 32K default config</td>
+<td>Yes; Tencent Hunyuan A13B Community License</td>
+<td>코딩, 추론, Tool call, 장문맥, 에이전트 작업</td>
+<td>¥0.5/¥2 per 1M<small>
+<a href="https://cloud.tencent.com/document/product/1729/97731" target="_blank" rel="noreferrer">Tencent Cloud pricing ↗</a>
+</small>
+<small>OpenRouter: $0.14/$0.57 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
+</td>
+<td>
+<a href="https://huggingface.co/tencent/Hunyuan-A13B-Instruct" target="_blank" rel="noreferrer">official model card ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://huggingface.co/tencent/Hunyuan-A13B-Instruct" target="_blank" rel="noreferrer">official model card ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/tencent/hunyuan-a13b-instruct" target="_blank" rel="noreferrer">OpenRouter ↗</a>
+</small>
+</td>
+<td>
+<small>Other 대표: Tencent 공식 model card가 2025-06-27 공개·80B/13B-active·256K·hybrid reasoning/agent capability를 명시한 모델. <a href="https://huggingface.co/tencent/Hunyuan-A13B-Instruct" target="_blank" rel="noreferrer">공식 model card ↗</a>
+</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/meta.md">
+<span class="platform-icon icon-meta" aria-hidden="true">M<img src="https://www.google.com/s2/favicons?domain=www.llama.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Meta</a>
+<strong class="model-name">Llama 4 Maverick</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-04-05</td>
+<td>1,000,000 tokens</td>
+<td>Yes — Llama 4 Community License</td>
+<td>Tool call, 코딩, Vision; Computer use 미확인</td>
+<td>자체 배포 비용 확인<small>
+<a href="https://github.com/meta-llama/llama-models" target="_blank" rel="noreferrer">Llama 모델 GitHub ↗</a>
+</small>
+</td>
+<td>
+<a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/" target="_blank" rel="noreferrer">Llama 4 소개 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://github.com/meta-llama/llama-models/blob/main/models/llama4/MODEL_CARD.md" target="_blank" rel="noreferrer">모델 카드 ↗</a> · <a href="https://github.com/meta-llama/llama-models/blob/main/models/llama4/LICENSE" target="_blank" rel="noreferrer">라이선스 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Other 대표: Meta 공식 발표의 current open-weight multimodal Llama 4 모델. Muse Spark 1.3 Frontier와 분리. <a href="https://ai.meta.com/blog/llama-4-multimodal-intelligence/" target="_blank" rel="noreferrer">공식 발표 ↗</a>
+</small>
 </td>
 </tr>
 </tbody>

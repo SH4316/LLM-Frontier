@@ -17,7 +17,7 @@ pricing_page: https://cursor.com/docs/models-and-pricing
 
 | 출시일 | 모델 | 상태 | 홈 분류 | 특징 | 비용 메모 | 공식 소개 | 가격 문서 | 비고 |
 |---|---|---|---|---|---|---|---|---|
-| 2026-05-18 | Composer 2.5 | Current | frontier | 코딩, Tool call, 에이전트 작업 | $0.50/$2.50 input/output per 1M; Fast $3/$15 | [official release](https://cursor.com/blog/composer-2-5) | [official pricing](https://cursor.com/docs/models/cursor-composer-2-5) | 200K; Browser computer control is Cursor-harness-level; Composer Vision 미상 |
+| 2026-05-18 | Composer 2.5 | Current | other | 코딩, Tool call, 에이전트 작업 | $0.50/$2.50 input/output per 1M; Fast $3/$15 | [official release](https://cursor.com/blog/composer-2-5) | [official pricing](https://cursor.com/docs/models/cursor-composer-2-5) | Other 대표: Cursor 공식 문서에서 현재 제공·200K context·가격을 확인한 Composer 모델. Browser computer control은 Cursor harness 기능이며 모델 단독 기능과 구분 |
 | 2026-03-19 | Composer 2 | Deprecated | - | 코딩, Tool call, 에이전트 작업 | $0.50/$2.50; Fast $1.50/$7.50 | [official release](https://cursor.com/blog/composer-2) | [official pricing](https://cursor.com/docs/models-and-pricing) | Retired slugs route to Composer 2.5 |
 | 2026-02-09 | Composer 1.5 | Deprecated | - | 코딩, 추론, Tool call, 에이전트 작업 | 미상 | [official release](https://cursor.com/blog/composer-1-5) | [official pricing](https://cursor.com/docs/models-and-pricing) | Adaptive thinking and self-summarization; later phased out |
 | 2025-10-29 | Composer 1 | Deprecated | - | 코딩, Tool call, 에이전트 작업 | 미상 | [official release](https://cursor.com/blog/composer) | [official pricing](https://cursor.com/docs/models-and-pricing) | Fully retired 2026-03-16 |

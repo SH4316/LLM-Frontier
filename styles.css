@@ -109,10 +109,18 @@ th {
 }
 .model-table th:nth-child(5),
 .model-table td:nth-child(5) {
-  width: 165px;
-  min-width: 135px;
-  max-width: 190px;
+  width: 145px;
+  min-width: 120px;
+  max-width: 170px;
   overflow-wrap: anywhere;
+}
+.model-table .source-details {
+  margin-top: 6px;
+}
+.model-table summary {
+  cursor: pointer;
+  color: #4d626c;
+  font-size: 11px;
 }
 .model-table .feature-line {
   display: block;
