@@ -113,6 +113,20 @@ th {
   max-width: 150px;
   overflow-wrap: anywhere;
 }
+.model-table th:nth-child(5),
+.model-table td:nth-child(5) {
+  width: 165px;
+  min-width: 135px;
+  max-width: 190px;
+  overflow-wrap: anywhere;
+}
+.model-table .feature-line {
+  display: block;
+}
+.model-table .feature-label {
+  color: #304a54;
+  font-weight: 650;
+}
 .model-table th:nth-child(6),
 .model-table td:nth-child(6) {
   min-width: 180px;
@@ -312,10 +326,11 @@ footer {
 <td class="date">2026-09-01</td>
 <td>Claude Fable 5.1: 1,000,000 tokens<br>Claude Mythos 5.1: 1,000,000 tokens</td>
 <td>Claude Fable 5.1: No — proprietary/API<br>Claude Mythos 5.1: 미상 — trusted access/API 제공은 확인되지만 공개 가중치·라이선스는 공식 자료에 명시되지 않음</td>
-<td>Claude Fable 5.1: Tool call, Computer use, 코딩, Vision<br>Claude Mythos 5.1: 추론, 코딩, Computer use, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업<small>Claude Fable 5.1: <a href="https://platform.claude.com/docs/en/models/fable-5-1/overview" target="_blank" rel="noreferrer">모델 사양 ↗</a>
-</small>
-<small>Claude Mythos 5.1: <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" rel="noreferrer">Fable 5.1·Mythos 5.1 공식 발표 ↗</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/context-windows" target="_blank" rel="noreferrer">Claude context windows ↗</a>
-</small>
+<td>
+<div class="feature-line">
+<span class="feature-label">공통:</span> 코딩 · Computer use · Tool call · Vision</div>
+<div class="feature-line">
+<span class="feature-label">Mythos:</span> 추론</div>
 </td>
 <td>Claude Fable 5.1: Fable 가격 확인<br>Claude Mythos 5.1: 제한 접근<small>Claude Fable 5.1: <a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
 <br>Claude Mythos 5.1: <a href="https://claude.com/pricing" target="_blank" rel="noreferrer">Claude 가격 ↗</a>
@@ -323,8 +338,16 @@ footer {
 </td>
 <td>Claude Fable 5.1: <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" rel="noreferrer">Fable 5.1·Mythos 5.1 ↗</a>
 <br>Claude Mythos 5.1: <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" rel="noreferrer">Fable 5.1·Mythos 5.1 ↗</a>
+<small>Claude Fable 5.1: <a href="https://platform.claude.com/docs/en/models/fable-5-1/overview" target="_blank" rel="noreferrer">모델 사양 ↗</a>
+</small>
+<small>Claude Mythos 5.1: <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" rel="noreferrer">Fable 5.1·Mythos 5.1 공식 발표 ↗</a> · <a href="https://platform.claude.com/docs/en/build-with-claude/context-windows" target="_blank" rel="noreferrer">Claude context windows ↗</a>
+</small>
 </td>
 <td>
+<small>Fable: 기록 특징 원문 — 추론, 코딩, 멀티모달, 장문맥, 에이전트 작업, Computer use, Tool call, Vision</small>
+<small>Fable: 사양 특징 원문 — Tool call, Computer use, 코딩, Vision</small>
+<small>Mythos: 기록 특징 원문 — 추론, 코딩, 멀티모달, 장문맥, 에이전트 작업</small>
+<small>Mythos: 사양 특징 원문 — 추론, 코딩, Computer use, Tool call, Vision, 멀티모달, 장문맥, 에이전트 작업</small>
 <small>Claude Mythos 5.1: 신뢰 접근 전용</small>
 </td>
 </tr>
@@ -418,7 +441,7 @@ footer {
 <strong class="model-name">GLM-5.3</strong>
 <small>Current</small>
 </td>
-<td class="date">미상</td>
+<td class="date">2026-08-14</td>
 <td>1,000,000 tokens</td>
 <td>Yes — GLM-5.3 License (custom)</td>
 <td>Tool call, 코딩; Vision 미지원; Computer use 미확인<small>
@@ -431,13 +454,13 @@ footer {
 <small>OpenRouter: $1.4/$4.4 input/output per 1M tokens; tier·시간대·provider 변동 가능</small>
 </td>
 <td>
-<a href="https://docs.bigmodel.cn/cn/guide/models/text/glm-5.3" target="_blank" rel="noreferrer">GLM-5.3 문서 ↗</a>
+<a href="https://z.ai/blog/glm-5.3" target="_blank" rel="noreferrer">GLM-5.3 출시 블로그 ↗</a>
 <small>
 <a href="https://openrouter.ai/z-ai/glm-5.3" target="_blank" rel="noreferrer">OpenRouter ↗</a>
 </small>
 </td>
 <td>
-<small>문서 간 날짜 충돌</small>
+<small>Z.AI 공식 블로그 “GLM-5.3: Frontier Coding with Emergent Cyber Capabilities”의 2026-08-14 게시일과 본문 출시 문구 기준. <a href="https://docs.bigmodel.cn/cn/update/new-releases" target="_blank" rel="noreferrer">BigModel 공식 기록 ↗</a>의 2026-08-19 “上线”은 후속 플랫폼 제공 기록이며, 블로그의 약 2주 후 공개 가중치 예고 및 checkpoint 변경일과 구분</small>
 </td>
 </tr>
 <tr>

@@ -6,7 +6,9 @@
 
 ## Preview
 
-메인 페이지는 [HTMLPreview에서 열기](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html)로 확인할 수 있습니다.
+현재 수정본은 [검토 브랜치 미리보기](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/feat/model-tables-and-catalogs/index.html)에서 확인하십시오. 표 UI와 수정된 Frontier·Value 분류를 반영했으며 메인 과거 모델 섹션은 없습니다. [PR #1](https://github.com/SH4316/LLM-Frontier/pull/1) 병합 전에는 main 미리보기에 이전 화면이 표시됩니다.
+
+병합된 메인 페이지는 [HTMLPreview에서 열기](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html)로 확인할 수 있습니다.
 
 [음성 전사](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/transcription.html) · [이미지 생성](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/image-generation.html) · [메모리별 Local 모델](https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/local-models.html)
 

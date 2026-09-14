@@ -207,6 +207,88 @@ function icon(p) {
     '</span>'
   );
 }
+const conciseFrontierFeatureTags = [
+  '코딩',
+  '추론',
+  'Computer use',
+  'Tool call',
+  'Vision',
+];
+const fableMythosNames = new Set(['Claude Fable 5.1', 'Claude Mythos 5.1']);
+const confirmedFeatureTags = (value = '') => [
+  ...new Set(
+    String(value)
+      .split(',')
+      .map((feature) => feature.trim())
+      .map((feature) => feature.replace(/\s+\((?:Preview|Beta)\)$/i, '').trim())
+      .filter((feature) => conciseFrontierFeatureTags.includes(feature)),
+  ),
+];
+const isFableMythosGroup = (p, models) =>
+  p.platform === 'Anthropic' &&
+  models.length === fableMythosNames.size &&
+  models.every((model) => fableMythosNames.has(model.name));
+const shortFeatureModelName = (name) =>
+  name.replace(/^Claude\s+/, '').replace(/\s+5\.1$/, '');
+const groupedFeatureDisplay = (p, models) => {
+  const featureSets = models.map(
+    (model) =>
+      new Set(
+        confirmedFeatureTags(
+          (specs.get(p.platform + '/' + model.name) || {}).features,
+        ),
+      ),
+  );
+  const common = conciseFrontierFeatureTags.filter((feature) =>
+    featureSets.every((features) => features.has(feature)),
+  );
+  const lines = [];
+  if (common.length)
+    lines.push(
+      '<div class="feature-line"><span class="feature-label">공통:</span> ' +
+        common.map((feature) => esc(feature)).join(' · ') +
+        '</div>',
+    );
+  models.forEach((model, index) => {
+    const specific = conciseFrontierFeatureTags.filter(
+      (feature) => featureSets[index].has(feature) && !common.includes(feature),
+    );
+    if (specific.length)
+      lines.push(
+        '<div class="feature-line"><span class="feature-label">' +
+          esc(shortFeatureModelName(model.name)) +
+          ':</span> ' +
+          specific.map((feature) => esc(feature)).join(' · ') +
+          '</div>',
+      );
+  });
+  return lines.join('') || '<span class="empty-note">핵심 태그 미상</span>';
+};
+const groupedFeatureDetails = (p, models) =>
+  models
+    .map((model) => {
+      const spec = specs.get(p.platform + '/' + model.name) || {};
+      const label = esc(shortFeatureModelName(model.name));
+      const details = [];
+      if (model.features)
+        details.push(
+          '<small>' +
+            label +
+            ': 기록 특징 원문 — ' +
+            esc(model.features) +
+            '</small>',
+        );
+      if (spec.features && spec.features !== model.features)
+        details.push(
+          '<small>' +
+            label +
+            ': 사양 특징 원문 — ' +
+            esc(spec.features) +
+            '</small>',
+        );
+      return details.join('');
+    })
+    .join('');
 function table(entries) {
   const contextTitle = entries.some(({ p }) => p.type && p.type !== 'language')
     ? 'Context / 입력한도'
@@ -220,6 +302,10 @@ function table(entries) {
         const { p, m } = entry;
         const models = entry.models || [m];
         const grouped = models.length > 1;
+        const conciseGroupedFeatures = isFableMythosGroup(p, models);
+        const featureDetails = conciseGroupedFeatures
+          ? groupedFeatureDetails(p, models)
+          : '';
         const displayValue = (getter) =>
           new Set(models.map((model) => getter(model) || '미상')).size === 1
             ? getter(models[0]) || '미상'
@@ -291,8 +377,10 @@ function table(entries) {
           '</td><td>' +
           displaySpecs((spec) => spec.weights) +
           '</td><td>' +
-          displaySpecs((spec, model) => spec.features || model.features) +
-          displaySpecLinks() +
+          (conciseGroupedFeatures
+            ? groupedFeatureDisplay(p, models)
+            : displaySpecs((spec, model) => spec.features || model.features) +
+              displaySpecLinks()) +
           '</td><td>' +
           displayLink((model) =>
             model.cost ? model.cost.replaceAll('`', '') : '가격 미상',
@@ -313,6 +401,7 @@ function table(entries) {
             .join('') +
           '</td><td>' +
           displayLink((model) => model.intro) +
+          (conciseGroupedFeatures ? displaySpecLinks() : '') +
           models
             .map((model) => {
               const r = routerInfo(p, model);
@@ -325,7 +414,14 @@ function table(entries) {
             })
             .join('') +
           '</td><td>' +
-          (notes || '<span class="empty-note">—</span>') +
+          featureDetails +
+          (notes ||
+            (!conciseGroupedFeatures
+              ? '<span class="empty-note">—</span>'
+              : '')) +
+          (conciseGroupedFeatures && !featureDetails && !notes
+            ? '<span class="empty-note">—</span>'
+            : '') +
           '</td></tr>'
         );
       })
