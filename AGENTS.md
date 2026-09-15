@@ -14,22 +14,31 @@
 ### 모델 데이터 규칙
 
 - 모델 관련 원본 데이터는 `models/*.md`에서 관리합니다.
+- 사양과 기능 근거는 `specs/models.md`, Unsloth 기반 메모리별 Local 추천은 `specs/local-models.md`에서 Markdown으로 관리합니다.
+- 모든 타임라인은 최신 출시일을 위에 두는 내림차순이며 `미상`은 맨 아래입니다.
+- 언어 모델 Frontier는 2026-09-14 Artificial Analysis 확인 스냅샷과 제공자 공식 자료를 바탕으로 수동 선택한 다음 9개만 표시합니다: Claude Fable 5.1, GPT-6 Astra, Claude Opus 5, Claude Fable 5, Muse Spark 1.3, GPT-5.6 Sol, GLM-5.3, Grok 4.6, Kimi K3. 이는 실시간 순위가 아니며 Artificial Analysis 점수를 원본에 저장하지 않습니다. Claude Mythos 5.1은 Frontier에서 제외하고 타임라인·사양 원본 행은 보존합니다. 나머지 현재 Frontier는 `-` 또는 선정된 `other`로 내립니다.
+- Value는 작은 모델 목록이 아니라, Sonnet·DeepSeek Flash·Gemini Flash처럼 충분한 성능과 기능을 유지하면서 비용이 낮아 실제 사용에 유리한 모델을 뜻합니다.
+- 작은 파라미터 수나 `mini`·`nano`·`lite`·`air` 같은 명칭, 공개 가중치, 무료 데모·무료 사용 구간만으로는 Value로 분류하지 않습니다. 공식 가격과 대표 작업의 성능·기능·비용 근거를 함께 확인합니다.
+- `specs/local-models.md`의 Unsloth 기반 메모리별 Local 추천은 실행 가능 메모리와 로컬 실행을 위한 별도 기준이며, 해당 목록에 포함되었다는 이유만으로 Value로 분류하지 않습니다.
+- 공식 가격 또는 대표 작업의 성능·기능·비용을 확인할 수 없는 모델은 근거가 확보될 때까지 Value 후보와 가성비 비교 대상에 포함하지 않습니다.
+- 기능 명칭은 `Computer use`입니다. 컴퓨터 화면·브라우저 조작 능력을 뜻하며 연산 효율과 구분합니다.
+- Context length·공개 가중치·라이선스·기능에는 공식 근거를 남깁니다. 확인되지 않은 값은 추정하지 않습니다.
 - 모델 버전의 과거 기록을 삭제하거나 기존 출시일을 임의로 변경하지 않습니다.
 - 출시일은 공식 출시일 기준의 `YYYY-MM-DD` 형식을 사용합니다.
 - 공식 소개 문서와 공식 가격 문서 링크를 우선 사용합니다.
 - 모델의 성능·특징 평가는 고정 태그 체계를 사용합니다.
-- `frontier`와 `value` 분류는 수동 큐레이션이며, 자동 벤치마크 점수로 대체하지 않습니다.
+- `frontier`, `value`, `other` 분류는 수동 큐레이션이며, 자동 벤치마크 점수로 대체하지 않습니다. `other`는 언어 제공자별 공식 자료에서 확인한 대표 모델을 정확히 하나씩만 표시하며, 과거 전체 모델에 일괄 부여하지 않습니다.
 
 ### 생성 및 검증
 
 Markdown 인덱스를 수정한 뒤 다음 명령을 실행합니다.
 
 ```bash
-npm run validate
 npm run build
+npm run validate
 ```
 
-`npm run build`는 플랫폼 Markdown 인덱스를 읽어 루트 `index.html`을 다시 생성합니다.
+`npm run build`는 Markdown 원본을 읽어 메인·음성 전사·이미지 생성·Local 추천 HTML 페이지를 다시 생성합니다.
 
 ### Git 작업 규칙
 
@@ -37,3 +46,5 @@ npm run build
 - 모든 변경은 별도 브랜치와 Pull Request로 제출합니다.
 - LLM이 생성한 PR은 관리자가 내용을 확인하고 승인한 뒤에만 병합합니다.
 - 모델 추가·교체 시에는 공식 출처와 가성비 판단 근거를 PR 본문에 남깁니다.
+
+모델 표에는 Price와 추가 설명을 별도 열로 표시하고 사양 출처는 접힌 링크로 표시합니다. 중국 제공자 모델은 `specs/openrouter.md`의 확인된 OpenRouter 모델 링크·가격 스냅샷을 사용하며, 미확인 모델은 검색 링크임을 명시합니다. OpenRouter 가격은 직접 제공자 가격과 구분하고 실시간 조회하지 않습니다. 메인 페이지에는 Frontier·Value와 언어 제공자별 curated `그외 모델`만 표시하며, 과거 모델 전체 표는 표시하지 않습니다.

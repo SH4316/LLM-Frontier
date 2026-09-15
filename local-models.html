@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Local Models by Memory</title>
+<style>:root {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color: #192323;
+  background: #fff;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+a {
+  color: #175c79;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.external-bar {
+  background: #182c32;
+  padding: 9px 4%;
+  font-size: 13px;
+}
+.external-bar a {
+  color: #d7f1a5;
+}
+.shell {
+  max-width: 1500px;
+  margin: auto;
+  padding: 0 4%;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 25px 0;
+  border-bottom: 1px solid #d4dce0;
+}
+.brand {
+  font-size: 19px;
+  font-weight: 750;
+  color: #192323;
+}
+nav {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+h1 {
+  font-size: clamp(28px, 4vw, 46px);
+  letter-spacing: -1.5px;
+  margin: 36px 0 10px;
+}
+h2 {
+  font-size: 23px;
+  letter-spacing: -0.5px;
+  margin: 0 0 12px;
+}
+h2 span {
+  font-size: 14px;
+  color: #788b96;
+  padding: 0 4px;
+}
+p {
+  color: #596b74;
+  line-height: 1.65;
+  font-size: 14px;
+}
+.intro {
+  max-width: 900px;
+}
+section {
+  margin-top: 38px;
+}
+.table-scroll {
+  overflow: auto;
+  border-top: 2px solid #23383f;
+  border-bottom: 1px solid #d7dfe3;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+th {
+  padding: 13px 16px;
+  background: #ecf0f2;
+  color: #4d626c;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.model-table th:nth-child(4),
+.model-table td:nth-child(4) {
+  width: 135px;
+  min-width: 110px;
+  max-width: 150px;
+  overflow-wrap: anywhere;
+}
+.model-table th:nth-child(5),
+.model-table td:nth-child(5) {
+  width: 145px;
+  min-width: 120px;
+  max-width: 170px;
+  overflow-wrap: anywhere;
+}
+.model-table .source-details {
+  margin-top: 6px;
+}
+.model-table summary {
+  cursor: pointer;
+  color: #4d626c;
+  font-size: 11px;
+}
+.model-table .feature-line {
+  display: block;
+}
+.model-table .feature-label {
+  color: #304a54;
+  font-weight: 650;
+}
+.model-table th:nth-child(6),
+.model-table td:nth-child(6) {
+  min-width: 180px;
+}
+.model-table th:nth-child(8),
+.model-table td:nth-child(8) {
+  min-width: 240px;
+}
+td {
+  padding: 10px 16px;
+  vertical-align: top;
+  border-top: 1px solid #e0e6e9;
+  line-height: 1.65;
+  min-width: 110px;
+}
+td:first-child {
+  min-width: 240px;
+}
+tr:hover td {
+  background: #f8fafb;
+}
+small {
+  display: block;
+  font-size: 11px;
+  color: #788b96;
+  margin-top: 4px;
+}
+.model-name {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #16282f;
+}
+.date {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.platform-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #596c76;
+  font-weight: 600;
+  font-size: 12px;
+}
+.platform-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #23383f;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+.icon-anthropic {
+  background: #c67b60;
+}
+.icon-google {
+  background: #4285f4;
+}
+.icon-deepseek {
+  background: #416cf0;
+}
+.icon-qwen {
+  background: #6854bc;
+}
+.icon-kimi {
+  background: #171a1e;
+}
+.icon-glm {
+  background: #304cf0;
+}
+.icon-nvidia {
+  background: #76b900;
+  color: #132000;
+}
+.icon-xiaomi {
+  background: #ff6900;
+}
+.icon-tencent {
+  background: #0077ff;
+}
+.icon-upstage {
+  background: #7d4aea;
+}
+.icon-meta {
+  background: #0866ff;
+}
+footer {
+  padding: 30px 0;
+  margin-top: 42px;
+  border-top: 1px solid #d7dfe3;
+  font-size: 12px;
+  color: #6c808a;
+  line-height: 1.8;
+}
+@media (max-width: 750px) {
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+  nav {
+    gap: 14px;
+  }
+  td,
+  th {
+    padding: 12px;
+  }
+  h1 {
+    margin-top: 25px;
+  }
+  .shell {
+    padding: 0 16px;
+  }
+}
+:root .platform-icon {
+  position: relative;
+  overflow: hidden;
+}
+:root .platform-icon img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  padding: 2px;
+}
+.local-guide td:first-child {
+  min-width: 100px;
+  width: 100px;
+}
+.local-guide td:nth-child(2) {
+  min-width: 200px;
+}
+.local-guide td:nth-child(5) {
+  min-width: 250px;
+}
+</style>
+</head>
+<body>
+<div class="external-bar">
+<a href="https://artificialanalysis.ai/" target="_blank" rel="noreferrer">Artificial Analysis ↗</a>
+</div>
+<div class="shell">
+<header>
+<a class="brand" href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html">Frontier Model Index</a>
+<nav>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html">LLM</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/transcription.html">Transcription</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/image-generation.html">Image generation</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/local-models.html">Local models</a>
+<a href="https://github.com/SH4316/LLM-Frontier/blob/main/docs/UPDATE_RULES.md">Update rules</a>
+</nav>
+</header>
+<main>
+<h1>Local Models by Memory</h1>
+<div class="local-guide">
+<p>확인일: 2026-09-14. Unsloth 공식 가이드와 해당 GGUF 배포 파일을 참고한 수동 추천입니다. 아래 컨텍스트 시작값은 보수적인 운영 제안이며 실측 보장값이 아닙니다.</p>
+<section>
+<h2>메모리 기준</h2>
+</section>
+<p>전용 GPU의 VRAM과 Apple Silicon 통합 메모리를 구분합니다. 통합 메모리는 macOS·다른 앱과 공유하므로 설치 용량 전체를 모델에 사용할 수 없습니다. RAM 오프로딩으로 로딩할 수 있는 모델과 GPU 메모리에 상주하는 모델도 구분합니다.</p>
+<p>가중치 크기는 공개 파일의 대략적인 GB입니다. GGUF 외에 Vision projector, KV cache, 런타임 버퍼와 운영체제 여유가 필요합니다. 양자화 계열의 개략 권장치가 특정 파일 합계보다 작으면 해당 값으로 실행 가능 여부를 판단하지 않습니다. 장치의 GB/GiB 표기 차이도 고려합니다.</p>
+<p>
+<a href="https://unsloth.ai/docs/models/tutorials/how-to-run-llms-with-docker.md" target="_blank" rel="noreferrer">Unsloth 메모리 기준 ↗</a> · <a href="https://unsloth.ai/docs/models/qwen3.5.md" target="_blank" rel="noreferrer">Qwen3.5 실행 가이드 ↗</a>
+</p>
+<section>
+<h2>메모리별 추천</h2>
+</section>
+<div class="table-scroll">
+<table>
+<tr>
+<th>메모리</th>
+<th>추천 모델</th>
+<th>양자화</th>
+<th>가중치 크기</th>
+<th>실행 조건 / Context</th>
+<th>특화 기능</th>
+<th>공식 근거</th>
+</tr>
+<tr>
+<td>8 GB</td>
+<td>Qwen3.5-4B</td>
+<td>UD-Q4_K_XL</td>
+<td>약 2.91 GB + projector 0.67 GB</td>
+<td>GPU: 4–8K부터 시작. Apple 8 GB: OS 여유가 작으므로 2–4K 짧은 문맥부터 확인; 실행 여유 확인 필요</td>
+<td>Vision, 코딩, 추론, 다국어</td>
+<td>
+<a href="https://unsloth.ai/docs/models/qwen3.5.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.5-4B-GGUF" target="_blank" rel="noreferrer">GGUF 파일 ↗</a>
+</td>
+</tr>
+<tr>
+<td>16 GB</td>
+<td>Qwen3.5-9B; GPU 한계 조합: Qwen3.8-27B</td>
+<td>기본 UD-Q4_K_XL; 27B 대안 UD-Q3_K_XL</td>
+<td>9B 약 5.97 GB + projector 0.92 GB; 27B main GGUF 약 13.1 GB</td>
+<td>기본 8–16K부터 시작. 27B는 16 GB GPU에서 KV cache·인코더 여유가 작으므로 짧은 문맥 조건부; Apple은 9B 우선</td>
+<td>Vision, 코딩, 추론</td>
+<td>
+<a href="https://unsloth.ai/docs/models/qwen3.5.md" target="_blank" rel="noreferrer">Qwen3.5 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.5-9B-GGUF" target="_blank" rel="noreferrer">9B GGUF ↗</a> · <a href="https://unsloth.ai/docs/models/qwen3.8.md" target="_blank" rel="noreferrer">Qwen3.8 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" target="_blank" rel="noreferrer">27B GGUF ↗</a>
+</td>
+</tr>
+<tr>
+<td>24 GB</td>
+<td>GLM-4.7-Flash</td>
+<td>UD-Q4_K_XL</td>
+<td>약 17.6 GB</td>
+<td>GPU: 8–16K부터 시작. Apple: OS·다른 앱 여유 확인 후 짧은 문맥부터 시작. 모델 최대 202,752 tokens를 이 용량에서 보장하지 않음</td>
+<td>코딩, 추론, 에이전트 작업</td>
+<td>
+<a href="https://unsloth.ai/docs/models/tutorials/glm-4.7-flash.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/GLM-4.7-Flash-GGUF" target="_blank" rel="noreferrer">GGUF 파일 ↗</a>
+</td>
+</tr>
+<tr>
+<td>32 GB</td>
+<td>GPU: Qwen3.8-27B; Apple: Qwen3.5-35B-A3B</td>
+<td>GPU UD-Q6_K_XL; Apple UD-Q4_K_XL</td>
+<td>GPU main GGUF 약 25.3 GB; Apple 약 22.2 GB + projector 0.90 GB</td>
+<td>GPU 4–8K, Apple 8–16K부터 시작. GPU 27B는 별도 인코더·런타임 공간 확인; 필요하면 더 낮은 양자화 사용</td>
+<td>Vision, 코딩, 추론, 에이전트 작업</td>
+<td>
+<a href="https://unsloth.ai/docs/models/qwen3.8.md" target="_blank" rel="noreferrer">Qwen3.8 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.8-27B-GGUF" target="_blank" rel="noreferrer">27B GGUF ↗</a> · <a href="https://unsloth.ai/docs/models/qwen3.5.md" target="_blank" rel="noreferrer">Qwen3.5 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF" target="_blank" rel="noreferrer">35B GGUF ↗</a>
+</td>
+</tr>
+<tr>
+<td>48 GB</td>
+<td>Qwen3.5-35B-A3B</td>
+<td>UD-Q6_K_XL</td>
+<td>약 32.1 GB + projector 0.90 GB</td>
+<td>16–32K부터 시작. native 약 262K / YaRN 확장 1M은 별도의 메모리 조건이며 이 구간의 실행 보장값이 아님</td>
+<td>Vision, 코딩, 추론, 에이전트 작업</td>
+<td>
+<a href="https://unsloth.ai/docs/models/qwen3.5.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF" target="_blank" rel="noreferrer">GGUF 파일 ↗</a>
+</td>
+</tr>
+<tr>
+<td>64 GB</td>
+<td>GPU 조건부: Qwen3.5-122B-A10B; Apple: Qwen3.5-35B-A3B</td>
+<td>GPU UD-Q3_K_XL; Apple UD-Q8_K_XL</td>
+<td>GPU 약 57.0 GB + projector 0.91 GB; Apple 약 48.7 GB + projector 0.90 GB</td>
+<td>GPU 122B는 한계 조합: 4–8K부터 시작하고 KV·런타임 여유 확인. Apple 35B는 8–16K부터 시작; 파일 합계 기준으로 판단</td>
+<td>Vision, 코딩, 추론, 에이전트 작업</td>
+<td>
+<a href="https://unsloth.ai/docs/models/qwen3.5.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.5-122B-A10B-GGUF" target="_blank" rel="noreferrer">122B GGUF ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.5-35B-A3B-GGUF" target="_blank" rel="noreferrer">35B GGUF ↗</a>
+</td>
+</tr>
+<tr>
+<td>96 GB</td>
+<td>Qwen3.8-Flash-Next</td>
+<td>UD-IQ1_M</td>
+<td>main quantization 약 74.5 GB</td>
+<td>Unsloth는 실용 용량으로 96 GB 제시. 8–16K부터 시작. MTP 약 1–2 GB 및 인코더·KV·런타임 여유 별도 확보. 저비트 양자화의 품질 차이 고려</td>
+<td>Vision, 코딩, 추론, 에이전트 작업</td>
+<td>
+<a href="https://unsloth.ai/docs/models/qwen3.8-next.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF" target="_blank" rel="noreferrer">GGUF 파일 ↗</a>
+</td>
+</tr>
+<tr>
+<td>128 GB</td>
+<td>Qwen3.8-Flash-Next</td>
+<td>GPU UD-Q4_K_XL; Apple 장문맥용 대안 UD-IQ1_M</td>
+<td>Q4 약 111 GB; IQ1 약 74.5 GB</td>
+<td>Q4는 8K부터 시작하여 여유 확인. Apple에서 문맥 여유를 우선하면 IQ1 사용. 모델 최대 문맥과 이 용량의 실용 문맥을 구분</td>
+<td>Vision, 코딩, 추론, 에이전트 작업</td>
+<td>
+<a href="https://unsloth.ai/docs/models/qwen3.8-next.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF" target="_blank" rel="noreferrer">GGUF 파일 ↗</a>
+</td>
+</tr>
+<tr>
+<td>160 GB 이상</td>
+<td>GLM-5.3-Flash</td>
+<td>UD-IQ3_XXS</td>
+<td>약 120 GB + projector 1.1 GB</td>
+<td>Unsloth는 약 128–150 GB 요구치, 160 GB 선호 조건 제시. 128 GB를 보장 조합으로 표시하지 않음; 8–16K부터 시작</td>
+<td>Vision, 코딩, 추론, Computer use</td>
+<td>
+<a href="https://unsloth.ai/docs/models/glm-5.3-flash.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a> · <a href="https://docs.z.ai/guides/vlm/glm-5.3-flash" target="_blank" rel="noreferrer">공식 모델 사양 ↗</a>
+</td>
+</tr>
+<tr>
+<td>256 GB 이상 검토</td>
+<td>Kimi K2.5</td>
+<td>UD-TQ1_0</td>
+<td>약 240 GB</td>
+<td>Unsloth의 성능 조건은 RAM+VRAM 또는 통합 메모리 240 GB 초과. 256 GB에서는 여유 확인 후 짧은 문맥; 128 GB는 대량 오프로딩 조건으로 동일 추천이 아님</td>
+<td>Vision, 코딩, Tool call, 에이전트 작업</td>
+<td>
+<a href="https://unsloth.ai/docs/models/tutorials/kimi-k2.5.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a>
+</td>
+</tr>
+</table>
+</div>
+<section>
+<h2>대체 모델과 미확인 실행 조건</h2>
+</section>
+<div class="table-scroll">
+<table>
+<tr>
+<th>메모리</th>
+<th>추천 모델</th>
+<th>양자화</th>
+<th>가중치 크기</th>
+<th>실행 조건 / Context</th>
+<th>특화 기능</th>
+<th>공식 근거</th>
+</tr>
+<tr>
+<td>GPU 8 GB 대안</td>
+<td>Nemotron-3-Nano-4B</td>
+<td>Q8_0</td>
+<td>약 4.23 GB</td>
+<td>Unsloth 개략 요구치 약 5 GB. 4–8K부터 시작; Apple 8 GB는 OS 여유 별도 확인</td>
+<td>텍스트, 코딩, 추론</td>
+<td>
+<a href="https://unsloth.ai/docs/models/nemotron-3.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a>
+</td>
+</tr>
+<tr>
+<td>32 GB 이상에서 검토</td>
+<td>Nemotron-3-Nano-30B-A3B</td>
+<td>UD-Q4_K_XL</td>
+<td>약 22.8 GB</td>
+<td>가이드의 개략 요구치 약 24 GB와 KV·런타임 여유를 구분. 24 GB 장치의 기본 추천으로 확정하지 않음</td>
+<td>코딩, 추론, Tool call</td>
+<td>
+<a href="https://unsloth.ai/docs/models/nemotron-3.md" target="_blank" rel="noreferrer">Unsloth 가이드 ↗</a> · <a href="https://huggingface.co/unsloth/Nemotron-3-Nano-30B-A3B-GGUF" target="_blank" rel="noreferrer">GGUF 파일 ↗</a>
+</td>
+</tr>
+<tr>
+<td>16 GB 이상에서 검토</td>
+<td>MiMo-VL-7B-RL</td>
+<td>UD-Q4_K_XL</td>
+<td>약 4.76 GB + projector 1.37 GB</td>
+<td>전체 런타임 요구치는 미상. 파일 크기만으로 8 GB 실행을 보장하지 않음</td>
+<td>Vision, 코딩, 추론</td>
+<td>
+<a href="https://huggingface.co/unsloth/MiMo-VL-7B-RL-GGUF" target="_blank" rel="noreferrer">Unsloth GGUF ↗</a>
+</td>
+</tr>
+<tr>
+<td>실행 용량 미확정</td>
+<td>MiMo-V2.5</td>
+<td>UD-IQ1_M</td>
+<td>약 92.5 GB</td>
+<td>KV·인코더·런타임 포함 요구치는 미상. 128 GB 추천으로 확정하기 전에 실제 실행 환경에서 확인</td>
+<td>Vision, 음성·영상 입력, 코딩, 에이전트 작업</td>
+<td>
+<a href="https://huggingface.co/unsloth/MiMo-V2.5-GGUF" target="_blank" rel="noreferrer">Unsloth GGUF ↗</a> · <a href="https://huggingface.co/XiaomiMiMo/MiMo-V2.5" target="_blank" rel="noreferrer">공식 모델 카드 ↗</a>
+</td>
+</tr>
+</table>
+</div>
+<section>
+<h2>MoE 모델의 메모리</h2>
+</section>
+<p>MoE도 전체 가중치가 필요합니다. 활성 파라미터 수는 주로 연산량·처리량에 영향을 주며 전체 모델 파일 크기를 대신하지 않습니다. GLM-4.7-Flash는 약 30B total / 3.6B active이지만 Q4 파일은 약 17.6 GB입니다. Kimi K2.5는 약 1T total / 32B active이지만 위 양자화 파일은 약 240 GB입니다.</p>
+</div>
+</main>
+<footer>공식 자료를 기반으로 수동 업데이트 · 미상: 공식 정보 미확인 · Open weights와 오픈소스 라이선스를 구분합니다. Deprecated: 공식 폐기 예고 또는 지원 종료; 공개 가중치 이용 여부는 별도입니다.<br>
+<a href="https://github.com/SH4316/LLM-Frontier/blob/main/AGENTS.md">AGENTS.md</a> · <a href="https://github.com/SH4316/LLM-Frontier">GitHub</a>
+</footer>
+</div>
+<script>
+(() => {
+  if (location.hostname !== 'htmlpreview.github.io') return;
+  const source = decodeURI(location.search.slice(1));
+  const prefix = "https://github.com/SH4316/LLM-Frontier/blob/";
+  if (!source.startsWith(prefix)) return;
+  const path = source.slice(prefix.length);
+  const requestedBranch = path.slice(0, path.lastIndexOf('/'));
+  if (!requestedBranch || requestedBranch === 'main') return;
+  for (const anchor of document.querySelectorAll('a[href]')) {
+    anchor.href = anchor.href.replace(prefix + 'main/', prefix + requestedBranch + '/');
+  }
+})();
+</script>
+</body>
+</html>

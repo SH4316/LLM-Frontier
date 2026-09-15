@@ -1,0 +1,1433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Image Generation Models</title>
+<style>:root {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color: #192323;
+  background: #fff;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+a {
+  color: #175c79;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.external-bar {
+  background: #182c32;
+  padding: 9px 4%;
+  font-size: 13px;
+}
+.external-bar a {
+  color: #d7f1a5;
+}
+.shell {
+  max-width: 1500px;
+  margin: auto;
+  padding: 0 4%;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 25px 0;
+  border-bottom: 1px solid #d4dce0;
+}
+.brand {
+  font-size: 19px;
+  font-weight: 750;
+  color: #192323;
+}
+nav {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+h1 {
+  font-size: clamp(28px, 4vw, 46px);
+  letter-spacing: -1.5px;
+  margin: 36px 0 10px;
+}
+h2 {
+  font-size: 23px;
+  letter-spacing: -0.5px;
+  margin: 0 0 12px;
+}
+h2 span {
+  font-size: 14px;
+  color: #788b96;
+  padding: 0 4px;
+}
+p {
+  color: #596b74;
+  line-height: 1.65;
+  font-size: 14px;
+}
+.intro {
+  max-width: 900px;
+}
+section {
+  margin-top: 38px;
+}
+.table-scroll {
+  overflow: auto;
+  border-top: 2px solid #23383f;
+  border-bottom: 1px solid #d7dfe3;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+th {
+  padding: 13px 16px;
+  background: #ecf0f2;
+  color: #4d626c;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.model-table th:nth-child(4),
+.model-table td:nth-child(4) {
+  width: 135px;
+  min-width: 110px;
+  max-width: 150px;
+  overflow-wrap: anywhere;
+}
+.model-table th:nth-child(5),
+.model-table td:nth-child(5) {
+  width: 145px;
+  min-width: 120px;
+  max-width: 170px;
+  overflow-wrap: anywhere;
+}
+.model-table .source-details {
+  margin-top: 6px;
+}
+.model-table summary {
+  cursor: pointer;
+  color: #4d626c;
+  font-size: 11px;
+}
+.model-table .feature-line {
+  display: block;
+}
+.model-table .feature-label {
+  color: #304a54;
+  font-weight: 650;
+}
+.model-table th:nth-child(6),
+.model-table td:nth-child(6) {
+  min-width: 180px;
+}
+.model-table th:nth-child(8),
+.model-table td:nth-child(8) {
+  min-width: 240px;
+}
+td {
+  padding: 10px 16px;
+  vertical-align: top;
+  border-top: 1px solid #e0e6e9;
+  line-height: 1.65;
+  min-width: 110px;
+}
+td:first-child {
+  min-width: 240px;
+}
+tr:hover td {
+  background: #f8fafb;
+}
+small {
+  display: block;
+  font-size: 11px;
+  color: #788b96;
+  margin-top: 4px;
+}
+.model-name {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #16282f;
+}
+.date {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.platform-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #596c76;
+  font-weight: 600;
+  font-size: 12px;
+}
+.platform-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #23383f;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+.icon-anthropic {
+  background: #c67b60;
+}
+.icon-google {
+  background: #4285f4;
+}
+.icon-deepseek {
+  background: #416cf0;
+}
+.icon-qwen {
+  background: #6854bc;
+}
+.icon-kimi {
+  background: #171a1e;
+}
+.icon-glm {
+  background: #304cf0;
+}
+.icon-nvidia {
+  background: #76b900;
+  color: #132000;
+}
+.icon-xiaomi {
+  background: #ff6900;
+}
+.icon-tencent {
+  background: #0077ff;
+}
+.icon-upstage {
+  background: #7d4aea;
+}
+.icon-meta {
+  background: #0866ff;
+}
+footer {
+  padding: 30px 0;
+  margin-top: 42px;
+  border-top: 1px solid #d7dfe3;
+  font-size: 12px;
+  color: #6c808a;
+  line-height: 1.8;
+}
+@media (max-width: 750px) {
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+  nav {
+    gap: 14px;
+  }
+  td,
+  th {
+    padding: 12px;
+  }
+  h1 {
+    margin-top: 25px;
+  }
+  .shell {
+    padding: 0 16px;
+  }
+}
+:root .platform-icon {
+  position: relative;
+  overflow: hidden;
+}
+:root .platform-icon img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  padding: 2px;
+}
+.local-guide td:first-child {
+  min-width: 100px;
+  width: 100px;
+}
+.local-guide td:nth-child(2) {
+  min-width: 200px;
+}
+.local-guide td:nth-child(5) {
+  min-width: 250px;
+}
+</style>
+</head>
+<body>
+<div class="external-bar">
+<a href="https://artificialanalysis.ai/" target="_blank" rel="noreferrer">Artificial Analysis ↗</a>
+</div>
+<div class="shell">
+<header>
+<a class="brand" href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html">Frontier Model Index</a>
+<nav>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html">LLM</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/transcription.html">Transcription</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/image-generation.html">Image generation</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/local-models.html">Local models</a>
+<a href="https://github.com/SH4316/LLM-Frontier/blob/main/docs/UPDATE_RULES.md">Update rules</a>
+</nav>
+</header>
+<main>
+<h1>Image Generation Models</h1>
+<p class="intro">공식 출시 이력과 모델 문서. 음성·이미지 모델의 입력 한도는 지원 단위로 표시합니다.</p>
+<div class="table-scroll model-table">
+<table>
+<thead>
+<tr>
+<th>플랫폼 / 모델</th>
+<th>출시일</th>
+<th>Context / 입력한도</th>
+<th>Open weights / License</th>
+<th>특화 기능</th>
+<th>Price</th>
+<th>소개 / 링크</th>
+<th>추가 설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-image-generation.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Image-2.5 Sunburst (gpt-image-2.5-sunburst)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-09-08</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>hosted API; No — hosted API</td>
+<td>Image generation, Image input; text/image input·생성·편집·품질 설정</td>
+<td>입력 text $5 / image $8 / 출력 image $30 per 1M tokens<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst" target="_blank" rel="noreferrer">OpenAI GPT-Image-2.5 Sunburst ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 snapshot gpt-image-2.5-sunburst-2026-09-08; API 공개일은 changelog로 확인</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-image-generation.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Image-2.5 Flare (gpt-image-2.5-flare)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-09-08</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>hosted API; No — hosted API</td>
+<td>Image generation, Image input, 속도; text/image input·생성·편집·품질 설정</td>
+<td>입력 text $5 / image $8 / 출력 image $30 per 1M tokens<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-image-2.5-flare" target="_blank" rel="noreferrer">OpenAI GPT-Image-2.5 Flare ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 snapshot gpt-image-2.5-flare-2026-09-08; API 공개일은 changelog로 확인</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/xai-image-generation.md">
+<span class="platform-icon icon-xai" aria-hidden="true">𝕏<img src="https://www.google.com/s2/favicons?domain=x.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>xAI</a>
+<strong class="model-name">Grok Imagine Image 2.0 (grok-imagine-image-2.0)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-08-07</td>
+<td>Context 미상; audio duration 해당 없음; reference image 최대 5개</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input; typography·layout·편집·segmentation·background removal</td>
+<td>$0.04–$0.08/image; 입력 $0.01/image<small>
+<a href="https://docs.x.ai/developers/pricing" target="_blank" rel="noreferrer">xAI Imagine pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://x.ai/news/grok-imagine-image-2" target="_blank" rel="noreferrer">Grok Imagine Image 2 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://x.ai/news/grok-imagine-image-2" target="_blank" rel="noreferrer">Grok Imagine Image 2 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>1K/2K·low/medium 품질별 가격</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/midjourney-image-generation.md">
+<span class="platform-icon icon-midjourney" aria-hidden="true">Mi<img src="https://www.google.com/s2/favicons?domain=www.midjourney.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Midjourney</a>
+<strong class="model-name">Midjourney V8.2</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-24</td>
+<td>공식 context limit 미상; audio duration 해당 없음</td>
+<td>No — hosted service; asset 권리는 Midjourney Terms 적용</td>
+<td>Image generation, Image input; aesthetics·개인화·HD 2K·Raw·Edit Model</td>
+<td>Basic $10/mo; Standard $30; Pro $60; Mega $120<small>
+<a href="https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans" target="_blank" rel="noreferrer">Midjourney plans ↗</a>
+</small>
+</td>
+<td>
+<a href="https://updates.midjourney.com/version-8-2/" target="_blank" rel="noreferrer">Midjourney V8.2 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://updates.midjourney.com/version-8-2/" target="_blank" rel="noreferrer">Midjourney V8.2 발표 ↗</a> · <a href="https://docs.midjourney.com/hc/en-us/articles/32083055291277-Terms-of-Service" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>모델별 과금이 아닌 구독·GPU 시간</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-image-generation.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen-Image-3.0 Pro</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-21</td>
+<td>Prompt 권장 최대 4,500 tokens; 출력 512×512–2048×2048; 최대 6개 출력</td>
+<td>미상 — managed snapshot 공개 가중치 미확인</td>
+<td>Image generation, Image input, 멀티모달; 복잡한 layout·10px 텍스트·다국어 폰트·T2I/I2I</td>
+<td>$0.04/image 1K; $0.075/image 2K<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud image pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://qwen.ai/blog?id=qwen-image-3.0" target="_blank" rel="noreferrer">Qwen-Image-3.0 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://qwen.ai/blog?id=qwen-image-3.0" target="_blank" rel="noreferrer">Qwen-Image-3.0 발표 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen-Image-3.0%20Pro" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>최대 2048×2048</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-image-generation.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen-Image-3.0 Standard</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-21</td>
+<td>Prompt 권장 최대 4,500 tokens; 출력 512×512–2048×2048; 최대 6개 출력</td>
+<td>미상 — managed snapshot 공개 가중치 미확인</td>
+<td>Image generation, Image input, 멀티모달; 복잡한 layout·10px 텍스트·다국어 폰트·T2I/I2I</td>
+<td>$0.03/image<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud image pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://qwen.ai/blog?id=qwen-image-3.0" target="_blank" rel="noreferrer">Qwen-Image-3.0 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://qwen.ai/blog?id=qwen-image-3.0" target="_blank" rel="noreferrer">Qwen-Image-3.0 발표 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen-Image-3.0%20Standard" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>최대 2048×2048</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/google-image-generation.md">
+<span class="platform-icon icon-google" aria-hidden="true">G<img src="https://www.google.com/s2/favicons?domain=ai.google.dev&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Google</a>
+<strong class="model-name">Gemini 3.1 Flash Lite Image / Nano Banana 2 Lite (gemini-3.1-flash-lite-image)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-06-30</td>
+<td>Input 65,536 tokens; output 4,096 tokens; audio duration 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input, 속도; 1K·sub-2-second·저비용 대량 생성</td>
+<td>$0.0336/image at 1K; Batch 약 50%<small>
+<a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noreferrer">Gemini API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image" target="_blank" rel="noreferrer">Gemini 3.1 Flash Lite Image ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image" target="_blank" rel="noreferrer">Gemini 3.1 Flash Lite Image ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>GA</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/google-image-generation.md">
+<span class="platform-icon icon-google" aria-hidden="true">G<img src="https://www.google.com/s2/favicons?domain=ai.google.dev&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Google</a>
+<strong class="model-name">Gemini 3.1 Flash Image / Nano Banana 2 (gemini-3.1-flash-image)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-05-28</td>
+<td>Input 131,072 tokens; output 32,768 tokens; audio duration 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input, 멀티모달; 0.5K/1K/2K/4K·Search grounding·다국어 텍스트</td>
+<td>$0.067 1K; $0.101 2K; $0.151 4K<small>
+<a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noreferrer">Gemini API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image" target="_blank" rel="noreferrer">Gemini 3.1 Flash Image ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-image" target="_blank" rel="noreferrer">Gemini 3.1 Flash Image ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Preview 2026-02-26; GA 2026-05-28</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/google-image-generation.md">
+<span class="platform-icon icon-google" aria-hidden="true">G<img src="https://www.google.com/s2/favicons?domain=ai.google.dev&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Google</a>
+<strong class="model-name">Gemini 3 Pro Image / Nano Banana Pro (gemini-3-pro-image)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-05-28</td>
+<td>Input 65,536 tokens; output 32,768 tokens; audio duration 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input, 추론; 전문 편집·제품 mockup·시각화·텍스트 렌더링</td>
+<td>$0.134 1K/2K; $0.24 4K<small>
+<a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noreferrer">Gemini API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image" target="_blank" rel="noreferrer">Gemini 3 Pro Image ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://ai.google.dev/gemini-api/docs/models/gemini-3-pro-image" target="_blank" rel="noreferrer">Gemini 3 Pro Image ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>GA; Preview는 2025-11월</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/xai-image-generation.md">
+<span class="platform-icon icon-xai" aria-hidden="true">𝕏<img src="https://www.google.com/s2/favicons?domain=x.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>xAI</a>
+<strong class="model-name">Grok Imagine Image Quality (grok-imagine-image-quality)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-05-06</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input; realism·텍스트·창작 제어; 2026-11-02 retirement 예정</td>
+<td>1K $0.05; 2K $0.07; 입력 $0.01/image<small>
+<a href="https://docs.x.ai/developers/models/grok-imagine-image-quality" target="_blank" rel="noreferrer">xAI Quality model ↗</a>
+</small>
+</td>
+<td>
+<a href="https://x.ai/news/grok-imagine-quality-mode" target="_blank" rel="noreferrer">Grok Imagine Quality Mode 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://x.ai/news/grok-imagine-quality-mode" target="_blank" rel="noreferrer">Grok Imagine Quality Mode 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>2026-11-02 retirement 예정</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-image-generation.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Image-2 (gpt-image-2)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-04-21</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>hosted API; No — hosted API</td>
+<td>Image generation, Image input; 고충실도 image input·생성·편집·유연한 크기</td>
+<td>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">모델별 공식 가격표 참조 ↗</a>
+<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-image-2" target="_blank" rel="noreferrer">OpenAI GPT-Image-2 ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 snapshot gpt-image-2-2026-04-21</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/midjourney-image-generation.md">
+<span class="platform-icon icon-midjourney" aria-hidden="true">Mi<img src="https://www.google.com/s2/favicons?domain=www.midjourney.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Midjourney</a>
+<strong class="model-name">Midjourney V8.1</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-04-14</td>
+<td>공식 context limit 미상; audio duration 해당 없음</td>
+<td>No — hosted service; asset 권리는 Midjourney Terms 적용</td>
+<td>Image generation, 속도; aesthetics·개인화·HD 2K·Raw·Edit Model</td>
+<td>구독 가격 동일<small>
+<a href="https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans" target="_blank" rel="noreferrer">Midjourney plans ↗</a>
+</small>
+</td>
+<td>
+<a href="https://updates.midjourney.com/v8-1-alpha/" target="_blank" rel="noreferrer">Midjourney V8.1 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://updates.midjourney.com/v8-1-alpha/" target="_blank" rel="noreferrer">Midjourney V8.1 발표 ↗</a> · <a href="https://docs.midjourney.com/hc/en-us/articles/32083055291277-Terms-of-Service" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<span class="empty-note">—</span>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-image-generation.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen-Image-2.0 Pro</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-02-10</td>
+<td>Prompt 약 1,000 tokens; native 최대 2K; audio duration 해당 없음</td>
+<td>미상 — managed snapshot 공개 가중치 미확인</td>
+<td>Image generation, Image input; typography·통합 생성/편집·고해상도</td>
+<td>$0.075/image<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud image pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noreferrer">Qwen 공식 저장소 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noreferrer">Qwen 공식 저장소 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen-Image-2.0%20Pro" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>권장 snapshot: Pro 2026-06-22, Standard 2026-03-03</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-image-generation.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen-Image-2.0 Standard</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-02-10</td>
+<td>Prompt 약 1,000 tokens; native 최대 2K; audio duration 해당 없음</td>
+<td>미상 — managed snapshot 공개 가중치 미확인</td>
+<td>Image generation, Image input; typography·통합 생성/편집·고해상도</td>
+<td>$0.035/image<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud image pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noreferrer">Qwen 공식 저장소 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noreferrer">Qwen 공식 저장소 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen-Image-2.0%20Standard" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>권장 snapshot: Pro 2026-06-22, Standard 2026-03-03</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/bfl-image-generation.md">
+<span class="platform-icon icon-bfl" aria-hidden="true">Bl<img src="https://www.google.com/s2/favicons?domain=bfl.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Black Forest Labs</a>
+<strong class="model-name">FLUX.2 [klein] 4B</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-01-15</td>
+<td>Context 미상; audio duration 해당 없음; 출력 최대 4 MP</td>
+<td>Yes — Apache 2.0</td>
+<td>Image generation, 속도; sub-second·로컬 실행·고처리량·multi-reference</td>
+<td>$0.014/image<small>
+<a href="https://docs.bfl.ai/quick_start/pricing" target="_blank" rel="noreferrer">BFL pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://bfl.ai/blog/flux2-klein-towards-interactive-visual-intelligence" target="_blank" rel="noreferrer">FLUX.2 klein 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://bfl.ai/blog/flux2-klein-towards-interactive-visual-intelligence" target="_blank" rel="noreferrer">FLUX.2 klein 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Apache 2.0 공개 가중치</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/bfl-image-generation.md">
+<span class="platform-icon icon-bfl" aria-hidden="true">Bl<img src="https://www.google.com/s2/favicons?domain=bfl.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Black Forest Labs</a>
+<strong class="model-name">FLUX.2 [klein] 9B</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-01-15</td>
+<td>Context 미상; audio duration 해당 없음; 출력 최대 4 MP</td>
+<td>Yes — FLUX Non-Commercial License</td>
+<td>Image generation, 속도; 품질 중심 경량 모델·로컬 실행</td>
+<td>$0.015/image<small>
+<a href="https://docs.bfl.ai/quick_start/pricing" target="_blank" rel="noreferrer">BFL pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://bfl.ai/blog/flux2-klein-towards-interactive-visual-intelligence" target="_blank" rel="noreferrer">FLUX.2 klein 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://bfl.ai/blog/flux2-klein-towards-interactive-visual-intelligence" target="_blank" rel="noreferrer">FLUX.2 klein 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>FLUX Non-Commercial License 공개 가중치</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/midjourney-image-generation.md">
+<span class="platform-icon icon-midjourney" aria-hidden="true">Mi<img src="https://www.google.com/s2/favicons?domain=www.midjourney.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Midjourney</a>
+<strong class="model-name">Midjourney Niji 7</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-01-08</td>
+<td>공식 context limit 미상; audio duration 해당 없음</td>
+<td>No — hosted service; Midjourney Terms 적용</td>
+<td>Image generation; anime·동양풍·illustration·linework</td>
+<td>구독 가격 동일<small>
+<a href="https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans" target="_blank" rel="noreferrer">Midjourney plans ↗</a>
+</small>
+</td>
+<td>
+<a href="https://nijijourney.com/blog/niji-7" target="_blank" rel="noreferrer">Niji 7 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://nijijourney.com/blog/niji-7" target="_blank" rel="noreferrer">Niji 7 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Niji 공식 발표 2026-01-08; Midjourney 제공일은 2026-01-09</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-image-generation.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen-Image-2512</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-12-31</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>Yes — Apache 2.0 model card</td>
+<td>Image generation; photorealism·텍스트·로컬 실행</td>
+<td>self-hosted; API 가격 해당 없음<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud image pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noreferrer">Qwen 공식 저장소 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noreferrer">Qwen 공식 저장소 ↗</a> · <a href="https://huggingface.co/Qwen/Qwen-Image-2512" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen-Image-2512" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>Apache 2.0</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-image-generation.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen-Image-Edit-2511</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-12-23</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>Yes — Apache 2.0 model card</td>
+<td>Image generation, Image input; 인물 일관성·LoRA·산업 디자인·geometry editing</td>
+<td>self-hosted; API 가격 해당 없음<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud image pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noreferrer">Qwen 공식 저장소 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://github.com/QwenLM/Qwen-Image" target="_blank" rel="noreferrer">Qwen 공식 저장소 ↗</a> · <a href="https://huggingface.co/Qwen/Qwen-Image-Edit-2511" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen-Image-Edit-2511" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>Apache 2.0</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/bfl-image-generation.md">
+<span class="platform-icon icon-bfl" aria-hidden="true">Bl<img src="https://www.google.com/s2/favicons?domain=bfl.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Black Forest Labs</a>
+<strong class="model-name">FLUX.2 [max]</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-12-16</td>
+<td>Context 미상; audio duration 해당 없음; 출력 최대 4 MP</td>
+<td>미상 — hosted snapshot 공개 가중치 미확인</td>
+<td>Image generation, Image input, 추론; photorealism·Grounding Search·production scale·typography/fine control</td>
+<td>$0.07/MP<small>
+<a href="https://docs.bfl.ai/quick_start/pricing" target="_blank" rel="noreferrer">BFL pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://docs.bfl.ai/flux_2/flux2_overview" target="_blank" rel="noreferrer">FLUX.2 overview ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.bfl.ai/flux_2/flux2_overview" target="_blank" rel="noreferrer">FLUX.2 overview ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>API/Playground reference 수 제한 상이</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-image-generation.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Image-1.5</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2025-12-16</td>
+<td>미상; audio 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input; Image generation, 이미지 입력·편집</td>
+<td>공식 모델별 가격표 확인<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-image-1.5" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 API 출시 기록; 현재 Deprecated</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/bfl-image-generation.md">
+<span class="platform-icon icon-bfl" aria-hidden="true">Bl<img src="https://www.google.com/s2/favicons?domain=bfl.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Black Forest Labs</a>
+<strong class="model-name">FLUX.2 [pro]</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-11-25</td>
+<td>Context 미상; audio duration 해당 없음; 출력 최대 4 MP</td>
+<td>미상 — hosted snapshot 공개 가중치 미확인</td>
+<td>Image generation, Image input; photorealism·Grounding Search·production scale·typography/fine control</td>
+<td>T2I $0.03/MP; edit $0.045/MP<small>
+<a href="https://docs.bfl.ai/quick_start/pricing" target="_blank" rel="noreferrer">BFL pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://bfl.ai/blog/flux-2" target="_blank" rel="noreferrer">FLUX.2 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://bfl.ai/blog/flux-2" target="_blank" rel="noreferrer">FLUX.2 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>2026-03-03 preview endpoint 속도 업데이트</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/bfl-image-generation.md">
+<span class="platform-icon icon-bfl" aria-hidden="true">Bl<img src="https://www.google.com/s2/favicons?domain=bfl.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Black Forest Labs</a>
+<strong class="model-name">FLUX.2 [flex]</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-11-25</td>
+<td>Context 미상; audio duration 해당 없음; 출력 최대 4 MP</td>
+<td>미상 — hosted snapshot 공개 가중치 미확인</td>
+<td>Image generation, Image input; photorealism·Grounding Search·production scale·typography/fine control</td>
+<td>$0.05/MP<small>
+<a href="https://docs.bfl.ai/quick_start/pricing" target="_blank" rel="noreferrer">BFL pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://docs.bfl.ai/flux_2/flux2_overview" target="_blank" rel="noreferrer">FLUX.2 overview ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.bfl.ai/flux_2/flux2_overview" target="_blank" rel="noreferrer">FLUX.2 overview ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>typography·sampling 세부 제어</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/bfl-image-generation.md">
+<span class="platform-icon icon-bfl" aria-hidden="true">Bl<img src="https://www.google.com/s2/favicons?domain=bfl.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Black Forest Labs</a>
+<strong class="model-name">FLUX.2 [dev]</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-11-25</td>
+<td>Context 미상; audio duration 해당 없음; 출력 최대 4 MP</td>
+<td>Yes — FLUX Dev License; 비상업·비프로덕션 조건</td>
+<td>Image generation, Image input; 로컬 연구·개발·customization</td>
+<td>자체 호스팅; API 가격 해당 없음<small>
+<a href="https://docs.bfl.ai/quick_start/pricing" target="_blank" rel="noreferrer">BFL pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://docs.bfl.ai/flux_2/flux2_overview" target="_blank" rel="noreferrer">FLUX.2 overview ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.bfl.ai/flux_2/flux2_overview" target="_blank" rel="noreferrer">FLUX.2 overview ↗</a> · <a href="https://github.com/black-forest-labs/flux2/blob/main/model_licenses/LICENSE-FLUX-DEV" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>FLUX Dev License — 비상업·비프로덕션 조건; 상업 라이선스 별도</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-image-generation.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Image-1 Mini</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2025-10-06</td>
+<td>미상; audio 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input; Image generation, 이미지 입력·편집</td>
+<td>공식 모델별 가격표 확인<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-image-1-mini" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>DevDay API 출시; 현재 Deprecated</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/google-image-generation.md">
+<span class="platform-icon icon-google" aria-hidden="true">G<img src="https://www.google.com/s2/favicons?domain=ai.google.dev&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Google</a>
+<strong class="model-name">Vertex AI Imagen 4 (imagen-4.0-generate-*)</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2025-08-14</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation; Ultra·Standard·Fast; 2026-06-30 discontinued</td>
+<td>역사적 목록 가격 $0.02–$0.06/image<small>
+<a href="https://cloud.google.com/vertex-ai/generative-ai/pricing" target="_blank" rel="noreferrer">Vertex AI pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate" target="_blank" rel="noreferrer">Vertex AI Imagen 4 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://cloud.google.com/vertex-ai/generative-ai/docs/models/imagen/4-0-generate" target="_blank" rel="noreferrer">Vertex AI Imagen 4 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>2026-06-30 discontinuation</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-image-generation.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Image-1</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2025-04-23</td>
+<td>미상; audio 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input; Image generation, 이미지 입력·편집</td>
+<td>공식 모델별 가격표 확인<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-image-1" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Image API 최초 공개; 2026-10-23 종료 예정</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/midjourney-image-generation.md">
+<span class="platform-icon icon-midjourney" aria-hidden="true">Mi<img src="https://www.google.com/s2/favicons?domain=www.midjourney.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Midjourney</a>
+<strong class="model-name">Midjourney V7</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-04-03</td>
+<td>공식 context limit 미상; audio duration 해당 없음</td>
+<td>No — hosted service; Midjourney Terms 적용</td>
+<td>Image generation, Image input; texture·coherence·Draft Mode·Omni Reference</td>
+<td>구독 가격 동일<small>
+<a href="https://docs.midjourney.com/hc/en-us/articles/27870484040333-Comparing-Midjourney-Plans" target="_blank" rel="noreferrer">Midjourney plans ↗</a>
+</small>
+</td>
+<td>
+<a href="https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version" target="_blank" rel="noreferrer">Midjourney 버전 문서 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.midjourney.com/hc/en-us/articles/32199405667853-Version" target="_blank" rel="noreferrer">Midjourney 버전 문서 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<span class="empty-note">—</span>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/stability-image-generation.md">
+<span class="platform-icon icon-stability" aria-hidden="true">St<img src="https://www.google.com/s2/favicons?domain=stability.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Stability AI</a>
+<strong class="model-name">Stable Image Ultra (SD3.5 Large update)</strong>
+<small>Current</small>
+</td>
+<td class="date">2024-10-29</td>
+<td>Context 미상; audio duration 해당 없음; API 출력 약 1 MP</td>
+<td>No — hosted API</td>
+<td>Image generation; 최고 품질·photorealism</td>
+<td>8 credits = $0.08/image<small>
+<a href="https://platform.stability.ai/pricing" target="_blank" rel="noreferrer">Stability pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://platform.stability.ai/docs/release-notes" target="_blank" rel="noreferrer">API 업데이트 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://platform.stability.ai/docs/api-reference" target="_blank" rel="noreferrer">Stability API reference ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>기존 Ultra 서비스의 SD3.5 Large 기반 업데이트 날짜; 서비스 최초 출시일과 구분</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/stability-image-generation.md">
+<span class="platform-icon icon-stability" aria-hidden="true">St<img src="https://www.google.com/s2/favicons?domain=stability.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Stability AI</a>
+<strong class="model-name">Stable Diffusion 3.5 Medium</strong>
+<small>Current</small>
+</td>
+<td class="date">2024-10-29</td>
+<td>Context 미상; audio duration 해당 없음; API 출력 약 1 MP</td>
+<td>Yes — Stability AI Community License</td>
+<td>Image generation, Image input; open customization·복잡한 prompt·photorealism·typography</td>
+<td>$0.035/image<small>
+<a href="https://platform.stability.ai/pricing" target="_blank" rel="noreferrer">Stability pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://platform.stability.ai/docs/release-notes" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://stability.ai/news-updates/introducing-stable-diffusion-3-5" target="_blank" rel="noreferrer">Stable Diffusion 3.5 발표 ↗</a> · <a href="https://stability.ai/license" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Medium API 실제 공개일; Community License</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/stability-image-generation.md">
+<span class="platform-icon icon-stability" aria-hidden="true">St<img src="https://www.google.com/s2/favicons?domain=stability.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Stability AI</a>
+<strong class="model-name">Stable Diffusion 3.5 Large</strong>
+<small>Current</small>
+</td>
+<td class="date">2024-10-22</td>
+<td>Context 미상; audio duration 해당 없음; API 출력 약 1 MP</td>
+<td>Yes — Stability AI Community License</td>
+<td>Image generation, Image input; open customization·복잡한 prompt·photorealism·typography</td>
+<td>$0.065/image<small>
+<a href="https://platform.stability.ai/pricing" target="_blank" rel="noreferrer">Stability pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://platform.stability.ai/docs/release-notes" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://stability.ai/news-updates/introducing-stable-diffusion-3-5" target="_blank" rel="noreferrer">Stable Diffusion 3.5 발표 ↗</a> · <a href="https://stability.ai/license" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>2024-10-22 API 공개; Community License</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/stability-image-generation.md">
+<span class="platform-icon icon-stability" aria-hidden="true">St<img src="https://www.google.com/s2/favicons?domain=stability.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Stability AI</a>
+<strong class="model-name">Stable Diffusion 3.5 Large Turbo</strong>
+<small>Current</small>
+</td>
+<td class="date">2024-10-22</td>
+<td>Context 미상; audio duration 해당 없음; API 출력 약 1 MP</td>
+<td>Yes — Stability AI Community License</td>
+<td>Image generation, Image input; open customization·복잡한 prompt·photorealism·typography</td>
+<td>$0.04/image<small>
+<a href="https://platform.stability.ai/pricing" target="_blank" rel="noreferrer">Stability pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://platform.stability.ai/docs/release-notes" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://stability.ai/news-updates/introducing-stable-diffusion-3-5" target="_blank" rel="noreferrer">Stable Diffusion 3.5 발표 ↗</a> · <a href="https://stability.ai/license" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>4-step distilled 생성; Community License</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/stability-image-generation.md">
+<span class="platform-icon icon-stability" aria-hidden="true">St<img src="https://www.google.com/s2/favicons?domain=stability.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Stability AI</a>
+<strong class="model-name">Stable Diffusion 3 Medium</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2024-06-12</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>Yes — Stability AI Community License</td>
+<td>Image generation; 2B·photorealism·typography; API는 폐기</td>
+<td>API 가격 해당 없음<small>
+<a href="https://platform.stability.ai/pricing" target="_blank" rel="noreferrer">Stability pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://stability.ai/news-updates/stable-diffusion-3-medium" target="_blank" rel="noreferrer">Stable Diffusion 3 Medium 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://stability.ai/news-updates/stable-diffusion-3-medium" target="_blank" rel="noreferrer">Stable Diffusion 3 Medium 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>API는 SD3.5로 자동 업그레이드</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-image-generation.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">DALL·E 3</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2023-11-06</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>hosted API; No — hosted API</td>
+<td>Image generation; API 폐기·삭제</td>
+<td>해당 없음<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">DALL·E 3 API 공개 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/dall-e-3" target="_blank" rel="noreferrer">OpenAI DALL·E 3 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>API 공개일 기준; 현재 API 폐기·삭제; GPT-Image 계열로 대체</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/stability-image-generation.md">
+<span class="platform-icon icon-stability" aria-hidden="true">St<img src="https://www.google.com/s2/favicons?domain=stability.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Stability AI</a>
+<strong class="model-name">SDXL 1.0</strong>
+<small>Current</small>
+</td>
+<td class="date">2023-07-26</td>
+<td>Context 미상; audio duration 해당 없음; native 1024×1024</td>
+<td>Yes — CreativeML OpenRAIL++-M</td>
+<td>Image generation; open checkpoint·소비자 GPU·일반 이미지 생성</td>
+<td>self-hosted; API 가격 해당 없음<small>
+<a href="https://stability.ai/license" target="_blank" rel="noreferrer">Stability license ↗</a>
+</small>
+</td>
+<td>
+<a href="https://stability.ai/news-updates/stable-diffusion-sdxl-1-announcement" target="_blank" rel="noreferrer">SDXL 1.0 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://stability.ai/news-updates/stable-diffusion-sdxl-1-announcement" target="_blank" rel="noreferrer">SDXL 1.0 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>CreativeML OpenRAIL++-M</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/stability-image-generation.md">
+<span class="platform-icon icon-stability" aria-hidden="true">St<img src="https://www.google.com/s2/favicons?domain=stability.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Stability AI</a>
+<strong class="model-name">Stable Image Flash 2.5</strong>
+<small>Current</small>
+</td>
+<td class="date">미상</td>
+<td>미상; audio 해당 없음</td>
+<td>미상 — 해당 API 서비스의 공개 가중치 미확인</td>
+<td>Image generation; Image generation; 현재 API 가격 목록</td>
+<td>$0.025/image<small>
+<a href="https://platform.stability.ai/pricing" target="_blank" rel="noreferrer">Stability pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://platform.stability.ai/docs/api-reference" target="_blank" rel="noreferrer">Stable Image API ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://platform.stability.ai/pricing" target="_blank" rel="noreferrer">API 가격 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>현재 가격 문서에서 확인; SD3.5 출시일로 추정하지 않음</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/xai-image-generation.md">
+<span class="platform-icon icon-xai" aria-hidden="true">𝕏<img src="https://www.google.com/s2/favicons?domain=x.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>xAI</a>
+<strong class="model-name">Grok Imagine Image (grok-imagine-image)</strong>
+<small>Current</small>
+</td>
+<td class="date">미상</td>
+<td>Context 미상; audio duration 해당 없음</td>
+<td>No — hosted API</td>
+<td>Image generation, Image input; 기본 T2I/I2I·1K/2K·batch</td>
+<td>$0.02/image 1K/2K; 입력 $0.002/image<small>
+<a href="https://docs.x.ai/developers/pricing" target="_blank" rel="noreferrer">xAI Imagine pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://docs.x.ai/developers/models/grok-imagine-image" target="_blank" rel="noreferrer">xAI Grok Imagine Image ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.x.ai/developers/models/grok-imagine-image" target="_blank" rel="noreferrer">xAI Grok Imagine Image ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>alias grok-imagine-image-2026-03-02; alias 날짜를 출시일로 간주하지 않음</small>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</main>
+<footer>공식 자료를 기반으로 수동 업데이트 · 미상: 공식 정보 미확인 · Open weights와 오픈소스 라이선스를 구분합니다. Deprecated: 공식 폐기 예고 또는 지원 종료; 공개 가중치 이용 여부는 별도입니다.<br>
+<a href="https://github.com/SH4316/LLM-Frontier/blob/main/AGENTS.md">AGENTS.md</a> · <a href="https://github.com/SH4316/LLM-Frontier">GitHub</a>
+</footer>
+</div>
+<script>
+(() => {
+  if (location.hostname !== 'htmlpreview.github.io') return;
+  const source = decodeURI(location.search.slice(1));
+  const prefix = "https://github.com/SH4316/LLM-Frontier/blob/";
+  if (!source.startsWith(prefix)) return;
+  const path = source.slice(prefix.length);
+  const requestedBranch = path.slice(0, path.lastIndexOf('/'));
+  if (!requestedBranch || requestedBranch === 'main') return;
+  for (const anchor of document.querySelectorAll('a[href]')) {
+    anchor.href = anchor.href.replace(prefix + 'main/', prefix + requestedBranch + '/');
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Transcription Models</title>
+<style>:root {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color: #192323;
+  background: #fff;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+a {
+  color: #175c79;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.external-bar {
+  background: #182c32;
+  padding: 9px 4%;
+  font-size: 13px;
+}
+.external-bar a {
+  color: #d7f1a5;
+}
+.shell {
+  max-width: 1500px;
+  margin: auto;
+  padding: 0 4%;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 25px 0;
+  border-bottom: 1px solid #d4dce0;
+}
+.brand {
+  font-size: 19px;
+  font-weight: 750;
+  color: #192323;
+}
+nav {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+h1 {
+  font-size: clamp(28px, 4vw, 46px);
+  letter-spacing: -1.5px;
+  margin: 36px 0 10px;
+}
+h2 {
+  font-size: 23px;
+  letter-spacing: -0.5px;
+  margin: 0 0 12px;
+}
+h2 span {
+  font-size: 14px;
+  color: #788b96;
+  padding: 0 4px;
+}
+p {
+  color: #596b74;
+  line-height: 1.65;
+  font-size: 14px;
+}
+.intro {
+  max-width: 900px;
+}
+section {
+  margin-top: 38px;
+}
+.table-scroll {
+  overflow: auto;
+  border-top: 2px solid #23383f;
+  border-bottom: 1px solid #d7dfe3;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 13px;
+}
+th {
+  padding: 13px 16px;
+  background: #ecf0f2;
+  color: #4d626c;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.model-table th:nth-child(4),
+.model-table td:nth-child(4) {
+  width: 135px;
+  min-width: 110px;
+  max-width: 150px;
+  overflow-wrap: anywhere;
+}
+.model-table th:nth-child(5),
+.model-table td:nth-child(5) {
+  width: 145px;
+  min-width: 120px;
+  max-width: 170px;
+  overflow-wrap: anywhere;
+}
+.model-table .source-details {
+  margin-top: 6px;
+}
+.model-table summary {
+  cursor: pointer;
+  color: #4d626c;
+  font-size: 11px;
+}
+.model-table .feature-line {
+  display: block;
+}
+.model-table .feature-label {
+  color: #304a54;
+  font-weight: 650;
+}
+.model-table th:nth-child(6),
+.model-table td:nth-child(6) {
+  min-width: 180px;
+}
+.model-table th:nth-child(8),
+.model-table td:nth-child(8) {
+  min-width: 240px;
+}
+td {
+  padding: 10px 16px;
+  vertical-align: top;
+  border-top: 1px solid #e0e6e9;
+  line-height: 1.65;
+  min-width: 110px;
+}
+td:first-child {
+  min-width: 240px;
+}
+tr:hover td {
+  background: #f8fafb;
+}
+small {
+  display: block;
+  font-size: 11px;
+  color: #788b96;
+  margin-top: 4px;
+}
+.model-name {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+  color: #16282f;
+}
+.date {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.platform-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #596c76;
+  font-weight: 600;
+  font-size: 12px;
+}
+.platform-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: #23383f;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+.icon-anthropic {
+  background: #c67b60;
+}
+.icon-google {
+  background: #4285f4;
+}
+.icon-deepseek {
+  background: #416cf0;
+}
+.icon-qwen {
+  background: #6854bc;
+}
+.icon-kimi {
+  background: #171a1e;
+}
+.icon-glm {
+  background: #304cf0;
+}
+.icon-nvidia {
+  background: #76b900;
+  color: #132000;
+}
+.icon-xiaomi {
+  background: #ff6900;
+}
+.icon-tencent {
+  background: #0077ff;
+}
+.icon-upstage {
+  background: #7d4aea;
+}
+.icon-meta {
+  background: #0866ff;
+}
+footer {
+  padding: 30px 0;
+  margin-top: 42px;
+  border-top: 1px solid #d7dfe3;
+  font-size: 12px;
+  color: #6c808a;
+  line-height: 1.8;
+}
+@media (max-width: 750px) {
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+  nav {
+    gap: 14px;
+  }
+  td,
+  th {
+    padding: 12px;
+  }
+  h1 {
+    margin-top: 25px;
+  }
+  .shell {
+    padding: 0 16px;
+  }
+}
+:root .platform-icon {
+  position: relative;
+  overflow: hidden;
+}
+:root .platform-icon img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  padding: 2px;
+}
+.local-guide td:first-child {
+  min-width: 100px;
+  width: 100px;
+}
+.local-guide td:nth-child(2) {
+  min-width: 200px;
+}
+.local-guide td:nth-child(5) {
+  min-width: 250px;
+}
+</style>
+</head>
+<body>
+<div class="external-bar">
+<a href="https://artificialanalysis.ai/" target="_blank" rel="noreferrer">Artificial Analysis ↗</a>
+</div>
+<div class="shell">
+<header>
+<a class="brand" href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html">Frontier Model Index</a>
+<nav>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/index.html">LLM</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/transcription.html">Transcription</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/image-generation.html">Image generation</a>
+<a href="https://htmlpreview.github.io/?https://github.com/SH4316/LLM-Frontier/blob/main/local-models.html">Local models</a>
+<a href="https://github.com/SH4316/LLM-Frontier/blob/main/docs/UPDATE_RULES.md">Update rules</a>
+</nav>
+</header>
+<main>
+<h1>Transcription Models</h1>
+<p class="intro">공식 출시 이력과 모델 문서. 음성·이미지 모델의 입력 한도는 지원 단위로 표시합니다.</p>
+<div class="table-scroll model-table">
+<table>
+<thead>
+<tr>
+<th>플랫폼 / 모델</th>
+<th>출시일</th>
+<th>Context / 입력한도</th>
+<th>Open weights / License</th>
+<th>특화 기능</th>
+<th>Price</th>
+<th>소개 / 링크</th>
+<th>추가 설명</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-transcription.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Transcribe (gpt-transcribe)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-28</td>
+<td>Context 미상; 오디오 길이 미상</td>
+<td>No — hosted API</td>
+<td>Transcription, 멀티모달, 에이전트 작업; 고정확도 파일·Realtime·streaming STT</td>
+<td>$0.0045/min<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-transcribe" target="_blank" rel="noreferrer">OpenAI GPT-Transcribe ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>파일·Realtime 전사; 공식 API 출시일</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-transcription.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Live-Transcribe (gpt-live-transcribe)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-28</td>
+<td>미상; streaming session 한도 미상</td>
+<td>No — hosted API</td>
+<td>Transcription, 속도; Transcription, streaming, 문맥·키워드·언어 힌트</td>
+<td>$0.017/min<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-live-transcribe" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>낮은 지연의 streaming 전사; 문맥·키워드·복수 언어 힌트</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/assemblyai-transcription.md">
+<span class="platform-icon icon-assemblyai" aria-hidden="true">As<img src="https://www.google.com/s2/favicons?domain=www.assemblyai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>AssemblyAI</a>
+<strong class="model-name">Universal-3.5 Pro</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-07-07</td>
+<td>Context 미상; /v2/transcript 최대 10 hours, 5 GB; local upload 최대 2.2 GB</td>
+<td>No — hosted API</td>
+<td>Transcription, 멀티모달; 18개 언어·native code-switching·contextual prompting·diarization</td>
+<td>$0.21/hr<small>
+<a href="https://www.assemblyai.com/pricing/" target="_blank" rel="noreferrer">AssemblyAI pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://www.assemblyai.com/collection/releases" target="_blank" rel="noreferrer">Universal-3.5 Pro 모델·릴리스 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://www.assemblyai.com/collection/releases" target="_blank" rel="noreferrer">Universal-3.5 Pro 모델·릴리스 ↗</a> · <a href="https://www.assemblyai.com/docs/coding-agent-prompts" target="_blank" rel="noreferrer">API 제한 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>batch/async</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/assemblyai-transcription.md">
+<span class="platform-icon icon-assemblyai" aria-hidden="true">As<img src="https://www.google.com/s2/favicons?domain=www.assemblyai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>AssemblyAI</a>
+<strong class="model-name">Universal-3.5 Pro Streaming</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-06-23</td>
+<td>Context 미상; streaming session cap 미상</td>
+<td>No — hosted API</td>
+<td>Transcription, 속도, 에이전트 작업; voice-agent·빠른 word emission·streaming prompting</td>
+<td>$0.45/hr<small>
+<a href="https://www.assemblyai.com/pricing/" target="_blank" rel="noreferrer">AssemblyAI pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://www.assemblyai.com/docs/getting-started/models" target="_blank" rel="noreferrer">AssemblyAI 모델 문서 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://www.assemblyai.com/docs/getting-started/models" target="_blank" rel="noreferrer">AssemblyAI 모델 문서 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Realtime 출시명은 Universal-3.5 Pro Realtime</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-transcription.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-Realtime-Whisper (gpt-realtime-whisper)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-05-07</td>
+<td>16,000 tokens; audio duration 미상</td>
+<td>미상 — 해당 hosted 모델 가중치 배포 미확인</td>
+<td>Transcription, 속도; Transcription, streaming; Tool call 미지원</td>
+<td>$0.017/min<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-realtime-whisper" target="_blank" rel="noreferrer">모델 사양 ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Realtime 전사 전용; Whisper 공개 가중치와 동일 모델로 간주하지 않음</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/deepgram-transcription.md">
+<span class="platform-icon icon-deepgram" aria-hidden="true">De<img src="https://www.google.com/s2/favicons?domain=deepgram.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Deepgram</a>
+<strong class="model-name">Flux Multilingual (flux-general-multi)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-04-29</td>
+<td>미상; streaming session 한도 미상</td>
+<td>미상 — 공개 가중치 미확인</td>
+<td>Transcription, 속도, 에이전트 작업; 대화형 STT·turn/end-of-turn detection·interruption·10개 언어</td>
+<td>streaming $0.0078/min<small>
+<a href="https://deepgram.com/pricing" target="_blank" rel="noreferrer">Deepgram pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://deepgram.com/learn/deepgram-launches-flux-multilingual-press-release" target="_blank" rel="noreferrer">Flux Multilingual GA 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://deepgram.com/learn/deepgram-launches-flux-multilingual-press-release" target="_blank" rel="noreferrer">Flux Multilingual GA 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>10개 언어, code-switching, turn detection 400ms 미만</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-transcription.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen3-ASR-1.7B</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-01-29</td>
+<td>Context 미상; 단일 장시간 오디오 최대 20 min</td>
+<td>Yes — Apache 2.0 model card</td>
+<td>Transcription, 멀티모달; 52개 언어·offline/streaming·speech/singing/BGM</td>
+<td>self-hosted; API 비용 해당 없음<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud Model Studio pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://qwen.ai/blog?id=qwen3asr" target="_blank" rel="noreferrer">Qwen3-ASR 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://qwen.ai/blog?id=qwen3asr" target="_blank" rel="noreferrer">Qwen3-ASR 발표 ↗</a> · <a href="https://huggingface.co/Qwen/Qwen3-ASR-1.7B-hf" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen3-ASR-1.7B" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>발표 2026-01-28; repo release 2026-01-29</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-transcription.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen3-ASR-0.6B</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-01-29</td>
+<td>Context 미상; 단일 장시간 오디오 최대 20 min</td>
+<td>Yes — Apache 2.0 model card</td>
+<td>Transcription, 비용 효율; 경량·고처리량·52개 언어·offline/streaming</td>
+<td>self-hosted; API 비용 해당 없음<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud Model Studio pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://github.com/QwenLM/Qwen3-ASR" target="_blank" rel="noreferrer">Qwen3-ASR 공식 저장소 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://github.com/QwenLM/Qwen3-ASR" target="_blank" rel="noreferrer">Qwen3-ASR 공식 저장소 ↗</a> · <a href="https://huggingface.co/Qwen/Qwen3-ASR-0.6B-hf" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen3-ASR-0.6B" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>Apache 2.0</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/elevenlabs-transcription.md">
+<span class="platform-icon icon-elevenlabs" aria-hidden="true">El<img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>ElevenLabs</a>
+<strong class="model-name">Scribe v2 (scribe_v2)</strong>
+<small>Current</small>
+</td>
+<td class="date">2026-01-09</td>
+<td>Context 미상; 표준 모드 최대 10 hours, multichannel 최대 1 hour, 파일 최대 3 GB</td>
+<td>No — hosted API</td>
+<td>Transcription, 멀티모달; 90개 이상 언어·keyterms·audio events·speaker/entity detection·redaction</td>
+<td>$0.22/hr<small>
+<a href="https://elevenlabs.io/pricing/api" target="_blank" rel="noreferrer">ElevenLabs API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://elevenlabs.io/blog/introducing-scribe-v2" target="_blank" rel="noreferrer">Scribe v2 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://elevenlabs.io/blog/introducing-scribe-v2" target="_blank" rel="noreferrer">Scribe v2 발표 ↗</a> · <a href="https://elevenlabs.io/docs/overview/capabilities/speech-to-text" target="_blank" rel="noreferrer">입력 제한 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>90개 이상 언어; 문서 UI에는 99개 언어로도 표시</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-transcription.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-4o Mini Transcribe (gpt-4o-mini-transcribe-2025-12-15)</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2025-12-15</td>
+<td>Context 16,000 tokens; 오디오 길이 미상</td>
+<td>No — hosted API</td>
+<td>Transcription, 비용 효율; 경량·비용 효율 STT</td>
+<td>입력 $1.25 / 출력 $5 per 1M audio tokens<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-4o-mini-transcribe" target="_blank" rel="noreferrer">OpenAI GPT-4o Mini Transcribe ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 dated snapshot 발표; 2026-01-13 기본 alias 변경; 2027-02-26 종료 예정</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/elevenlabs-transcription.md">
+<span class="platform-icon icon-elevenlabs" aria-hidden="true">El<img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>ElevenLabs</a>
+<strong class="model-name">Scribe v2 Realtime (scribe_v2_realtime)</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-11-11</td>
+<td>Context 미상; realtime session duration 미상</td>
+<td>No — hosted API</td>
+<td>Transcription, 속도, 에이전트 작업; 150ms 미만 지연·VAD·manual commit·live transcription</td>
+<td>$0.39/hr<small>
+<a href="https://elevenlabs.io/pricing/api" target="_blank" rel="noreferrer">ElevenLabs API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://elevenlabs.io/blog/introducing-scribe-v2-realtime" target="_blank" rel="noreferrer">Scribe v2 Realtime 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://elevenlabs.io/blog/introducing-scribe-v2-realtime" target="_blank" rel="noreferrer">Scribe v2 Realtime 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>지연시간 150ms 미만</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/google-transcription.md">
+<span class="platform-icon icon-google" aria-hidden="true">G<img src="https://www.google.com/s2/favicons?domain=cloud.google.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Google Cloud</a>
+<strong class="model-name">Chirp 3 (chirp_3)</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-10-13</td>
+<td>Streaming 5 min/session; Recognize &lt;1 min; Batch 1 min–1 hour, word timestamps 사용 시 20 min; 일반 batch quota 최대 8 hours</td>
+<td>No — hosted API</td>
+<td>Transcription, 멀티모달; 다국어 생성형 ASR·diarization·자동 언어 감지·adaptation</td>
+<td>표준 $0.016/min부터; dynamic batch $0.003/min<small>
+<a href="https://cloud.google.com/speech-to-text/pricing" target="_blank" rel="noreferrer">Google Cloud Speech-to-Text pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://docs.cloud.google.com/speech-to-text/docs/models/chirp-3" target="_blank" rel="noreferrer">Google Cloud Chirp 3 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.cloud.google.com/speech-to-text/docs/models/chirp-3" target="_blank" rel="noreferrer">Google Cloud Chirp 3 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>GA 날짜; 한국어 ko-KR GA</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/deepgram-transcription.md">
+<span class="platform-icon icon-deepgram" aria-hidden="true">De<img src="https://www.google.com/s2/favicons?domain=deepgram.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Deepgram</a>
+<strong class="model-name">Flux English (flux-general-en)</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-10-01</td>
+<td>미상; streaming session 한도 미상</td>
+<td>미상 — 공개 가중치 미확인</td>
+<td>Transcription, 속도, 에이전트 작업; 대화형 STT·turn/end-of-turn detection·interruption·10개 언어</td>
+<td>$0.0065/min 프로모션, 정가 $0.0077/min<small>
+<a href="https://deepgram.com/pricing" target="_blank" rel="noreferrer">Deepgram pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://deepgram.com/learn/introducing-flux-conversational-speech-recognition" target="_blank" rel="noreferrer">Flux 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://deepgram.com/learn/introducing-flux-conversational-speech-recognition" target="_blank" rel="noreferrer">Flux 발표 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>conversational speech recognition</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/qwen-transcription.md">
+<span class="platform-icon icon-qwen" aria-hidden="true">Q<img src="https://www.google.com/s2/favicons?domain=qwen.ai&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Qwen</a>
+<strong class="model-name">Qwen3-ASR-Flash-Filetrans</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-09-08</td>
+<td>Context 미상; 단일 파일 최대 12 hours, 2 GB</td>
+<td>No — hosted API</td>
+<td>Transcription, 비용 효율; async file transcription·contextual biasing·singing/BGM·무음 거부</td>
+<td>Singapore 국제 가격 $0.000035/sec; 중국 $0.000032/sec<small>
+<a href="https://www.alibabacloud.com/help/en/model-studio/model-pricing" target="_blank" rel="noreferrer">Alibaba Cloud Model Studio pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://qwen.ai/blog?id=qwen3-asr-flash" target="_blank" rel="noreferrer">Qwen3-ASR-Flash 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://qwen.ai/blog?id=qwen3-asr-flash" target="_blank" rel="noreferrer">Qwen3-ASR-Flash 발표 ↗</a>
+</small>
+</details>
+<small>
+<a href="https://openrouter.ai/models?q=Qwen3-ASR-Flash-Filetrans" target="_blank" rel="noreferrer">OpenRouter 검색 ↗</a>
+</small>
+</td>
+<td>
+<small>최대 12시간·2GB</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-transcription.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-4o Transcribe</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2025-03-20</td>
+<td>Context 16,000 tokens; 오디오 길이 미상</td>
+<td>No — hosted API</td>
+<td>Transcription, 멀티모달; GPT-4o 기반 WER·언어 인식 개선</td>
+<td>입력 $2.50 / 출력 $10 per 1M audio tokens<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-4o-transcribe" target="_blank" rel="noreferrer">OpenAI GPT-4o Transcribe ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>Context window 16,000 tokens; 2026-08-26 폐기 예고, 2027-02-26 API 종료 예정</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-transcription.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-4o Mini Transcribe</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2025-03-20</td>
+<td>Context 16,000 tokens; 오디오 길이 미상</td>
+<td>No — hosted API</td>
+<td>Transcription, 비용 효율; 경량·비용 효율 STT</td>
+<td>입력 $1.25 / 출력 $5 per 1M audio tokens<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-4o-mini-transcribe" target="_blank" rel="noreferrer">OpenAI GPT-4o Mini Transcribe ↗</a> · <a href="https://developers.openai.com/api/docs/changelog" target="_blank" rel="noreferrer">API 출시 기록 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 snapshot gpt-4o-mini-transcribe-2025-12-15; 2026-08-26 폐기 예고, 2027-02-26 API 종료 예정</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/deepgram-transcription.md">
+<span class="platform-icon icon-deepgram" aria-hidden="true">De<img src="https://www.google.com/s2/favicons?domain=deepgram.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Deepgram</a>
+<strong class="model-name">Nova-3</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-02-12</td>
+<td>Context 미상; pre-recorded 최대 2 GB; 오디오 길이 한도와 요청 처리 timeout을 구분</td>
+<td>미상 — 공개 가중치 미확인</td>
+<td>Transcription, 멀티모달; WER·엔터티·도메인 용어·keyterm·PII·batch/streaming</td>
+<td>pre-recorded $0.0043/min; streaming $0.0048–$0.0058/min 프로모션<small>
+<a href="https://deepgram.com/pricing" target="_blank" rel="noreferrer">Deepgram pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://deepgram.com/changelog/introducing-nova-3" target="_blank" rel="noreferrer">Nova-3 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://deepgram.com/changelog/introducing-nova-3" target="_blank" rel="noreferrer">Nova-3 발표 ↗</a> · <a href="https://developers.deepgram.com/docs/pre-recorded-audio" target="_blank" rel="noreferrer">파일 제한 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>단일 언어/다국어 streaming 가격 상이</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/google-transcription.md">
+<span class="platform-icon icon-google" aria-hidden="true">G<img src="https://www.google.com/s2/favicons?domain=cloud.google.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Google Cloud</a>
+<strong class="model-name">Chirp 2 (chirp_2)</strong>
+<small>Current</small>
+</td>
+<td class="date">2025-01-27</td>
+<td>Streaming 5 min/session; sync &lt;1 min; Batch 1 min–8 hours</td>
+<td>No — hosted API</td>
+<td>Transcription, 장문맥; timestamps·adaptation·speech translation·다국어</td>
+<td>V2 표준 모델 $0.016/min부터<small>
+<a href="https://cloud.google.com/speech-to-text/pricing" target="_blank" rel="noreferrer">Google Cloud Speech-to-Text pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://docs.cloud.google.com/speech-to-text/docs/models/chirp-2" target="_blank" rel="noreferrer">Google Cloud Chirp 2 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://docs.cloud.google.com/speech-to-text/docs/models/chirp-2" target="_blank" rel="noreferrer">Google Cloud Chirp 2 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>GA 날짜</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/deepgram-transcription.md">
+<span class="platform-icon icon-deepgram" aria-hidden="true">De<img src="https://www.google.com/s2/favicons?domain=deepgram.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>Deepgram</a>
+<strong class="model-name">Nova-2</strong>
+<small>Current</small>
+</td>
+<td class="date">2023-09-19</td>
+<td>Context 미상; pre-recorded 최대 2 GB; 오디오 길이 한도와 요청 처리 timeout을 구분</td>
+<td>미상 — 공개 가중치 미확인</td>
+<td>Transcription, 비용 효율; WER·엔터티·도메인 용어·keyterm·PII·batch/streaming</td>
+<td>현재 모델별 가격 미상<small>
+<a href="https://deepgram.com/pricing" target="_blank" rel="noreferrer">Deepgram pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://deepgram.com/learn/nova-2-speech-to-text-api" target="_blank" rel="noreferrer">Nova-2 발표 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://deepgram.com/learn/nova-2-speech-to-text-api" target="_blank" rel="noreferrer">Nova-2 발표 ↗</a> · <a href="https://developers.deepgram.com/docs/pre-recorded-audio" target="_blank" rel="noreferrer">파일 제한 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 모델 목록에는 유지됨</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-transcription.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">Whisper (whisper-1)</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">2023-03-01</td>
+<td>공식 모델 문서상 context/audio cap 미상</td>
+<td>Yes — Whisper 공개 가중치 MIT; API 서비스 별도</td>
+<td>Transcription, 멀티모달; 다국어 ASR·speech translation·language identification</td>
+<td>$0.006/min<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://openai.com/index/introducing-chatgpt-and-whisper-apis/" target="_blank" rel="noreferrer">Whisper API 공개 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/whisper-1" target="_blank" rel="noreferrer">OpenAI Whisper API model ↗</a> · <a href="https://github.com/openai/whisper" target="_blank" rel="noreferrer">라이선스·가중치 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 Whisper weights/code는 MIT; <a href="https://github.com/openai/whisper" target="_blank" rel="noreferrer">공식 저장소 ↗</a>; 2026-08-26 폐기 예고, 2027-02-26 API 종료 예정</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/assemblyai-transcription.md">
+<span class="platform-icon icon-assemblyai" aria-hidden="true">As<img src="https://www.google.com/s2/favicons?domain=www.assemblyai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>AssemblyAI</a>
+<strong class="model-name">Universal-2</strong>
+<small>Current</small>
+</td>
+<td class="date">미상</td>
+<td>Context 미상; 파일 최대 10 hours, 5 GB</td>
+<td>No — hosted API</td>
+<td>Transcription, 비용 효율; 99개 언어·낮은 지연·keyterms·code-switching</td>
+<td>$0.15/hr<small>
+<a href="https://www.assemblyai.com/pricing/" target="_blank" rel="noreferrer">AssemblyAI pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://www.assemblyai.com/docs/getting-started/models" target="_blank" rel="noreferrer">AssemblyAI 모델 문서 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://www.assemblyai.com/docs/getting-started/models" target="_blank" rel="noreferrer">AssemblyAI 모델 문서 ↗</a> · <a href="https://www.assemblyai.com/docs/coding-agent-prompts" target="_blank" rel="noreferrer">API 제한 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>공식 출시일 미상</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/elevenlabs-transcription.md">
+<span class="platform-icon icon-elevenlabs" aria-hidden="true">El<img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>ElevenLabs</a>
+<strong class="model-name">Scribe v1 (scribe_v1)</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">미상</td>
+<td>폐기 모델; duration 해당 없음</td>
+<td>No — hosted API</td>
+<td>Transcription; 2026-07-09 API에서 제거</td>
+<td>해당 없음<small>
+<a href="https://elevenlabs.io/pricing/api" target="_blank" rel="noreferrer">ElevenLabs API pricing ↗</a>
+</small>
+</td>
+<td>
+<a href="https://elevenlabs.io/docs/changelog/2026/6/8" target="_blank" rel="noreferrer">Scribe v1 폐기 공지 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://elevenlabs.io/docs/changelog/2026/6/8" target="_blank" rel="noreferrer">Scribe v1 폐기 공지 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>2026-07-09 폐기·삭제</small>
+</td>
+</tr>
+<tr>
+<td>
+<a class="platform-name" href="https://github.com/SH4316/LLM-Frontier/blob/main/models/openai-transcription.md">
+<span class="platform-icon icon-openai" aria-hidden="true">O<img src="https://www.google.com/s2/favicons?domain=openai.com&amp;sz=64" alt="" loading="lazy" onerror="this.style.display='none'">
+</span>OpenAI</a>
+<strong class="model-name">GPT-4o Transcribe Diarize</strong>
+<small>Deprecated</small>
+</td>
+<td class="date">미상</td>
+<td>16,000 tokens; audio duration 미상</td>
+<td>No — hosted API</td>
+<td>Transcription; Transcription, speaker diarization; Transcription API 전용</td>
+<td>Audio tokens input $2.50 / output $10 per 1M<small>
+<a href="https://developers.openai.com/api/docs/pricing" target="_blank" rel="noreferrer">OpenAI 가격 ↗</a>
+</small>
+</td>
+<td>
+<a href="https://developers.openai.com/api/docs/models/gpt-4o-transcribe-diarize" target="_blank" rel="noreferrer">모델 소개 ↗</a>
+<details class="source-details">
+<summary>사양 출처</summary>
+<small>
+<a href="https://developers.openai.com/api/docs/models/gpt-4o-transcribe-diarize" target="_blank" rel="noreferrer">모델 사양 ↗</a>
+</small>
+</details>
+</td>
+<td>
+<small>화자 구분 내장; 출시일 미확인; 2027-02-26 종료 예정</small>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</main>
+<footer>공식 자료를 기반으로 수동 업데이트 · 미상: 공식 정보 미확인 · Open weights와 오픈소스 라이선스를 구분합니다. Deprecated: 공식 폐기 예고 또는 지원 종료; 공개 가중치 이용 여부는 별도입니다.<br>
+<a href="https://github.com/SH4316/LLM-Frontier/blob/main/AGENTS.md">AGENTS.md</a> · <a href="https://github.com/SH4316/LLM-Frontier">GitHub</a>
+</footer>
+</div>
+<script>
+(() => {
+  if (location.hostname !== 'htmlpreview.github.io') return;
+  const source = decodeURI(location.search.slice(1));
+  const prefix = "https://github.com/SH4316/LLM-Frontier/blob/";
+  if (!source.startsWith(prefix)) return;
+  const path = source.slice(prefix.length);
+  const requestedBranch = path.slice(0, path.lastIndexOf('/'));
+  if (!requestedBranch || requestedBranch === 'main') return;
+  for (const anchor of document.querySelectorAll('a[href]')) {
+    anchor.href = anchor.href.replace(prefix + 'main/', prefix + requestedBranch + '/');
+  }
+})();
+</script>
+</body>
+</html>
